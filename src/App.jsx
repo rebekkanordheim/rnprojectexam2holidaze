@@ -24,21 +24,3 @@ function App() {
 
 export default App;
  */
-import React from "react";
-import { useState } from "react";
-
-function App() {
-  const [isActive, setIsActive] = useState(false);
-
-  const toggleActive = () => {
-    setIsActive(!isActive);
-  };
-
-  return (
-    <div>
-      {isActive ? <div>I am active</div> : <div>I am not active</div>}
-      <button onClick={toggleActive}>Toggle Active</button>
-    </div>
-  );
-}
-export default App;
