@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+/* import logo from './logo.svg';
 import './App.css';
 
 function App() {
@@ -19,6 +19,20 @@ function App() {
         </a>
       </header>
     </div>
+  );
+}
+
+export default App;
+ */
+import React from 'react';
+import './styles.scss';
+
+function App() {
+  return (
+    <ul>
+      <li>Primary</li>
+      <li>Secondary</li>
+    </ul>
   );
 }
 
