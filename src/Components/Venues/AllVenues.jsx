@@ -1,11 +1,10 @@
-
 import React, { useEffect, useState } from "react";
 import SearchBar from "../Layout/SearchBar";
 import { Link } from 'react-router-dom';
 
 function Venues() {
     const [venues, setVenues] = useState([]);
-    const [searchedVenue, setSearchedVenue] = useState(null);
+    const [filteredVenues, setFilteredVenues] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
 
@@ -19,6 +18,7 @@ function Venues() {
                 }
                 const data = await response.json();
                 setVenues(data.data);
+                setFilteredVenues(data.data);
                 setIsLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -30,8 +30,10 @@ function Venues() {
     }, []);
 
     const handleSearch = (searchTerm) => {
-        const foundVenue = venues.find(venue => venue.name.toLowerCase().includes(searchTerm.toLowerCase()));
-        setSearchedVenue(foundVenue);
+        const filtered = venues.filter(venue =>
+            venue.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredVenues(filtered);
     };
 
     if (isLoading) {
@@ -45,26 +47,13 @@ function Venues() {
         <div>
             <SearchBar onSearch={handleSearch} />
             <div className='venues-container'>
-                {searchedVenue ? (
-                    <div className='venue'>
-                        <div className='venue-info'>
-                            <Link to={`/venue/${searchedVenue.id}`}>
-                                <h2 className='venue-title'>{searchedVenue.name}</h2>
-                            </Link>
-                            <p className='venue-description'>Price: ${searchedVenue.price} | Max Guests: {searchedVenue.maxGuests}</p>
-                            <Link to={`/venue/${searchedVenue.id}`}>
-                                <button className='view-venue-btn'>View Venue</button>
-                            </Link>
-                            {searchedVenue.media.length > 0 && (
-                                <img className='venue-image' src={searchedVenue.media[0].url} alt={searchedVenue.media[0].alt} />
-                            )}
-                        </div>
-                    </div>
-                ) : (
-                    venues.map((venue) => (
+                {filteredVenues.length > 0 ? (
+                    filteredVenues.map((venue) => (
                         <div key={venue.id} className='venue'>
                             <div className='venue-info'>
-                                <h2 className='venue-title'>{venue.name}</h2>
+                                <Link to={`/venue/${venue.id}`}>
+                                    <h2 className='venue-title'>{venue.name}</h2>
+                                </Link>
                                 <p className='venue-description'>Price: ${venue.price} | Max Guests: {venue.maxGuests}</p>
                                 {venue.media.length > 0 && (
                                     <img className='venue-image' src={venue.media[0].url} alt={venue.media[0].alt} />
@@ -75,6 +64,8 @@ function Venues() {
                             </div>
                         </div>
                     ))
+                ) : (
+                    <div>No venues found</div>
                 )}
             </div>
         </div>
