@@ -1,0 +1,15 @@
+.button {
+    padding: 10px 20px 10px 20px;
+    height: 40px;
+    border: 1px solid var(--secondary-text);
+    border-radius: 5px;
+    margin-left: 10px;
+    font-size: 16px;
+}
+
+.button:hover {
+    background-color: var(--secondary-color);
+    border: 1px solid var(--main-text);
+    color: var(--main-text);
+    cursor: pointer;
+}
