@@ -12,7 +12,6 @@ const RegisterForm = () => {
 
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,7 +40,7 @@ const RegisterForm = () => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        await registerUser(formData);
+        await registerUser(formData.name, formData.email, formData.password, formData.avatarUrl);
         setSuccessMessage('Registration successful!');
         setFormData({
           name: '',
@@ -62,73 +61,64 @@ const RegisterForm = () => {
     }
   };
 
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
   return (
     <div className='user-information'>
       <h2>Register</h2>
-      {errors.apiError && <span className='error error-message'>{errors.apiError}</span>}
-      {successMessage && <span className='success success-message'>{successMessage}</span>}
+      {errors.apiError && <span className="error error-message">{errors.apiError}</span>}
+      {successMessage && <span className="success success-message">{successMessage}</span>}
       <form onSubmit={handleSubmit} className='form'>
         <div className='form-group'>
           <label htmlFor='name'>First name:</label>
           <input
-            type='text'
-            id='name'
-            name='name'
+            type="text"
+            id="name"
+            name="name"
             value={formData.name}
             placeholder='Your first name'
             onChange={handleChange}
             className='form-input'
           />
-          {errors.name && <span className='error error-message'>{errors.name}</span>}
+          {errors.name && <span className="error error-message">{errors.name}</span>}
         </div>
         <div className='form-group'>
           <label htmlFor='email'>Email:</label>
           <input
-            type='email'
-            id='email'
-            name='email'
+            type="email"
+            id="email"
+            name="email"
             value={formData.email}
             placeholder='Your email'
             onChange={handleChange}
             className='form-input'
           />
-          {errors.email && <span className='error error-message'>{errors.email}</span>}
+          {errors.email && <span className="error error-message">{errors.email}</span>}
         </div>
         <div className='form-group'>
           <label htmlFor='password'>Password:</label>
-          <div className='password-input-container'>
-            <input
-              type={showPassword ? 'text' : 'password'}
-              id='password'
-              name='password'
-              value={formData.password}
-              placeholder='Your password'
-              onChange={handleChange}
-              className='form-input'
-            />
-            <button type='button' onClick={toggleShowPassword} className='toggle-password'>
-              <i className={showPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'}></i>
-            </button>
-          </div>
-          {errors.password && <span className='error error-message'>{errors.password}</span>}
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={formData.password}
+            placeholder='Your password'
+            onChange={handleChange}
+            className='form-input'
+          />
+          {errors.password && <span className="error error-message">{errors.password}</span>}
         </div>
         <div className='form-group'>
           <label htmlFor='avatarUrl'>Avatar URL:</label>
           <input
-            type='text'
-            id='avatarUrl'
-            name='avatarUrl'
+            type="text"
+            id="avatarUrl"
+            name="avatarUrl"
             value={formData.avatarUrl}
             placeholder='Your avatar url'
             onChange={handleChange}
             className='form-input'
           />
         </div>
-        <button type='submit' className={styles.button}>Register</button>
+        <button type="submit" className={styles.button}>Register</button>
       </form>
     </div>
   );
