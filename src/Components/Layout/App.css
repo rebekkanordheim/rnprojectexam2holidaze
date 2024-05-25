@@ -6,7 +6,9 @@
   --main-color-light: #58728461;
   --secondary-color: #6C9EB4;
 }
-html, body {
+
+html,
+body {
   overflow-x: hidden;
   margin: 0;
   padding: 0;
@@ -26,6 +28,15 @@ h1,
 h2,
 h3 {
   text-align: center;
+}
+
+a {
+  text-decoration: none;
+  color: var(--secondary-text);
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 /* nav */
