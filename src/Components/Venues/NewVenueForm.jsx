@@ -29,7 +29,7 @@ function NewVenueForm() {
             media: [{ url: imageUrl, alt: 'Venue Image' }],
             price: parseFloat(price),
             maxGuests: parseInt(maxGuests),
-            rating: 0, // default rating
+            rating: 0,
             meta: { wifi: wifi === 'yes', parking: parking === 'yes', breakfast: breakfast === 'yes', pets: pets === 'yes' },
             location: { address, city, zip, country }
         };
@@ -50,17 +50,12 @@ function NewVenueForm() {
             const responseData = await response.json();
             console.log('Venue created:', responseData);
 
-            // Show success message
             setSuccessMessage('Venue created successfully');
-            // Clear error message
             setErrorMessage('');
 
-            // Optionally, you can perform further actions after successful venue creation
         } catch (error) {
             console.error('Error creating venue:', error);
-            // Show error message
             setErrorMessage('Failed to create venue. Please try again.');
-            // Clear success message
             setSuccessMessage('');
         }
     };
@@ -80,7 +75,6 @@ function NewVenueForm() {
                     required
                     className='form-input'
                 />
-
                 <textarea
                     id='description'
                     value={description}
@@ -89,7 +83,6 @@ function NewVenueForm() {
                     required
                     className='form-textarea'
                 />
-
                 <input
                     type='url'
                     id='imageUrl'
@@ -99,7 +92,6 @@ function NewVenueForm() {
                     required
                     className='form-input'
                 />
-
                 <input
                     type='number'
                     id='price'
@@ -110,7 +102,6 @@ function NewVenueForm() {
                     min='0'
                     className='form-input'
                 />
-
                 <input
                     type='number'
                     id='maxGuests'
@@ -121,7 +112,6 @@ function NewVenueForm() {
                     min='1'
                     className='form-input'
                 />
-
                 <div>
                     <label>Wifi</label>
                     <div>
@@ -141,7 +131,6 @@ function NewVenueForm() {
                         /> No
                     </div>
                 </div>
-
                 <div>
                     <label>Parking</label>
                     <div>
@@ -161,7 +150,6 @@ function NewVenueForm() {
                         /> No
                     </div>
                 </div>
-
                 <div>
                     <label>Breakfast</label>
                     <div>
@@ -181,7 +169,6 @@ function NewVenueForm() {
                         /> No
                     </div>
                 </div>
-
                 <div>
                     <label>Pets</label>
                     <div>
@@ -201,7 +188,6 @@ function NewVenueForm() {
                         /> No
                     </div>
                 </div>
-
                 <input
                     type='text'
                     id='address'
@@ -211,7 +197,6 @@ function NewVenueForm() {
                     required
                     className='form-input'
                 />
-
                 <input
                     type='text'
                     id='city'
@@ -221,7 +206,6 @@ function NewVenueForm() {
                     required
                     className='form-input'
                 />
-
                 <input
                     type='text'
                     id='zip'
@@ -230,7 +214,6 @@ function NewVenueForm() {
                     onChange={(e) => setZip(e.target.value)}
                     className='form-input'
                 />
-
                 <input
                     type='text'
                     id='country'
@@ -240,7 +223,6 @@ function NewVenueForm() {
                     required
                     className='form-input'
                 />
-
                 <button type='submit' className={styles.button}>Submit</button>
             </form>
         </div>

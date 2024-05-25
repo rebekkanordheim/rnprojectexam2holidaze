@@ -1,12 +1,11 @@
 import React from 'react';
-import './App.css';
 import { Link } from 'react-router-dom';
+import './App.css';
 import Logo from '../../images/Holidaze-transparent.png';
+import { isLoggedIn } from '../User/authUtils';
 
 function Header() {
-    const handleVenuesClick = () => {
-        window.location.href = '/';
-    };
+    const loggedIn = isLoggedIn();
 
     return (
         <nav className='nav'>
@@ -18,7 +17,7 @@ function Header() {
             <div>
                 <ul>
                     <li>
-                        <Link to='/' onClick={handleVenuesClick}>Venues</Link>
+                        <Link to='/'>Venues</Link>
                     </li>
                     <li>
                         <Link to='/contact'>Contact</Link>
@@ -26,12 +25,23 @@ function Header() {
                     <li>
                         <Link to='/about'>About</Link>
                     </li>
-                    <li>
-                        <Link to='/register'>Register</Link>
-                    </li>
-                    <li>
-                        <Link to='/login'>Login</Link>
-                    </li>
+                    {!loggedIn && (
+                        <>
+                            <li>
+                                <Link to='/register'>Register</Link>
+                            </li>
+                            <li>
+                                <Link to='/login'>Login</Link>
+                            </li>
+                        </>
+                    )}
+                    {loggedIn && (
+                        <>
+                            <li>
+                                <Link to='/profile'>Profile</Link>
+                            </li>
+                        </>
+                    )}
                 </ul>
             </div>
         </nav>

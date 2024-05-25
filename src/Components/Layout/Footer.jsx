@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import { isLoggedIn } from '../User/authUtils';
 
 const handleLogout = () => {
     localStorage.removeItem('jwtToken');
@@ -7,8 +8,7 @@ const handleLogout = () => {
 };
 
 function Footer() {
-    const token = localStorage.getItem('jwtToken');
-    const isLoggedIn = !!token;
+    const loggedIn = isLoggedIn();
 
     const handleNewVenueClick = () => {
         window.location.href = '/newvenue';
@@ -18,10 +18,10 @@ function Footer() {
         <footer className='footer'>
             <p>&copy; Rebekka Nordheim 2024</p>
             <div>
-                {isLoggedIn && (
+                {loggedIn && (
                     <button onClick={handleNewVenueClick} className='button-link'>Create New Venue</button>
                 )}
-                {isLoggedIn && (
+                {loggedIn && (
                     <button onClick={handleLogout} className='button-link'>Logout</button>
                 )}
             </div>
