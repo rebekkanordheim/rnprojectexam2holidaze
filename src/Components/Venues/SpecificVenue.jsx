@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 function SpecificVenue() {
   const { id } = useParams();
@@ -38,6 +39,9 @@ function SpecificVenue() {
 
   return (
     <div key={venue.id} className='venue-detail'>
+      <Helmet>
+        <title>Holidaze | {venue.name}</title>
+      </Helmet>
       <div className='venue-info'>
         <h2 className='venue-title'>{venue.name}</h2>
         <p><i>Address:</i> {venue.address}</p>

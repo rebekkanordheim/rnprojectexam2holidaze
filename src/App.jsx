@@ -8,11 +8,10 @@ import NewVenueForm from './Components/Venues/NewVenueForm';
 import Layout from './Components/Layout/Layout';
 import RegisterPage from './Components/User/Register/RegisterPage';
 import LoginPage from './Components/User/Login/LoginPage';
-import '../src/Components/Layout/App.css';
+
 
 function App() {
   return (
-    <div>
       <BrowserRouter>
         <Layout />
         <Routes>
@@ -26,7 +25,6 @@ function App() {
           <Route path='*' element={<div>Route not found</div>} />
         </Routes>
       </BrowserRouter>
-    </div>
   );
 }
 

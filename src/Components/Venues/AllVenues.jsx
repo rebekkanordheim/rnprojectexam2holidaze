@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import SearchBar from '../Layout/SearchBar';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 function Venues() {
     const [venues, setVenues] = useState([]);
@@ -45,6 +46,9 @@ function Venues() {
 
     return (
         <div>
+            <Helmet>
+                <title>Holidaze | Home</title>
+            </Helmet>
             <SearchBar onSearch={handleSearch} />
             <div className='venues-container'>
                 {filteredVenues.length > 0 ? (
