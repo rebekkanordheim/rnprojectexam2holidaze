@@ -23,6 +23,16 @@ h3 {
   text-align: center;
 }
 
+a {
+  text-decoration: none;
+  color: var(--main-text);
+}
+
+a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 /* nav */
 .nav {
   background-color: var(--main-text);
@@ -162,7 +172,7 @@ h3 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #ffffffbf;
+  background-color: #ffffff6d;
   border: 2px solid white;
   color: var(--secondary-text);
   border-radius: 5px;
