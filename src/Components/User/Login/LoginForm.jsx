@@ -14,10 +14,10 @@ const LoginForm = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
+        setFormData((prevFormData) => ({
+            ...prevFormData,
             [name]: value
-        });
+        }));
     };
 
     const validateForm = () => {
@@ -36,7 +36,7 @@ const LoginForm = () => {
         e.preventDefault();
         if (validateForm()) {
             try {
-                const user = await loginUser(formData.email, formData.password);
+                await loginUser(formData.email, formData.password);
                 setSuccessMessage('Login successful!');
                 setFormData({
                     email: '',
