@@ -6,11 +6,17 @@
   --main-color-light: #58728461;
   --secondary-color: #6C9EB4;
 }
+html, body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
 
 body {
+  /* background-color: var(--main-color); */
   background-image: linear-gradient(to right, var(--main-color), var(--secondary-color));
   color: var(--main-text);
-  font-family: 'Syne', sans-serif;
+  font-family: "Syne", sans-serif;
   font-size: 24px;
   padding-bottom: 60px;
   overflow-x: hidden;
@@ -21,16 +27,6 @@ h1,
 h2,
 h3 {
   text-align: center;
-}
-
-a {
-  text-decoration: none;
-  color: var(--main-text);
-}
-
-a:hover {
-  text-decoration: underline;
-  cursor: pointer;
 }
 
 /* nav */
@@ -172,7 +168,7 @@ a:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #ffffff6d;
+  background-color: #ffffffbf;
   border: 2px solid white;
   color: var(--secondary-text);
   border-radius: 5px;
