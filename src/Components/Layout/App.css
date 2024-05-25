@@ -13,8 +13,7 @@ html, body {
 }
 
 body {
-  /* background-color: var(--main-color); */
-  background-image: linear-gradient(to right, var(--main-color), var(--secondary-color));
+  background-color: var(--main-color);
   color: var(--main-text);
   font-family: "Syne", sans-serif;
   font-size: 24px;
