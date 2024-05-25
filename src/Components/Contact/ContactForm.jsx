@@ -17,7 +17,7 @@ function ContactForm() {
             return;
         }
 
-        console.log("Form Data:", { firstName, lastName, subject, email, body });
+        console.log('Form Data:', { firstName, lastName, subject, email, body });
         setFormSubmitted(true);
         setFormError('');
         setFirstName('');
@@ -54,7 +54,7 @@ function ContactForm() {
     return (
         <div className='user-information'>
             {formSubmitted && <p className='success-message'>Thank you for your submission!</p>}
-            {formError && <p className="error-message">{formError}</p>}
+            {formError && <p className='error-message'>{formError}</p>}
             <div className='form'>
                 <h3>Opening Hours</h3>
                 <p>Monday - Friday: 08:00-16:00</p>
@@ -120,7 +120,7 @@ function ContactForm() {
                     className='form-textarea'
                 />
 
-                <button type="submit" className={styles.button}>Submit</button>
+                <button type='submit' className={styles.button}>Submit</button>
             </form>
         </div>
     );

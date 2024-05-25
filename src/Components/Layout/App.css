@@ -8,10 +8,9 @@
 }
 
 body {
-  /* background-color: var(--main-color); */
   background-image: linear-gradient(to right, var(--main-color), var(--secondary-color));
   color: var(--main-text);
-  font-family: "Syne", sans-serif;
+  font-family: 'Syne', sans-serif;
   font-size: 24px;
   padding-bottom: 60px;
   overflow-x: hidden;
@@ -216,7 +215,7 @@ h3 {
   padding: 10px 20px;
 }
 
-/* Form styling */
+/* form styling */
 .form {
   display: flex;
   flex-direction: column;
@@ -264,25 +263,7 @@ label {
   background-color: var(--main-color-light);
   font-size: 18px;
   color: var(--main-text);
-  font-family: "Syne", sans-serif;
-}
-::placeholder {
-  color: var(--main-text);
-  opacity: 1;
-}
-
-.success-message {
-  color: greenyellow;
-  border-radius: 5px;
-  padding: 0px 5px;
-  font-size: 30px;
-  margin-top: 5px;
-}
-
-.error-message {
-  color: orange;
-  font-size: 30px;
-  margin-top: 5px;
+  font-family: 'Syne', sans-serif;
 }
 
 .password-input-container {
@@ -303,4 +284,23 @@ label {
   background: none;
   border: none;
   cursor: pointer;
+}
+
+::placeholder {
+  color: var(--main-text);
+  opacity: 1;
+}
+
+.success-message {
+  color: greenyellow;
+  border-radius: 5px;
+  padding: 0px 5px;
+  font-size: 30px;
+  margin-top: 5px;
+}
+
+.error-message {
+  color: orange;
+  font-size: 30px;
+  margin-top: 5px;
 }

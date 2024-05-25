@@ -241,7 +241,7 @@ function NewVenueForm() {
                     className='form-input'
                 />
 
-                <button type="submit" className={styles.button}>Submit</button>
+                <button type='submit' className={styles.button}>Submit</button>
             </form>
         </div>
     );

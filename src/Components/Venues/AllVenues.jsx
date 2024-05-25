@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import SearchBar from "../Layout/SearchBar";
+import React, { useEffect, useState } from 'react';
+import SearchBar from '../Layout/SearchBar';
 import { Link } from 'react-router-dom';
 
 function Venues() {

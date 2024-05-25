@@ -19,9 +19,8 @@ export async function loginUser(email, password) {
 
       if (response.ok) {
           const data = await response.json();
-          const token = data.data.accessToken; // Assuming the API returns the token in this field
-
-          // Store the token in local storage
+          const token = data.data.accessToken; 
+          
           localStorage.setItem('jwtToken', token);
 
           console.log('Login successful. JWT token stored.');

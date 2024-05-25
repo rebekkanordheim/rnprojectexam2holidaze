@@ -12,7 +12,7 @@ function AboutPage() {
             <p>With our user-friendly platform, you can explore a diverse range of accommodations, make secure reservations, and even manage your bookings with ease. Join us on our journey to redefine the way you experience holidays, one booking at a time.</p>
             <p>Best regards from the team behind</p>
             <Link to='/'>
-                <img src={Logo} className="logo" alt="Logo" />
+                <img src={Logo} className='logo' alt='Logo' />
             </Link>
 
         </div >

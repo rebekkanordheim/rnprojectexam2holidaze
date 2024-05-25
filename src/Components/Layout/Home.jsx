@@ -1,7 +1,6 @@
 import React from 'react';
 import Venues from '../Venues/AllVenues';
 
-
 function Home() {
     return (
         <div>
