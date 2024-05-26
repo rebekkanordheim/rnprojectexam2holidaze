@@ -350,7 +350,7 @@ label {
 }
 
 .error-message {
-  color: orange;
+  color: rgb(255, 132, 0);
   background-color: var(--main-color);
   border-radius: 5px;
   padding: 5px;
