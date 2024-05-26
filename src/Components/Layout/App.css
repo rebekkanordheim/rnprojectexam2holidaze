@@ -207,7 +207,7 @@ a:hover {
   border: 2px solid white;
   color: var(--secondary-text);
   border-radius: 5px;
-  width: 80%;
+  width: 100%;
   max-width: 400px;
   margin: 20px auto;
   margin-bottom: 80px;
