@@ -50,12 +50,13 @@ function Header() {
 
 export default Header;
  */
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './App.css';
 import Logo from '../../images/Holidaze-transparent.png';
 import { isLoggedIn } from '../User/authUtils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
 function Header() {
     const loggedIn = isLoggedIn();
@@ -93,11 +94,11 @@ function Header() {
                             <li>
                                 <Link to='/profile'>Profile</Link>
                             </li>
+                            <li>
+                                <Link to='/booking-cart'><FontAwesomeIcon icon={faCartShopping} /> </Link>
+                            </li>
                         </>
                     )}
-                    <li>
-                        <Link to='/booking-cart'>Booking Cart</Link>
-                    </li>
                 </ul>
             </div>
         </nav>

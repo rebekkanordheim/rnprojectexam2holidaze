@@ -225,6 +225,10 @@ a:hover {
   cursor: pointer;
 }
 
+.specific-booking {
+  background-color: var(--main-text);
+}
+
 /* about */
 .about p {
   align-items: center;
@@ -309,6 +313,7 @@ label {
 
 .success-message {
   color: greenyellow;
+  background-color: var(--main-color);
   border-radius: 5px;
   padding: 0px 5px;
   font-size: 30px;
@@ -317,6 +322,7 @@ label {
 
 .error-message {
   color: orange;
+  background-color: var(--main-color);
   font-size: 30px;
   margin-top: 5px;
 }
