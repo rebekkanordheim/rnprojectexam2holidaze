@@ -3,7 +3,8 @@ import './App.css';
 import { isLoggedIn } from '../User/authUtils';
 
 const handleLogout = () => {
-    localStorage.removeItem('jwtToken');
+    /* localStorage.removeItem('jwtToken'); */
+    localStorage.clear();
     window.location.href = '/';
 };
 

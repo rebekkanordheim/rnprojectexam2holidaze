@@ -9,6 +9,7 @@ import Layout from './Components/Layout/Layout';
 import RegisterPage from './Components/User/Register/RegisterPage';
 import LoginPage from './Components/User/Login/LoginPage';
 import BookingCart from './Components/Venues/BookingCart';
+import BookingCheckout from './Components/Venues/BookingCheckout';
 
 function App() {
   const [bookingCart, setBookingCart] = useState(() => {
@@ -32,6 +33,7 @@ function App() {
         <Route path='/login' element={<LoginPage />} />
         <Route path='/newvenue' element={<NewVenueForm />} />
         <Route path='/booking-cart' element={<BookingCart bookingCart={bookingCart} setBookingCart={setBookingCart} />} />
+        <Route path="/checkout" element={<BookingCheckout />} />
         <Route path='*' element={<div>Route not found</div>} />
       </Routes>
     </BrowserRouter>
