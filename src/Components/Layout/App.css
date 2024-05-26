@@ -105,7 +105,6 @@ a:hover {
   height: 60px;
 }
 
-
 .button-link {
   background-color: var(--main-color);
   color: var(--main-text);
@@ -158,7 +157,7 @@ a:hover {
 /* Venues styling */
 .venues-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
 }
 
@@ -185,12 +184,11 @@ a:hover {
   border: 2px solid white;
   color: var(--secondary-text);
   border-radius: 5px;
-  width: 100%;
-  max-width: 600px;
+  width: 80%;
+  max-width: 400px;
   margin: 20px auto;
   padding: 20px;
   margin-bottom: 80px;
-  text-align: center;
 }
 
 .venue-info {
@@ -259,7 +257,6 @@ a:hover {
 .remove-item-btn:hover {
   color: var(--main-color);
 }
-
 
 /* about */
 .about p {
@@ -347,7 +344,7 @@ label {
   color: greenyellow;
   background-color: var(--main-color);
   border-radius: 5px;
-  padding: 0px 5px;
+  padding: 5px;
   font-size: 30px;
   margin-top: 5px;
 }
@@ -355,6 +352,8 @@ label {
 .error-message {
   color: orange;
   background-color: var(--main-color);
+  border-radius: 5px;
+  padding: 5px;
   font-size: 30px;
   margin-top: 5px;
 }

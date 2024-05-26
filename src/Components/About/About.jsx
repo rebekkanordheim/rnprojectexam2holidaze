@@ -7,7 +7,7 @@ function AboutPage() {
     return (
         <div className='form'>
             <Helmet>
-                <title>Holidaze | About</title> {/* Set the title */}
+                <title>Holidaze | About</title>
             </Helmet>
             <h1>Welcome to Holidazee</h1>
             <p>Your ultimate destination for hassle-free accommodation booking.</p>

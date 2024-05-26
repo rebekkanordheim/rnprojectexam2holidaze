@@ -50,7 +50,6 @@ function SpecificVenue({ addToBookingCart }) {
       <Helmet>
         <title>Holidaze | {venue.name}</title>
       </Helmet>
-      {showSuccessMessage && <p className="success-message">Venue added to booking cart!</p>}
       <div className='venue-info'>
         <h2 className='venue-title'>{venue.name}</h2>
         <p><i>Address:</i> {venue.address}</p>
@@ -62,6 +61,7 @@ function SpecificVenue({ addToBookingCart }) {
         {venue.media.length > 0 && (
           <img className='venue-image' src={venue.media[0].url} alt={venue.media[0].alt} />
         )}
+        {showSuccessMessage && <p className="success-message">Venue added to booking cart!</p>}
         <button type='submit' className={styles.button} onClick={handleAddToBookingCart}>Add to Booking Cart</button>
       </div>
     </div>

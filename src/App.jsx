@@ -10,6 +10,7 @@ import RegisterPage from './Components/User/Register/RegisterPage';
 import LoginPage from './Components/User/Login/LoginPage';
 import BookingCart from './Components/Venues/BookingCart';
 import BookingCheckout from './Components/Venues/BookingCheckout';
+import Profile from './Components/User/Profile';
 
 function App() {
   const [bookingCart, setBookingCart] = useState(() => {
@@ -31,6 +32,7 @@ function App() {
         <Route path='/about' element={<AboutPage />} />
         <Route path='/register' element={<RegisterPage />} />
         <Route path='/login' element={<LoginPage />} />
+        <Route path='/profile' element={<Profile />} />
         <Route path='/newvenue' element={<NewVenueForm />} />
         <Route path='/booking-cart' element={<BookingCart bookingCart={bookingCart} setBookingCart={setBookingCart} />} />
         <Route path="/checkout" element={<BookingCheckout />} />

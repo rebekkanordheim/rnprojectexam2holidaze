@@ -43,7 +43,6 @@ const LoginForm = () => {
                     password: ''
                 });
                 setErrors({});
-                // Store JWT token in local storage
                 localStorage.setItem('jwtToken', user.data.accessToken);
                 setTimeout(() => {
                     window.location.href = '/';

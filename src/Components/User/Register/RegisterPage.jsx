@@ -6,7 +6,7 @@ const RegisterPage = () => {
     return (
         <div>
             <Helmet>
-                <title>Holidaze | Register</title> {/* Set the title */}
+                <title>Holidaze | Register</title>
             </Helmet>
             <RegisterForm />
         </div>
