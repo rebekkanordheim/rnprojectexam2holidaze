@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import styles from '../../Button.module.css';
 import { Helmet } from 'react-helmet';
 
 function SpecificVenue({ addToBookingCart }) {
@@ -61,7 +62,7 @@ function SpecificVenue({ addToBookingCart }) {
         {venue.media.length > 0 && (
           <img className='venue-image' src={venue.media[0].url} alt={venue.media[0].alt} />
         )}
-        <button className='add-to-booking-cart-btn' onClick={handleAddToBookingCart}>Add to Booking Cart</button>
+        <button type='submit' className={styles.button} onClick={handleAddToBookingCart}>Add to Booking Cart</button>
       </div>
     </div>
   );
