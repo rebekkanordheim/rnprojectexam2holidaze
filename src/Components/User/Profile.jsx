@@ -1,51 +1,55 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 function Profile() {
-  const { name } = useParams();
-  const [userName, setUserName] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+    const { name } = useParams();
+    const [userName, setUserName] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchUserName = () => {
-      try {
-        setIsLoading(true);
-        
-        const userData = localStorage.getItem('userName');
+    useEffect(() => {
+        const fetchUserName = () => {
+            try {
+                setIsLoading(true);
 
-        if (!userData) {
-          throw new Error('User name not found in local storage');
-        }
+                const userData = localStorage.getItem('userName');
 
-        setUserName(userData);
-        setIsLoading(false);
-      } catch (error) {
-        setError(error);
-        setIsLoading(false);
-      }
-    };
+                if (!userData) {
+                    throw new Error('User name not found in local storage');
+                }
 
-    fetchUserName();
-  }, [name]);
+                setUserName(userData);
+                setIsLoading(false);
+            } catch (error) {
+                setError(error);
+                setIsLoading(false);
+            }
+        };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+        fetchUserName();
+    }, [name]);
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
-  if (!userName) {
-    return <div>No user name found</div>;
-  }
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
 
-  return (
-    <div>
-      <h1>Welcome, {userName}!</h1>
-    </div>
-  );
+    if (!userName) {
+        return <div>No user name found</div>;
+    }
+
+    return (
+        <div>
+            <Helmet>
+                <title>Holidaze | {userName}</title>
+            </Helmet>
+            <h1>Welcome, {userName}!</h1>
+        </div>
+    );
 }
 
 export default Profile;
