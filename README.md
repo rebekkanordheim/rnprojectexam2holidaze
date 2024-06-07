@@ -8,12 +8,6 @@ A simple overview of the use/purpose of the project.
 
 By working with the official API documentation, I have planned, designed, and built a modern front-end accommodation booking application for my client Holidaze.
 
-You can add some bullet points if you'd like to:
-
-- List item 1
-- List item 2
-- List item 3
-
 ## Built With
 
 - JavaScript Framework: React.js
