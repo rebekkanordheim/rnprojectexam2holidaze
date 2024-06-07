@@ -1,12 +1,12 @@
-# Your project title
+# Project Exam 2 - Holidaze 
 
-![image](https://user-images.githubusercontent.com/52622303/164316813-4b12d99f-aeb7-4069-85cf-e72b3a50ac99.png)
+![HolidazeSite](https://github.com/rebekkanordheim/rnprojectexam2holidaze/assets/111970970/3b389c43-b176-4a1b-a676-1c85bf02c983)
 
 A simple overview of the use/purpose of the project.
 
 ## Description
 
-Add a more detailed description of what your project entails and set out to do.
+By working with the official API documentation, I have planned, designed, and built a modern front-end accommodation booking application for my client Holidaze.
 
 You can add some bullet points if you'd like to:
 
@@ -16,21 +16,23 @@ You can add some bullet points if you'd like to:
 
 ## Built With
 
-You can list a the tech stack that you've used over here
-
-- [React.js](https://reactjs.org/)
-- [Bootstrap](https://getbootstrap.com)
+- JavaScript Framework: React.js
+- CSS Framework: CSS Modules
+- Static Host: Netlify
+- Design Application: Figma
+- Planning Application: Trello
 
 ## Getting Started
 
 ### Installing
 
-This is where you list how to get the project started. It typically just includes telling a person to clone the repo and then to install the dependencies e.g.
+To get started with this project, follow these steps:
 
 1. Clone the repo:
 
 ```bash
-git clone git@github.com:NoroffFEU/portfolio-1-example.git
+git clone https://github.com/rebekkanordheim/rnprojectexam2holidaze.git
+
 ```
 
 2. Install the dependencies:
@@ -49,15 +51,11 @@ To run the app, run the following commands:
 npm run start
 ```
 
-## Contributing
-
-Here you can detail any information you want to provide regarding contributing to the project. For big projects you will usually have a separate `CONTRIBUTING.md` and link to it, but for smaller projects you can simply include instructions here. These instructions can simply detail the process you want a person to take, such as to make sure to open a pull request so code can be reviewed.
-
 ## Contact
 
 This is where you can leave your social links for people to contact you, such as a LinkedIn profile or Twitter link e.g.
 
-[My Twitter page](www.twitter.com)
+[My own website](https://rebekkanordheim.no)
 
-[My LinkedIn page](www.linkedin.com)
+[My LinkedIn page](https://www.linkedin.com/in/rebekka-nordheim-903377194/)
 
