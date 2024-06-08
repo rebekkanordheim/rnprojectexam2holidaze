@@ -1,6 +1,6 @@
-import React from 'react';
-import ContactForm from './ContactForm';
-import { Helmet } from 'react-helmet';
+import React from "react";
+import ContactForm from "./ContactForm";
+import { Helmet } from "react-helmet";
 
 function ContactPage() {
   return (

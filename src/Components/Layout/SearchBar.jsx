@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function SearchBar({ onSearch }) {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -13,15 +13,17 @@ function SearchBar({ onSearch }) {
   };
 
   return (
-    <form className='searchbar-container' onSubmit={handleSubmit}>
+    <form className="searchbar-container" onSubmit={handleSubmit}>
       <input
-        type='text'
-        placeholder='Search...'
+        type="text"
+        placeholder="Search..."
         value={searchTerm}
         onChange={handleChange}
-        className='searchbar'
+        className="searchbar"
       />
-      <button className='search-btn' type='submit'>Search</button>
+      <button className="search-btn" type="submit">
+        Search
+      </button>
     </form>
   );
 }
