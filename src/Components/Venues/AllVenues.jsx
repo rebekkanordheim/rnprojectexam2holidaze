@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import SearchBar from "../Layout/SearchBar";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { VENUES_API_ENDPOINT } from "../../Common/constants";
 
 function Venues() {
   const [venues, setVenues] = useState([]);
@@ -13,7 +14,7 @@ function Venues() {
     async function fetchData() {
       setIsLoading(true);
       try {
-        const response = await fetch("https://v2.api.noroff.dev/holidaze/venues");
+        const response = await fetch(VENUES_API_ENDPOINT);
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }

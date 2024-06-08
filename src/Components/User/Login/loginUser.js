@@ -1,5 +1,7 @@
+import { AUTH_ENDPOINT_LOGIN } from "../../../Common/constants";
+
 export async function loginUser(email, password) {
-  const loginUrl = 'https://v2.api.noroff.dev/auth/login';
+  const loginUrl = AUTH_ENDPOINT_LOGIN;
 
   try {
     const loginData = {

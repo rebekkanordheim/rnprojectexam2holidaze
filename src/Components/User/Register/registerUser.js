@@ -1,5 +1,7 @@
+import { AUTH_ENDPOINT_REGISTER } from "../../../Common/constants";
+
 export async function registerUser(formData) {
-  const registerUrl = 'https://v2.api.noroff.dev/auth/register';
+  const registerUrl = AUTH_ENDPOINT_REGISTER;
 
   try {
     const userData = {
