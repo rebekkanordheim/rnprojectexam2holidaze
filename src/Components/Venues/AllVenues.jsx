@@ -20,7 +20,7 @@ function Venues() {
     /**
      * Fetches venues data from the API.
      */
-    async function fetchData() {
+    const fetchData = async () => {
       setIsLoading(true);
       try {
         const response = await fetch(VENUES_API_ENDPOINT);
@@ -30,13 +30,15 @@ function Venues() {
         const data = await response.json();
         setVenues(data.data);
         setFilteredVenues(data.data);
-        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
         setIsError(true);
-        setIsLoading(false);
+      } finally {
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1500); // Set loading state to false after 1.5 seconds
       }
-    }
+    };
     fetchData();
   }, []);
 
@@ -52,49 +54,46 @@ function Venues() {
     setFilteredVenues(filtered);
   };
 
-  if (isLoading) {
-    return <div>Loading venues...</div>;
-  }
-  if (isError || !venues) {
-    return <div>Error loading venues</div>;
-  }
-
   return (
     <div>
       <Helmet>
         <title>Holidaze | Home</title>
       </Helmet>
       <SearchBar onSearch={handleSearch} />
-      <div className="venues-container">
-        {filteredVenues.length > 0 ? (
-          filteredVenues.map((venue) => (
-            <div key={venue.id} className="venue">
-              <div className="venue-info">
-                <Link to={`/venue/${venue.id}`}>
-                  <h2 className="venue-title">{venue.name}</h2>
-                </Link>
-                <p className="venue-description">
-                  Price: ${venue.price} | Max Guests: {venue.maxGuests}
-                </p>
-                {venue.media.length > 0 && (
-                  <img
-                    className="venue-image"
-                    src={venue.media[0].url}
-                    alt={venue.media[0].alt}
-                  />
-                )}
-                <Link to={`/venue/${venue.id}`}>
-                  <button type="submit" className={styles.button}>
-                    View Venue
-                  </button>
-                </Link>
+      {isLoading && <div className="loading-message">Loading venues...</div>}
+      {isError && <div className="error-message">Error loading venues</div>}
+      {!isLoading && !isError && (
+        <div className="venues-container">
+          {filteredVenues.length > 0 ? (
+            filteredVenues.map((venue) => (
+              <div key={venue.id} className="venue">
+                <div className="venue-info">
+                  <Link to={`/venue/${venue.id}`}>
+                    <h2 className="venue-title">{venue.name}</h2>
+                  </Link>
+                  <p className="venue-description">
+                    Price: ${venue.price} | Max Guests: {venue.maxGuests}
+                  </p>
+                  {venue.media.length > 0 && (
+                    <img
+                      className="venue-image"
+                      src={venue.media[0].url}
+                      alt={venue.media[0].alt}
+                    />
+                  )}
+                  <Link to={`/venue/${venue.id}`}>
+                    <button type="submit" className={styles.button}>
+                      View Venue
+                    </button>
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))
-        ) : (
-          <div>No venues found</div>
-        )}
-      </div>
+            ))
+          ) : (
+            <div>No venues found</div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

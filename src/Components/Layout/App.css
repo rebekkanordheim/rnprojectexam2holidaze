@@ -178,24 +178,11 @@ a:hover {
 }
 
 /* Venues styling */
-/* .venues-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+.loading-message,
+.error-message {
+  text-align: center;
 }
 
-@media (max-width: 1350px) and (min-width: 701px) {
-  .venues-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 880px) {
-  .venues-container {
-    grid-template-columns: repeat(1, 1fr);
-  }
-} */
-/* Venues styling */
 .venues-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -258,23 +245,6 @@ a:hover {
   padding: 5px;
   object-fit: cover;
 }
-
-/* .view-venue-btn,
-.create-venue-button {
-  background-color: var(--secondary-text);
-  color: var(--main-text);
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: none;
-  margin: 20px;
-} */
-
-/* .view-venue-btn:hover,
-.create-venue-button:hover {
-  background-color: var(--secondary-color);
-  color: var(--main-text);
-  cursor: pointer;
-} */
 
 /* booking cart */
 .specific-booking {
