@@ -3,6 +3,13 @@ import { useParams } from "react-router-dom";
 import styles from "../../Button.module.css";
 import { Helmet } from "react-helmet";
 
+/**
+ * SpecificVenue component displays detailed information about a specific venue.
+ * 
+ * @param {Object} props - The props passed to the component.
+ * @param {Function} props.addToBookingCart - Function to add the venue to the booking cart.
+ * @returns {JSX.Element} JSX element representing the SpecificVenue component.
+ */
 function SpecificVenue({ addToBookingCart }) {
   const { id } = useParams();
   const [venue, setVenue] = useState(null);
@@ -10,6 +17,9 @@ function SpecificVenue({ addToBookingCart }) {
   const [isError, setIsError] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
+  /**
+   * Handles adding the venue to the booking cart and displays a success message.
+   */
   const handleAddToBookingCart = () => {
     addToBookingCart(venue);
     setShowSuccessMessage(true);
@@ -71,9 +81,15 @@ function SpecificVenue({ addToBookingCart }) {
           <i>Price:</i> ${venue.price}
         </p>
         {venue.media.length > 0 && (
-          <img className="venue-image" src={venue.media[0].url} alt={venue.media[0].alt} />
+          <img
+            className="venue-image"
+            src={venue.media[0].url}
+            alt={venue.media[0].alt}
+          />
         )}
-        {showSuccessMessage && <p className="success-message">Venue added to booking cart!</p>}
+        {showSuccessMessage && (
+          <p className="success-message">Venue added to booking cart!</p>
+        )}
         <button type="submit" className={styles.button} onClick={handleAddToBookingCart}>
           Add to Booking Cart
         </button>

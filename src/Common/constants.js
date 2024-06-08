@@ -1,4 +1,5 @@
-const BASE_API_URL = 'https://v2.api.noroff.dev'; 
+
+export const BASE_API_URL = 'https://v2.api.noroff.dev'; 
 
 export const BASE_API_ENDPOINT = `${BASE_API_URL}/holidaze`;
 

@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
+/**
+ * Profile component displaying the user's name fetched from localStorage.
+ *
+ * @returns {JSX.Element} JSX element representing the Profile component.
+ */
 function Profile() {
   const { name } = useParams();
   const [userName, setUserName] = useState("");
@@ -9,6 +14,9 @@ function Profile() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    /**
+     * Fetches the user name from localStorage.
+     */
     const fetchUserName = () => {
       try {
         setIsLoading(true);

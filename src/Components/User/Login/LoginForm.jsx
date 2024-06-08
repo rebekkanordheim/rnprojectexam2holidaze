@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { loginUser } from "./loginUser";
 import styles from "../../../Button.module.css";
 
+/**
+ * LoginForm component for user authentication.
+ *
+ * @returns {JSX.Element} The rendered LoginForm component.
+ */
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -12,6 +17,10 @@ const LoginForm = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  /**
+   * Handles input change events and updates the form data state.
+   * @param {Object} e - The input change event object.
+   */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -20,6 +29,10 @@ const LoginForm = () => {
     }));
   };
 
+  /**
+   * Validates the form input fields.
+   * @returns {boolean} True if the form is valid, otherwise false.
+   */
   const validateForm = () => {
     const errors = {};
     if (!formData.email.endsWith("@stud.noroff.no")) {
@@ -32,6 +45,10 @@ const LoginForm = () => {
     return Object.keys(errors).length === 0;
   };
 
+  /**
+   * Handles form submission events.
+   * @param {Object} e - The form submission event object.
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
@@ -55,6 +72,9 @@ const LoginForm = () => {
     }
   };
 
+  /**
+   * Toggles the visibility of the password input.
+   */
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -63,7 +83,9 @@ const LoginForm = () => {
     <div className="user-information">
       <h2>Login</h2>
       {errors.apiError && <span className="error error-message">{errors.apiError}</span>}
-      {successMessage && <span className="success success-message">{successMessage}</span>}
+      {successMessage && (
+        <span className="success success-message">{successMessage}</span>
+      )}
       <form onSubmit={handleSubmit} className="form">
         <div className="form-group">
           <label htmlFor="email">Email:</label>
@@ -90,11 +112,19 @@ const LoginForm = () => {
               onChange={handleChange}
               className="form-input"
             />
-            <button type="button" onClick={toggleShowPassword} className="toggle-password">
-              <i className={showPassword ? "fa-regular fa-eye-slash" : "fa-regular fa-eye"}></i>
+            <button
+              type="button"
+              onClick={toggleShowPassword}
+              className="toggle-password">
+              <i
+                className={
+                  showPassword ? "fa-regular fa-eye-slash" : "fa-regular fa-eye"
+                }></i>
             </button>
           </div>
-          {errors.password && <span className="error error-message">{errors.password}</span>}
+          {errors.password && (
+            <span className="error error-message">{errors.password}</span>
+          )}
         </div>
         <button type="submit" className={styles.button}>
           Login

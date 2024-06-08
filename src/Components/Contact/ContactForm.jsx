@@ -1,6 +1,16 @@
 import React, { useState } from "react";
 import styles from "../../Button.module.css";
 
+/**
+ * ContactForm component
+ *
+ * This component renders a contact form that allows users to submit their first name, last name,
+ * subject, email, and message.
+ * It includes form validation to ensure all fields are filled out correctly before submission.
+ * Upon successful submission, the form displays a success message and clears the input fields.
+ *
+ * @returns {JSX.Element} The ContactForm component.
+ */
 function ContactForm() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");

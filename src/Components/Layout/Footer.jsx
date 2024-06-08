@@ -2,14 +2,28 @@ import React from "react";
 import "./App.css";
 import { isLoggedIn } from "../User/authUtils";
 
+/**
+ * Clears the local storage and redirects to the home page.
+ */
 const handleLogout = () => {
   localStorage.clear();
   window.location.href = "/";
 };
 
+/**
+ * Renders the Footer component.
+ * This component displays the footer with a copyright notice and conditional buttons.
+ * If the user is logged in, it shows buttons for creating a new venue and logging out.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered Footer component.
+ */
 function Footer() {
   const loggedIn = isLoggedIn();
 
+  /**
+   * Redirects to the new venue creation page.
+   */
   const handleNewVenueClick = () => {
     window.location.href = "/newvenue";
   };

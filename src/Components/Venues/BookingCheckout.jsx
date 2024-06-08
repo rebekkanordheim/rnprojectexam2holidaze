@@ -2,11 +2,19 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
-const handleCheckout = () => {
-  localStorage.removeItem("bookingCart");
-};
-
+/**
+ * Checkout component displays a confirmation message for the completed order.
+ *
+ * @returns {JSX.Element} JSX element representing the Checkout component.
+ */
 function Checkout() {
+  /**
+   * handleCheckout function removes the booking cart from localStorage.
+   */
+  const handleCheckout = () => {
+    localStorage.removeItem("bookingCart");
+  };
+
   return (
     <div className="checkout-message">
       <Helmet>

@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { registerUser } from "./registerUser";
 import styles from "../../../Button.module.css";
 
+/**
+ * A form component for user registration.
+ *
+ * @returns {JSX.Element} The rendered RegisterForm component.
+ */
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -14,6 +19,11 @@ const RegisterForm = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  /**
+   * Handles input change in the form fields.
+   *
+   * @param {Event} e - The input change event.
+   */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -22,10 +32,16 @@ const RegisterForm = () => {
     });
   };
 
+  /**
+   * Validates the registration form data.
+   *
+   * @returns {boolean} true if the form data is valid, otherwise false.
+   */
   const validateForm = () => {
     const errors = {};
     if (!formData.name.match(/^\w+$/)) {
-      errors.name = "Name must not contain punctuation symbols apart from underscore (_).";
+      errors.name =
+        "Name must not contain punctuation symbols apart from underscore (_).";
     }
     if (!formData.email.endsWith("@stud.noroff.no")) {
       errors.email = "Email must be a valid stud.noroff.no email address.";
@@ -37,11 +53,21 @@ const RegisterForm = () => {
     return Object.keys(errors).length === 0;
   };
 
+  /**
+   * Handles form submission.
+   *
+   * @param {Event} e - The form submit event.
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        await registerUser(formData.name, formData.email, formData.password, formData.avatarUrl);
+        await registerUser(
+          formData.name,
+          formData.email,
+          formData.password,
+          formData.avatarUrl
+        );
         setSuccessMessage("Registration successful!");
         setFormData({
           name: "",
@@ -62,6 +88,9 @@ const RegisterForm = () => {
     }
   };
 
+  /**
+   * Toggles the visibility of the password field.
+   */
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -70,7 +99,9 @@ const RegisterForm = () => {
     <div className="user-information">
       <h2>Register</h2>
       {errors.apiError && <span className="error error-message">{errors.apiError}</span>}
-      {successMessage && <span className="success success-message">{successMessage}</span>}
+      {successMessage && (
+        <span className="success success-message">{successMessage}</span>
+      )}
       <form onSubmit={handleSubmit} className="form">
         <div className="form-group">
           <label htmlFor="name">First name:</label>
@@ -110,11 +141,19 @@ const RegisterForm = () => {
               onChange={handleChange}
               className="form-input"
             />
-            <button type="button" onClick={toggleShowPassword} className="toggle-password">
-              <i className={showPassword ? "fa-regular fa-eye-slash" : "fa-regular fa-eye"}></i>
+            <button
+              type="button"
+              onClick={toggleShowPassword}
+              className="toggle-password">
+              <i
+                className={
+                  showPassword ? "fa-regular fa-eye-slash" : "fa-regular fa-eye"
+                }></i>
             </button>
           </div>
-          {errors.password && <span className="error error-message">{errors.password}</span>}
+          {errors.password && (
+            <span className="error error-message">{errors.password}</span>
+          )}
         </div>
         <div className="form-group">
           <label htmlFor="avatarUrl">Avatar URL:</label>

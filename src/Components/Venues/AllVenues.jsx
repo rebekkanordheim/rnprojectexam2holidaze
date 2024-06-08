@@ -4,6 +4,11 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { VENUES_API_ENDPOINT } from "../../Common/constants";
 
+/**
+ * Venues component displaying a list of venues fetched from an API.
+ *
+ * @returns {JSX.Element} JSX element representing the Venues component.
+ */
 function Venues() {
   const [venues, setVenues] = useState([]);
   const [filteredVenues, setFilteredVenues] = useState([]);
@@ -11,6 +16,9 @@ function Venues() {
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
+    /**
+     * Fetches venues data from the API.
+     */
     async function fetchData() {
       setIsLoading(true);
       try {
@@ -31,6 +39,11 @@ function Venues() {
     fetchData();
   }, []);
 
+  /**
+   * Handles search functionality to filter venues by name.
+   *
+   * @param {string} searchTerm - The search term entered by the user.
+   */
   const handleSearch = (searchTerm) => {
     const filtered = venues.filter((venue) =>
       venue.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -63,7 +76,11 @@ function Venues() {
                   Price: ${venue.price} | Max Guests: {venue.maxGuests}
                 </p>
                 {venue.media.length > 0 && (
-                  <img className="venue-image" src={venue.media[0].url} alt={venue.media[0].alt} />
+                  <img
+                    className="venue-image"
+                    src={venue.media[0].url}
+                    alt={venue.media[0].alt}
+                  />
                 )}
                 <Link to={`/venue/${venue.id}`}>
                   <button className="view-venue-btn">View Venue</button>

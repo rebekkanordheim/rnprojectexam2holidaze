@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import styles from "../../Button.module.css";
+import { VENUES_API_ENDPOINT } from "../../Common/constants";
 
+/**
+ * NewVenueForm component allows users to create a new venue.
+ * 
+ * @returns {JSX.Element} JSX element representing the NewVenueForm component.
+ */
 function NewVenueForm() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -18,8 +24,11 @@ function NewVenueForm() {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const apiUrl = "https://v2.api.noroff.dev/holidaze/venues";
-
+  /**
+   * handleSubmit function handles form submission to create a new venue.
+   *
+   * @param {Event} event - The form submit event.
+   */ 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -40,7 +49,7 @@ function NewVenueForm() {
     };
 
     try {
-      const response = await fetch(apiUrl, {
+      const response = await fetch(VENUES_API_ENDPOINT, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
