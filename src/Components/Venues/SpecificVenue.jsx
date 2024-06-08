@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styles from "../../Button.module.css";
 import { Helmet } from "react-helmet";
-import { isLoggedIn } from "../User/authUtils"; // Import the isLoggedIn function
+import { isLoggedIn } from "../User/authUtils";
+import Calendar from "react-calendar"; // Import Calendar from react-calendar
 
 /**
- * SpecificVenue component displays detailed information about a specific venue.
+ * SpecificVenue component displays detailed information about a specific venue,
+ * including a calendar to select dates and an option to add the venue to the booking cart.
  *
  * @param {Object} props - The props passed to the component.
  * @param {Function} props.addToBookingCart - Function to add the venue to the booking cart.
@@ -19,6 +21,8 @@ function SpecificVenue({ addToBookingCart }) {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const loggedIn = isLoggedIn(); // Check if the user is logged in
 
+  const [selectedDate, setSelectedDate] = useState(new Date()); // State to store selected date
+
   /**
    * Handles adding the venue to the booking cart and displays a success message.
    */
@@ -29,6 +33,9 @@ function SpecificVenue({ addToBookingCart }) {
   };
 
   useEffect(() => {
+    /**
+     * Fetches venue data from the API.
+     */
     async function fetchData() {
       setIsLoading(true);
       try {
@@ -82,6 +89,12 @@ function SpecificVenue({ addToBookingCart }) {
         <p>
           <i>Price:</i> ${venue.price}
         </p>
+
+        {/* Simple calendar with a class of "calendar" */}
+        <div className="calendar">
+          <Calendar value={selectedDate} onChange={setSelectedDate} />
+        </div>
+
         {venue.media.length > 0 && (
           <img
             className="venue-image"
