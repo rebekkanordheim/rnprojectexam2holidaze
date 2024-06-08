@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 
+/**
+ * Component displaying contact information including opening hours, email, and phone number.
+ *
+ * @returns {JSX.Element} JSX element representing the ContactInformation component.
+ */
 function ContactInformation() {
   return (
     <div className="contact-information">

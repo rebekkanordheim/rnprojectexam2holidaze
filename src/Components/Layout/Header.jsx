@@ -6,7 +6,12 @@ import { isLoggedIn } from "../User/authUtils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
-
+/**
+ * Component representing the header navigation bar.
+ * Renders the logo and navigation links based on the user's authentication status.
+ *
+ * @returns {JSX.Element} JSX element representing the Header component.
+ */
 function Header() {
   const loggedIn = isLoggedIn();
 
