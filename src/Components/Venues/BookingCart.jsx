@@ -33,8 +33,14 @@ function BookingCart({ bookingCart, setBookingCart }) {
     localStorage.setItem("bookingCart", JSON.stringify(updatedCart));
   };
 
+  // Clear booking cart from localStorage and remove item from booking cart when continuing to checkout
+  const handleContinueToCheckout = () => {
+    localStorage.removeItem("bookingCart");
+    setBookingCart([]);
+  };
+
   return (
-    <div className="venue-detail">
+    <div className="venue">
       <Helmet>
         <title>Holidaze | Booking Cart</title>
       </Helmet>
@@ -60,9 +66,13 @@ function BookingCart({ bookingCart, setBookingCart }) {
             ))}
           </ul>
           <p className="total-price">Total Price: ${totalPrice}</p>
-          <button type="submit" className={styles.button}>
-            <Link to="/checkout">Continue to Checkout</Link>
-          </button>
+          {/* Added onClick event handler to handle clearing localStorage and removing item from booking cart */}
+          <Link
+            to="/checkout"
+            className={styles.button}
+            onClick={handleContinueToCheckout}>
+            Continue to Checkout
+          </Link>
         </div>
       )}
     </div>

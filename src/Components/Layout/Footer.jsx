@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import styles from "../../Button.module.css";
 import { isLoggedIn } from "../User/authUtils";
 
 /**
@@ -32,13 +33,15 @@ function Footer() {
     <footer className="footer">
       <p>&copy; Rebekka Nordheim 2024</p>
       <div>
+        {/* Renders the "Create New Venue" button if the user is logged in */}
         {loggedIn && (
-          <button onClick={handleNewVenueClick} className="button-link">
+          <button onClick={handleNewVenueClick} className={styles.button}>
             Create New Venue
           </button>
         )}
+        {/* Renders the "Logout" button if the user is logged in */}
         {loggedIn && (
-          <button onClick={handleLogout} className="button-link">
+          <button onClick={handleLogout} className={styles.button}>
             Logout
           </button>
         )}

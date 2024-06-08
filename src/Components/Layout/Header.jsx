@@ -6,11 +6,7 @@ import { isLoggedIn } from "../User/authUtils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
-/**
- * Header component displaying the navigation bar.
- *
- * @returns {JSX.Element} The rendered Header component.
- */
+
 function Header() {
   const loggedIn = isLoggedIn();
 

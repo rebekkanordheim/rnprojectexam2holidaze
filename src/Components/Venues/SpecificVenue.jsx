@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styles from "../../Button.module.css";
 import { Helmet } from "react-helmet";
+import { isLoggedIn } from "../User/authUtils"; // Import the isLoggedIn function
 
 /**
  * SpecificVenue component displays detailed information about a specific venue.
- * 
+ *
  * @param {Object} props - The props passed to the component.
  * @param {Function} props.addToBookingCart - Function to add the venue to the booking cart.
  * @returns {JSX.Element} JSX element representing the SpecificVenue component.
@@ -16,6 +17,7 @@ function SpecificVenue({ addToBookingCart }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const loggedIn = isLoggedIn(); // Check if the user is logged in
 
   /**
    * Handles adding the venue to the booking cart and displays a success message.
@@ -56,7 +58,7 @@ function SpecificVenue({ addToBookingCart }) {
   }
 
   return (
-    <div key={venue.id} className="venue-detail">
+    <div key={venue.id} className="venue">
       <Helmet>
         <title>Holidaze | {venue.name}</title>
       </Helmet>
@@ -90,9 +92,15 @@ function SpecificVenue({ addToBookingCart }) {
         {showSuccessMessage && (
           <p className="success-message">Venue added to booking cart!</p>
         )}
-        <button type="submit" className={styles.button} onClick={handleAddToBookingCart}>
-          Add to Booking Cart
-        </button>
+        {/* Render the "Add to Booking Cart" button only if the user is logged in */}
+        {loggedIn && (
+          <button
+            type="submit"
+            className={styles.button}
+            onClick={handleAddToBookingCart}>
+            Add to Booking Cart
+          </button>
+        )}
       </div>
     </div>
   );

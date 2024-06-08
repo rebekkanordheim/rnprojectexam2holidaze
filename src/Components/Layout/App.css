@@ -1,10 +1,10 @@
 /* General styling */
 :root {
-  --main-text: #FFFFFF;
+  --main-text: #ffffff;
   --secondary-text: #385064;
   --main-color: #587284;
   --main-color-light: #58728461;
-  --secondary-color: #6C9EB4;
+  --secondary-color: #6c9eb4;
 }
 
 html,
@@ -78,7 +78,7 @@ a:hover {
   }
 
   .nav ul li {
-    flex: 1 1 50%; 
+    flex: 1 1 50%;
     text-align: center;
   }
 
@@ -178,7 +178,7 @@ a:hover {
 }
 
 /* Venues styling */
-.venues-container {
+/* .venues-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
@@ -194,10 +194,36 @@ a:hover {
   .venues-container {
     grid-template-columns: repeat(1, 1fr);
   }
+} */
+/* Venues styling */
+.venues-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 10px;
+}
+
+/* Change to display 3 venues on larger screens */
+@media (min-width: 1356px) {
+  .venues-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Change to display 2 venues on medium screens */
+@media (max-width: 1355px) and (min-width: 901px) {
+  .venues-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* For smaller screens, revert to single column layout */
+@media (max-width: 900px) {
+  .venues-container {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 
 .venue,
-.venue-detail,
 .specific-booking,
 .checkout-message {
   display: flex;
@@ -211,6 +237,7 @@ a:hover {
   max-width: 400px;
   margin: 20px auto;
   margin-bottom: 80px;
+  padding: 20px;
 }
 
 .venue-info {
@@ -232,7 +259,7 @@ a:hover {
   object-fit: cover;
 }
 
-.view-venue-btn,
+/* .view-venue-btn,
 .create-venue-button {
   background-color: var(--secondary-text);
   color: var(--main-text);
@@ -240,14 +267,14 @@ a:hover {
   border-radius: 5px;
   border: none;
   margin: 20px;
-}
+} */
 
-.view-venue-btn:hover,
+/* .view-venue-btn:hover,
 .create-venue-button:hover {
   background-color: var(--secondary-color);
   color: var(--main-text);
   cursor: pointer;
-}
+} */
 
 /* booking cart */
 .specific-booking {
@@ -280,6 +307,10 @@ a:hover {
   color: var(--main-color);
 }
 
+.submit button {
+  margin-bottom: 20px;
+}
+
 /* about */
 .about p {
   align-items: center;
@@ -287,7 +318,8 @@ a:hover {
 }
 
 /* form styling */
-.form {
+.form,
+.contact-information {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -297,10 +329,11 @@ a:hover {
   border: 2px solid white;
   color: var(--secondary-text);
   border-radius: 10px;
-  max-width: 80%;
   margin: 0 auto;
   margin-top: 20px;
   margin-bottom: 80px;
+  width: 100%;
+  max-width: 700px;
 }
 
 .contact-link {
@@ -334,7 +367,7 @@ label {
   background-color: var(--main-color-light);
   font-size: 18px;
   color: var(--main-text);
-  font-family: 'Syne', sans-serif;
+  font-family: "Syne", sans-serif;
 }
 
 .password-input-container {

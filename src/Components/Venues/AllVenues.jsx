@@ -3,6 +3,7 @@ import SearchBar from "../Layout/SearchBar";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { VENUES_API_ENDPOINT } from "../../Common/constants";
+import styles from "../../Button.module.css";
 
 /**
  * Venues component displaying a list of venues fetched from an API.
@@ -83,7 +84,9 @@ function Venues() {
                   />
                 )}
                 <Link to={`/venue/${venue.id}`}>
-                  <button className="view-venue-btn">View Venue</button>
+                  <button type="submit" className={styles.button}>
+                    View Venue
+                  </button>
                 </Link>
               </div>
             </div>

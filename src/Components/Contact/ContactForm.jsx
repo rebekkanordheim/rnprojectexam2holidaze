@@ -65,7 +65,7 @@ function ContactForm() {
     <div className="user-information">
       {formSubmitted && <p className="success-message">Thank you for your submission!</p>}
       {formError && <p className="error-message">{formError}</p>}
-      <div className="form">
+      {/* <div className="form">
         <h3>Opening Hours</h3>
         <p>Monday - Friday: 08:00-16:00</p>
         <h3>Email Us</h3>
@@ -76,7 +76,7 @@ function ContactForm() {
         <a href="tel:+4745454545" className="contact-link">
           +4745454545
         </a>
-      </div>
+      </div> */}
       <form onSubmit={onFormSubmit} className="form">
         <h2>Or send us a message</h2>
         <label htmlFor="first-name">First name</label>

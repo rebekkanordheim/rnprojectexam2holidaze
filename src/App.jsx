@@ -12,12 +12,25 @@ import BookingCart from "./Components/Venues/BookingCart";
 import BookingCheckout from "./Components/Venues/BookingCheckout";
 import Profile from "./Components/User/Profile";
 
+/**
+ * App component is the root component that sets up routing and manages the booking cart state.
+ *
+ * @returns {JSX.Element} JSX element representing the App component.
+ */
 function App() {
+  /**
+   * State hook to manage the booking cart.
+   */
   const [bookingCart, setBookingCart] = useState(() => {
     const savedCart = localStorage.getItem("bookingCart");
     return savedCart ? JSON.parse(savedCart) : [];
   });
 
+  /**
+   * Function to add a venue to the booking cart.
+   *
+   * @param {Object} venue - The venue object to be added to the cart.
+   */
   const addToBookingCart = (venue) => {
     setBookingCart((prevCart) => [...prevCart, venue]);
   };
@@ -27,7 +40,10 @@ function App() {
       <Layout />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/venue/:id" element={<SpecificVenue addToBookingCart={addToBookingCart} />} />
+        <Route
+          path="/venue/:id"
+          element={<SpecificVenue addToBookingCart={addToBookingCart} />}
+        />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -36,7 +52,9 @@ function App() {
         <Route path="/newvenue" element={<NewVenueForm />} />
         <Route
           path="/booking-cart"
-          element={<BookingCart bookingCart={bookingCart} setBookingCart={setBookingCart} />}
+          element={
+            <BookingCart bookingCart={bookingCart} setBookingCart={setBookingCart} />
+          }
         />
         <Route path="/checkout" element={<BookingCheckout />} />
         <Route path="*" element={<div>Route not found</div>} />
