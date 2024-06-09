@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import UpdateUserImage from "./UpdateUserImage";
+import UpdateProfile from "./UpdateProfile";
+import { USER_API_UPDATE } from "../../../Common/constants";
 
+/**
+ * Profile component displaying the user's name and image fetched from localStorage.
+ *
+ * @returns {JSX.Element} JSX element representing the Profile component.
+ */
 function Profile() {
   const { name } = useParams();
   const [userName, setUserName] = useState("");
   const [avatarImageUrl, setAvatarImageUrl] = useState("");
+  const [isVenueManager, setIsVenueManager] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -17,6 +24,7 @@ function Profile() {
 
         const storedUserName = localStorage.getItem("userName");
         const storedAvatarImageUrl = localStorage.getItem("avatarImageUrl");
+        const storedIsVenueManager = JSON.parse(localStorage.getItem("isVenueManager"));
 
         if (!storedUserName || !storedAvatarImageUrl) {
           throw new Error("User data not found in local storage");
@@ -24,6 +32,7 @@ function Profile() {
 
         setUserName(storedUserName);
         setAvatarImageUrl(storedAvatarImageUrl);
+        setIsVenueManager(storedIsVenueManager || false);
         setIsLoading(false);
       } catch (error) {
         setError(error);
@@ -33,6 +42,31 @@ function Profile() {
 
     fetchUserData();
   }, [name]);
+
+  const handleVenueManagerChange = async (newValue) => {
+    try {
+      const response = await fetch(`${USER_API_UPDATE}/${name}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          venueManager: newValue,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update venue manager status");
+      }
+
+      const data = await response.json();
+      localStorage.setItem("isVenueManager", JSON.stringify(newValue));
+      setIsVenueManager(newValue);
+      return "Venue manager status updated successfully!";
+    } catch (error) {
+      throw new Error(`Failed to update venue manager status: ${error.message}`);
+    }
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -56,7 +90,11 @@ function Profile() {
         {avatarImageUrl && (
           <img src={avatarImageUrl} alt="User Avatar" className="avatar-image" />
         )}
-        <UpdateUserImage />
+        <UpdateProfile
+          handleVenueManagerChange={handleVenueManagerChange}
+          isVenueManager={isVenueManager}
+          setAvatarImageUrl={setAvatarImageUrl}
+        />
       </div>
     </div>
   );

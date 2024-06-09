@@ -1,4 +1,7 @@
-import { AUTH_ENDPOINT_LOGIN } from "../../../Common/constants";
+import {
+  AUTH_ENDPOINT_LOGIN,
+  AUTH_ENDPOINT_CREATE_API_KEY,
+} from "../../../Common/constants";
 
 /**
  * Sends a login request to the authentication endpoint.
@@ -10,6 +13,7 @@ import { AUTH_ENDPOINT_LOGIN } from "../../../Common/constants";
  */
 export async function loginUser(email, password) {
   const loginUrl = AUTH_ENDPOINT_LOGIN;
+  const createApiKeyUrl = AUTH_ENDPOINT_CREATE_API_KEY;
 
   try {
     const loginData = {
@@ -33,11 +37,17 @@ export async function loginUser(email, password) {
       const userName = data.data.name;
       const imageUrl = data.data.avatar.url;
 
+      // Store JWT token, user name, and image URL
       localStorage.setItem("jwtToken", token);
       localStorage.setItem("userName", userName);
       localStorage.setItem("imageUrl", imageUrl);
 
-      console.log("Login successful. JWT token, user name, and image URL stored.");
+      // Generate and store API key
+      await generateAndStoreApiKey(token, createApiKeyUrl);
+
+      console.log(
+        "Login successful. JWT token, user name, image URL, and API key stored."
+      );
       return data;
     } else {
       const errorData = await response.json();
@@ -45,5 +55,40 @@ export async function loginUser(email, password) {
     }
   } catch (error) {
     throw new Error("Login failed. Please try again.");
+  }
+}
+
+/**
+ * Generates and stores an API key using the provided JWT token.
+ *
+ * @param {string} jwtToken - The JWT token of the user.
+ * @param {string} createApiKeyUrl - The URL for creating an API key.
+ */
+async function generateAndStoreApiKey(jwtToken, createApiKeyUrl) {
+  try {
+    const response = await fetch(createApiKeyUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      body: JSON.stringify({
+        name: "My API Key",
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to create API key");
+    }
+
+    const data = await response.json();
+    const apiKey = data.data.key;
+
+    // Store API key
+    localStorage.setItem("apiKey", apiKey);
+
+    console.log("API key generated and stored.");
+  } catch (error) {
+    console.error("Error generating API key:", error);
   }
 }

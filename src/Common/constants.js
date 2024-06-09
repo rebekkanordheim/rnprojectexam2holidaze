@@ -10,4 +10,7 @@ export const AUTH_ENDPOINT_REGISTER = `${BASE_API_URL}/auth/register`;
 
 export const AUTH_ENDPOINT_LOGIN = `${BASE_API_URL}/auth/login`;
 
+export const AUTH_ENDPOINT_CREATE_API_KEY = `${BASE_API_URL}/auth/create-api-key`;
+
 export const USER_API_UPDATE = `${BASE_API_ENDPOINT}/profiles/<name>`;
+
