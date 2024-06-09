@@ -90,7 +90,7 @@ function Venues() {
               </div>
             ))
           ) : (
-            <div>No venues found</div>
+            <div className="error-message">No venues found</div>
           )}
         </div>
       )}
