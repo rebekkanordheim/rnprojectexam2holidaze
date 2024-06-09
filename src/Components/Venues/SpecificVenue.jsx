@@ -3,11 +3,10 @@ import { useParams } from "react-router-dom";
 import styles from "../../Button.module.css";
 import { Helmet } from "react-helmet";
 import { isLoggedIn } from "../User/authUtils";
-import Calendar from "react-calendar"; // Import Calendar from react-calendar
+import CustomCalendar from "../Calendar/CustomCalendar";
 
 /**
- * SpecificVenue component displays detailed information about a specific venue,
- * including a calendar to select dates and an option to add the venue to the booking cart.
+ * SpecificVenue component displays detailed information about a specific venue.
  *
  * @param {Object} props - The props passed to the component.
  * @param {Function} props.addToBookingCart - Function to add the venue to the booking cart.
@@ -21,21 +20,7 @@ function SpecificVenue({ addToBookingCart }) {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const loggedIn = isLoggedIn(); // Check if the user is logged in
 
-  const [selectedDate, setSelectedDate] = useState(new Date()); // State to store selected date
-
-  /**
-   * Handles adding the venue to the booking cart and displays a success message.
-   */
-  const handleAddToBookingCart = () => {
-    addToBookingCart(venue);
-    setShowSuccessMessage(true);
-    console.log("Venue added to booking cart:", venue);
-  };
-
   useEffect(() => {
-    /**
-     * Fetches venue data from the API.
-     */
     async function fetchData() {
       setIsLoading(true);
       try {
@@ -55,6 +40,16 @@ function SpecificVenue({ addToBookingCart }) {
 
     fetchData();
   }, [id]);
+
+  const handleDateRangeSelected = (dateRange) => {
+    console.log("Date range selected:", dateRange);
+  };
+
+  const handleAddToBookingCart = () => {
+    addToBookingCart(venue);
+    setShowSuccessMessage(true);
+    console.log("Venue added to booking cart:", venue);
+  };
 
   if (isLoading) {
     return <div>Loading venue...</div>;
@@ -89,12 +84,6 @@ function SpecificVenue({ addToBookingCart }) {
         <p>
           <i>Price:</i> ${venue.price}
         </p>
-
-        {/* Simple calendar with a class of "calendar" */}
-        <div className="calendar">
-          <Calendar value={selectedDate} onChange={setSelectedDate} />
-        </div>
-
         {venue.media.length > 0 && (
           <img
             className="venue-image"
@@ -105,7 +94,9 @@ function SpecificVenue({ addToBookingCart }) {
         {showSuccessMessage && (
           <p className="success-message">Venue added to booking cart!</p>
         )}
-        {/* Render the "Add to Booking Cart" button only if the user is logged in */}
+        <div className="calendar">
+          <CustomCalendar onDateRangeSelected={handleDateRangeSelected} />
+        </div>
         {loggedIn && (
           <button
             type="submit"
