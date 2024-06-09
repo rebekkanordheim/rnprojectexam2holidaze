@@ -47,7 +47,7 @@ function UpdateAvatar() {
 
   return (
     <div className="formContainer">
-      <h2>Update your avatar:</h2>
+      <h2>Update your profile image:</h2>
       <form onSubmit={handleSubmit} className="avatarform" encType="multipart/form-data">
         <input
           type="file"
