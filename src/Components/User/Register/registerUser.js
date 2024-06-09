@@ -7,7 +7,6 @@ import { AUTH_ENDPOINT_REGISTER } from "../../../Common/constants";
  * @param {string} formData.name - The user's name.
  * @param {string} formData.email - The user's email.
  * @param {string} formData.password - The user's password.
- * @param {string} formData.avatarUrl - The URL of the user's avatar.
  * @returns {Promise<Object>} A promise that resolves to the registration data.
  * @throws {Error} If registration fails.
  */
@@ -19,9 +18,6 @@ export async function registerUser(formData) {
       name: formData.name,
       email: formData.email,
       password: formData.password,
-      avatar: {
-        url: formData.avatarUrl,
-      },
     };
 
     const postData = {
@@ -38,7 +34,6 @@ export async function registerUser(formData) {
       const data = await response.json();
 
       localStorage.setItem("userName", formData.name);
-      localStorage.setItem("avatarUrl", formData.avatarUrl);
 
       return data;
     } else {

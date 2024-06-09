@@ -19,7 +19,7 @@ function SpecificVenue({ addToBookingCart }) {
   const [isError, setIsError] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [selectedDateRange, setSelectedDateRange] = useState(null);
-  const loggedIn = isLoggedIn(); // Check if the user is logged in
+  const loggedIn = isLoggedIn();
 
   useEffect(() => {
     async function fetchData() {
@@ -108,6 +108,9 @@ function SpecificVenue({ addToBookingCart }) {
             onClick={handleAddToBookingCart}>
             Add to Booking Cart
           </button>
+        )}
+        {!loggedIn && (
+          <p className="error-message">You need to be logged in to book this venue</p>
         )}
       </div>
     </div>

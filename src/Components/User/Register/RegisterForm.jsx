@@ -12,7 +12,6 @@ const RegisterForm = () => {
     name: "",
     email: "",
     password: "",
-    avatarUrl: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -62,18 +61,12 @@ const RegisterForm = () => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        await registerUser(
-          formData.name,
-          formData.email,
-          formData.password,
-          formData.avatarUrl
-        );
+        await registerUser(formData);
         setSuccessMessage("Registration successful!");
         setFormData({
           name: "",
           email: "",
           password: "",
-          avatarUrl: "",
         });
         setErrors({});
 
@@ -154,18 +147,6 @@ const RegisterForm = () => {
           {errors.password && (
             <span className="error error-message">{errors.password}</span>
           )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="avatarUrl">Avatar URL:</label>
-          <input
-            type="text"
-            id="avatarUrl"
-            name="avatarUrl"
-            value={formData.avatarUrl}
-            placeholder="Your avatar url"
-            onChange={handleChange}
-            className="form-input"
-          />
         </div>
         <button type="submit" className={styles.button}>
           Register

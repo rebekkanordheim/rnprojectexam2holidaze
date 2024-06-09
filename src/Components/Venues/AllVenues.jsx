@@ -36,7 +36,7 @@ function Venues() {
       } finally {
         setTimeout(() => {
           setIsLoading(false);
-        }, 1500); // Set loading state to false after 1.5 seconds
+        }, 1500);
       }
     };
     fetchData();

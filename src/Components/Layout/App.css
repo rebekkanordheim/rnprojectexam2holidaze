@@ -180,8 +180,10 @@ a:hover {
 
 /* Venues styling */
 .loading-message,
+.success-message,
 .error-message {
   text-align: center;
+  display: grid;
 }
 
 .venues-container {

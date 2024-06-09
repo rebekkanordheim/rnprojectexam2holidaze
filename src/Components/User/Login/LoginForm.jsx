@@ -49,28 +49,30 @@ const LoginForm = () => {
    * Handles form submission events.
    * @param {Object} e - The form submission event object.
    */
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (validateForm()) {
-      try {
-        const user = await loginUser(formData.email, formData.password);
-        setSuccessMessage("Login successful!");
-        setFormData({
-          email: "",
-          password: "",
-        });
-        setErrors({});
-        localStorage.setItem("jwtToken", user.data.accessToken);
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 1000);
-      } catch (error) {
-        console.error("Login failed:", error);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (validateForm()) {
+    try {
+      const user = await loginUser(formData.email, formData.password);
+      setSuccessMessage("Login successful!");
+      setFormData({
+        email: "",
+        password: "",
+      });
+      setErrors({});
+      localStorage.setItem("jwtToken", user.data.accessToken);
+      setTimeout(() => {
         setSuccessMessage("");
-        setErrors({ apiError: "Login failed. Please try again." });
-      }
+        window.location.href = "/";
+      }, 1500); 
+    } catch (error) {
+      console.error("Login failed:", error);
+      setSuccessMessage("");
+      setErrors({ apiError: "Login failed. Please try again." });
     }
-  };
+  }
+};
+
 
   /**
    * Toggles the visibility of the password input.
