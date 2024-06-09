@@ -33,8 +33,6 @@ export async function registerUser(formData) {
     if (response.ok) {
       const data = await response.json();
 
-      localStorage.setItem("userName", formData.name);
-
       return data;
     } else {
       const errorData = await response.json();

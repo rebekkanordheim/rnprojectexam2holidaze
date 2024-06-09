@@ -38,14 +38,13 @@ const RegisterForm = () => {
    */
   const validateForm = () => {
     const errors = {};
-    if (!formData.name.match(/^\w+$/)) {
-      errors.name =
-        "Name must not contain punctuation symbols apart from underscore (_).";
+    if (!formData.name.trim()) {
+      errors.name = "Name is required.";
     }
-    if (!formData.email.endsWith("@stud.noroff.no")) {
+    if (!formData.email.trim() || !formData.email.endsWith("@stud.noroff.no")) {
       errors.email = "Email must be a valid stud.noroff.no email address.";
     }
-    if (formData.password.length < 8) {
+    if (!formData.password.trim() || formData.password.length < 8) {
       errors.password = "Password must be at least 8 characters.";
     }
     setErrors(errors);
@@ -69,10 +68,6 @@ const RegisterForm = () => {
           password: "",
         });
         setErrors({});
-
-        setTimeout(() => {
-          window.location.href = "/login";
-        }, 1000);
       } catch (error) {
         console.error("Registration failed:", error);
         setSuccessMessage("");
