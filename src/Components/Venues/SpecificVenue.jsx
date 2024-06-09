@@ -18,6 +18,7 @@ function SpecificVenue({ addToBookingCart }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [selectedDateRange, setSelectedDateRange] = useState(null);
   const loggedIn = isLoggedIn(); // Check if the user is logged in
 
   useEffect(() => {
@@ -42,11 +43,14 @@ function SpecificVenue({ addToBookingCart }) {
   }, [id]);
 
   const handleDateRangeSelected = (dateRange) => {
-    console.log("Date range selected:", dateRange);
+    setSelectedDateRange(dateRange);
   };
 
   const handleAddToBookingCart = () => {
-    addToBookingCart(venue);
+    addToBookingCart({
+      ...venue,
+      selectedDateRange: selectedDateRange,
+    });
     setShowSuccessMessage(true);
     console.log("Venue added to booking cart:", venue);
   };

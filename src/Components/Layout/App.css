@@ -126,6 +126,7 @@ a:hover {
   justify-content: space-between;
   align-items: center;
   height: 60px;
+  z-index: 1;
 }
 
 .button-link {
@@ -225,6 +226,8 @@ a:hover {
   margin: 20px auto;
   margin-bottom: 80px;
   padding: 20px;
+  position: relative;
+
 }
 
 .venue-info {
@@ -390,13 +393,14 @@ label {
   border-radius: 8px;
   overflow: hidden;
   font-family: Arial, sans-serif;
+  z-index: -1;
 }
 
 .custom-calendar .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f4f4f4;
+  background-color: var(--main-color-light);
   padding: 10px;
 }
 
