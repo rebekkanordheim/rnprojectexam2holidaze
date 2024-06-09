@@ -229,7 +229,6 @@ a:hover {
   margin-bottom: 80px;
   padding: 20px;
   position: relative;
-
 }
 
 .venue-info {
@@ -449,4 +448,66 @@ label {
 .custom-calendar .day.to {
   border: 2px solid #a4c639;
   color: #a4c639;
+}
+
+/* profile site styling */
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  background-color: #ffffffbf;
+  border: 2px solid white;
+  color: var(--secondary-text);
+  border-radius: 10px;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 80px;
+  width: 100%;
+  max-width: 700px;
+}
+.avatar-image {
+  height: 250px;
+  width: 250px;
+  border-radius: 50%;
+}
+.formContainer {
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.avatarform {
+  padding: 25px;
+  margin: 10px;
+  border-radius: 5px;
+  font-size: 20px;
+  max-width: 100%;
+}
+
+.avatar-input {
+  padding-left: 25px;
+  margin: 10px;
+  height: 40px;
+  border-radius: 5px;
+  font-size: 20px;
+  width: 100%;
+  max-width: 350px;
+}
+
+.avatar-btn {
+  padding: 10px 20px 10px 20px;
+  height: 40px;
+  border: 1px solid var(--secondary-text);
+  border-radius: 5px;
+  margin-left: auto; /* Move button to the right */
+  margin-top: 10px; /* Add margin to separate from input */
+}
+
+.avatar-btn:hover {
+  background-color: var(--secondary-color);
+  border: 1px solid var(--main-text);
+  color: var(--main-text);
+  cursor: pointer;
 }

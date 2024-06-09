@@ -9,3 +9,5 @@ export const VENUES_API_ENDPOINT = `${BASE_API_ENDPOINT}/venues`;
 export const AUTH_ENDPOINT_REGISTER = `${BASE_API_URL}/auth/register`;
 
 export const AUTH_ENDPOINT_LOGIN = `${BASE_API_URL}/auth/login`;
+
+export const USER_API_UPDATE = `${BASE_API_ENDPOINT}/profiles/<name>`;

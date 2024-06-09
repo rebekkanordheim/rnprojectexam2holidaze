@@ -10,7 +10,7 @@ import RegisterPage from "./Components/User/Register/RegisterPage";
 import LoginPage from "./Components/User/Login/LoginPage";
 import BookingCart from "./Components/Venues/BookingCart";
 import BookingCheckout from "./Components/Venues/BookingCheckout";
-import Profile from "./Components/User/Profile";
+import Profile from "./Components/User/Profile/Profile";
 
 /**
  * App component is the root component that sets up routing and manages the booking cart state.
