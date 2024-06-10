@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./App.css";
 import Logo from "../../images/Holidaze-transparent.png";
-import { isLoggedIn } from "../User/authUtils";
+import { isAuthenticated } from "../User/authUtils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
@@ -13,7 +13,7 @@ import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
  * @returns {JSX.Element} JSX element representing the Header component.
  */
 function Header() {
-  const loggedIn = isLoggedIn();
+  const loggedIn = isAuthenticated();
 
   return (
     <nav className="nav">

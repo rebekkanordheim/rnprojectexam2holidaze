@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { loginUser } from "./loginUser";
 import styles from "../../../Button.module.css";
+import { Link } from "react-router-dom"; 
 
 /**
  * LoginForm component for user authentication.
@@ -131,6 +132,7 @@ const handleSubmit = async (e) => {
         <button type="submit" className={styles.button}>
           Login
         </button>
+        <Link to="/register">Not a user? Register here.</Link>
       </form>
     </div>
   );

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styles from "../../Button.module.css";
 import { Helmet } from "react-helmet";
-import { isLoggedIn } from "../User/authUtils";
+import { isAuthenticated } from "../User/authUtils";
 import CustomCalendar from "../Calendar/CustomCalendar";
 
 /**
@@ -19,7 +19,7 @@ function SpecificVenue({ addToBookingCart }) {
   const [isError, setIsError] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [selectedDateRange, setSelectedDateRange] = useState(null);
-  const loggedIn = isLoggedIn();
+  const loggedIn = isAuthenticated();
 
   useEffect(() => {
     async function fetchData() {

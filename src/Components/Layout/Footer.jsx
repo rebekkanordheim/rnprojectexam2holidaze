@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import styles from "../../Button.module.css";
-import { isLoggedIn } from "../User/authUtils";
+import { isAuthenticated } from "../User/authUtils";
 
 /**
  * Clears the local storage and redirects to the home page.
@@ -20,7 +20,7 @@ const handleLogout = () => {
  * @returns {JSX.Element} The rendered Footer component.
  */
 function Footer() {
-  const loggedIn = isLoggedIn();
+  const loggedIn = isAuthenticated();
 
   /**
    * Redirects to the new venue creation page.

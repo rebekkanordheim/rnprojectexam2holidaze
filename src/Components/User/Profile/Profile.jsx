@@ -2,38 +2,44 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import UpdateProfile from "./UpdateProfile";
-import { USER_API_UPDATE } from "../../../Common/constants";
 import UserBookings from "../../Venues/UsersBookings";
+import { isAuthenticated } from "../authUtils";
+import defaultImage from "../../../images/default.jpg";
 
 /**
- * Profile component displaying the user's name and image fetched from localStorage.
- *
- * @returns {JSX.Element} JSX element representing the Profile component.
+ * Profile component to display user profile information.
+ * @returns {JSX.Element} Profile component JSX
  */
 function Profile() {
   const { name } = useParams();
-  const [userName, setUserName] = useState("");
-  const [avatarImageUrl, setAvatarImageUrl] = useState("");
-  const [isVenueManager, setIsVenueManager] = useState(false);
+  const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  /**
+   * Fetches user data from local storage.
+   */
   useEffect(() => {
-    const fetchUserData = () => {
+    const fetchUserData = async () => {
       try {
         setIsLoading(true);
 
-        const storedUserName = localStorage.getItem("userName");
-        const storedAvatarImageUrl = localStorage.getItem("imageUrl");
-        const storedIsVenueManager = JSON.parse(localStorage.getItem("isVenueManager"));
+        // Check if the user is authenticated
+        if (!isAuthenticated()) {
+          // Redirect the user to the login page or handle unauthorized access
+          return;
+        }
 
-        if (storedUserName === null || storedAvatarImageUrl === null) {
+        // Retrieve user data from local storage
+        const imageUrl = localStorage.getItem("imageUrl");
+        const userName = localStorage.getItem("userName");
+        const venueManager = localStorage.getItem("venueManager") === "true";
+
+        if (!imageUrl || !userName) {
           throw new Error("User data not found in local storage");
         }
 
-        setUserName(storedUserName);
-        setAvatarImageUrl(storedAvatarImageUrl);
-        setIsVenueManager(storedIsVenueManager || false);
+        setUserData({ imageUrl, userName, venueManager });
         setIsLoading(false);
       } catch (error) {
         setError(error);
@@ -44,25 +50,19 @@ function Profile() {
     fetchUserData();
   }, [name]);
 
-  const handleVenueManagerChange = async (newValue) => {
+  /**
+   * Handles the change in venue manager status.
+   * @param {boolean} newValue - The new value for venue manager status
+   * @returns {string} Success message
+   * @throws {Error} If failed to update venue manager status
+   */
+  const handleVenueManagerChange = (newValue) => {
     try {
-      const response = await fetch(`${USER_API_UPDATE}/${name}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          venueManager: newValue,
-        }),
-      });
+      // Update venue manager status in local storage and state
+      const updatedUserData = { ...userData, venueManager: newValue };
+      setUserData(updatedUserData);
+      localStorage.setItem("venueManager", newValue.toString());
 
-      if (!response.ok) {
-        throw new Error("Failed to update venue manager status");
-      }
-
-      const data = await response.json();
-      localStorage.setItem("isVenueManager", JSON.stringify(newValue));
-      setIsVenueManager(newValue);
       return "Venue manager status updated successfully!";
     } catch (error) {
       throw new Error(`Failed to update venue manager status: ${error.message}`);
@@ -77,27 +77,29 @@ function Profile() {
     return <div>Error: {error.message}</div>;
   }
 
-  if (!userName) {
+  if (!userData) {
     return <div>No user data found</div>;
   }
 
   return (
     <div>
       <Helmet>
-        <title>Holidaze | {userName}</title>
+        <title>Holidaze | {userData.userName}</title>
       </Helmet>
       <div className="profile-container">
-        <h1>Welcome, {userName}!</h1>
-        {avatarImageUrl && (
-          <img src={avatarImageUrl} alt="User Avatar" className="avatar-image" />
-        )}
-        {isVenueManager && (
+        <h1>Welcome, {userData.userName}!</h1>
+        <img
+          src={userData.imageUrl || {defaultImage}}
+          alt="User Avatar"
+          className="avatar-image"
+        />
+        {userData.venueManager && (
           <p className="venue-manager-status">You are a venue manager.</p>
         )}
         <UpdateProfile
           handleVenueManagerChange={handleVenueManagerChange}
-          isVenueManager={isVenueManager}
-          setAvatarImageUrl={setAvatarImageUrl}
+          isVenueManager={userData.venueManager}
+          setAvatarImageUrl={(url) => setUserData({ ...userData, imageUrl: url })}
         />
         <UserBookings />
       </div>

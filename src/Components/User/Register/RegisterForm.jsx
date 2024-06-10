@@ -1,41 +1,30 @@
 import React, { useState } from "react";
 import { registerUser } from "./registerUser";
 import styles from "../../../Button.module.css";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
-/**
- * A form component for user registration.
- *
- * @returns {JSX.Element} The rendered RegisterForm component.
- */
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
+    venueManager: false, // Added venueManager field with default value false
   });
 
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  /**
-   * Handles input change in the form fields.
-   *
-   * @param {Event} e - The input change event.
-   */
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
+    // If the input type is checkbox, update value as checked status, else use normal value
+    const inputValue = type === "checkbox" ? checked : value;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: inputValue,
     });
   };
 
-  /**
-   * Validates the registration form data.
-   *
-   * @returns {boolean} true if the form data is valid, otherwise false.
-   */
   const validateForm = () => {
     const errors = {};
     if (!formData.name.trim()) {
@@ -51,11 +40,6 @@ const RegisterForm = () => {
     return Object.keys(errors).length === 0;
   };
 
-  /**
-   * Handles form submission.
-   *
-   * @param {Event} e - The form submit event.
-   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
@@ -66,8 +50,12 @@ const RegisterForm = () => {
           name: "",
           email: "",
           password: "",
+          venueManager: false,
         });
         setErrors({});
+
+        // Store user information in local storage
+        localStorage.setItem("userData", JSON.stringify(formData));
       } catch (error) {
         console.error("Registration failed:", error);
         setSuccessMessage("");
@@ -76,9 +64,6 @@ const RegisterForm = () => {
     }
   };
 
-  /**
-   * Toggles the visibility of the password field.
-   */
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -143,9 +128,21 @@ const RegisterForm = () => {
             <span className="error error-message">{errors.password}</span>
           )}
         </div>
+        <div className="form-group">
+          <label htmlFor="venueManager">Become a venue manager:</label>
+          <input
+            type="checkbox"
+            id="venueManager"
+            name="venueManager"
+            checked={formData.venueManager}
+            onChange={handleChange}
+          />
+        </div>
         <button type="submit" className={styles.button}>
           Register
         </button>
+        {/* Link to another page */}
+        <Link to="/login">Already have an account? Login here.</Link>
       </form>
     </div>
   );

@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import "../../Layout/App.css";
 import { USER_API_UPDATE } from "../../../Common/constants";
 
-function UpdateProfile({ handleVenueManagerChange, isVenueManager, setAvatarImageUrl }) {
+function UpdateProfile({
+  handleVenueManagerChange,
+  isVenueManager,
+  setAvatarImageUrl,
+  userName,
+}) {
   const [imageUrl, setImageUrl] = useState("");
   const [venueManager, setVenueManager] = useState(isVenueManager);
   const [successMessage, setSuccessMessage] = useState("");
@@ -17,12 +22,29 @@ function UpdateProfile({ handleVenueManagerChange, isVenueManager, setAvatarImag
 
   const updateProfile = async (updates) => {
     try {
-      const response = await fetch(USER_API_UPDATE, {
+      const { bio, avatar, banner, venueManager } = updates;
+
+      const requestBody = {};
+
+      if (bio) {
+        requestBody.bio = bio;
+      }
+      if (avatar) {
+        requestBody.avatar = avatar;
+      }
+      if (banner) {
+        requestBody.banner = banner;
+      }
+      if (venueManager !== undefined) {
+        requestBody.venueManager = venueManager;
+      }
+
+      const response = await fetch(`${USER_API_UPDATE}/${userName}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updates),
+        body: JSON.stringify(requestBody),
       });
 
       if (!response.ok) {
@@ -48,6 +70,7 @@ function UpdateProfile({ handleVenueManagerChange, isVenueManager, setAvatarImag
       if (venueManager !== isVenueManager) {
         updates.venueManager = venueManager;
         localStorage.setItem("isVenueManager", JSON.stringify(venueManager));
+        handleVenueManagerChange(venueManager);
       }
 
       if (Object.keys(updates).length > 0) {
