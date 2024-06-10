@@ -47,10 +47,23 @@ function SpecificVenue({ addToBookingCart }) {
   };
 
   const handleAddToBookingCart = () => {
-    addToBookingCart({
+    const booking = {
       ...venue,
       selectedDateRange: selectedDateRange,
-    });
+    };
+
+    addToBookingCart(booking);
+
+    // Add booking to bookingCart in localStorage
+    const bookingCart = JSON.parse(localStorage.getItem("bookingCart")) || [];
+    bookingCart.push(booking);
+    localStorage.setItem("bookingCart", JSON.stringify(bookingCart));
+
+    // Add booking to userBookings in localStorage
+    const userBookings = JSON.parse(localStorage.getItem("userBookings")) || [];
+    userBookings.push(booking);
+    localStorage.setItem("userBookings", JSON.stringify(userBookings));
+
     setShowSuccessMessage(true);
     console.log("Venue added to booking cart:", venue);
   };

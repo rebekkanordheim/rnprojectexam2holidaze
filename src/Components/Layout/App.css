@@ -236,7 +236,7 @@ a:hover {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  text-align: center; 
 }
 
 .venue-title {
@@ -511,4 +511,10 @@ label {
   border: 1px solid var(--main-text);
   color: var(--main-text);
   cursor: pointer;
+}
+
+.bookingCard {
+  background-color: var(--main-color-light);
+  padding: 20px;
+  border-radius: 5px;
 }

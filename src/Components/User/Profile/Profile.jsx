@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import UpdateProfile from "./UpdateProfile";
 import { USER_API_UPDATE } from "../../../Common/constants";
+import UserBookings from "../../Venues/UsersBookings";
 
 /**
  * Profile component displaying the user's name and image fetched from localStorage.
@@ -23,10 +24,10 @@ function Profile() {
         setIsLoading(true);
 
         const storedUserName = localStorage.getItem("userName");
-        const storedAvatarImageUrl = localStorage.getItem("avatarImageUrl");
+        const storedAvatarImageUrl = localStorage.getItem("imageUrl");
         const storedIsVenueManager = JSON.parse(localStorage.getItem("isVenueManager"));
 
-        if (!storedUserName || !storedAvatarImageUrl) {
+        if (storedUserName === null || storedAvatarImageUrl === null) {
           throw new Error("User data not found in local storage");
         }
 
@@ -90,11 +91,15 @@ function Profile() {
         {avatarImageUrl && (
           <img src={avatarImageUrl} alt="User Avatar" className="avatar-image" />
         )}
+        {isVenueManager && (
+          <p className="venue-manager-status">You are a venue manager.</p>
+        )}
         <UpdateProfile
           handleVenueManagerChange={handleVenueManagerChange}
           isVenueManager={isVenueManager}
           setAvatarImageUrl={setAvatarImageUrl}
         />
+        <UserBookings />
       </div>
     </div>
   );
