@@ -1,4 +1,4 @@
-import Reactf from "react";
+import React from "react";
 
 /**
  * Component displaying contact information including opening hours, email, and phone number.
