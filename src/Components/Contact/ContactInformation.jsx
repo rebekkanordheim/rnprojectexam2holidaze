@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import Reactf from "react";
 
 /**
  * Component displaying contact information including opening hours, email, and phone number.
