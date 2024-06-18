@@ -19,7 +19,7 @@ function NewVenueForm() {
   const [country, setCountry] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [isVenueManager, setIsVenueManager] = useState(false);
+  const [venueManager, setVenueManager] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated()) {
@@ -39,7 +39,7 @@ function NewVenueForm() {
 
           if (response.ok) {
             const data = await response.json();
-            setIsVenueManager(data.data.venueManager);
+            setVenueManager(data.data.venueManager);
           } else {
             throw new Error("Failed to fetch user profile");
           }
@@ -60,7 +60,7 @@ function NewVenueForm() {
       return;
     }
 
-    if (!isVenueManager) {
+    if (!venueManager) {
       setErrorMessage("You must be a venue manager to create a venue.");
       return;
     }

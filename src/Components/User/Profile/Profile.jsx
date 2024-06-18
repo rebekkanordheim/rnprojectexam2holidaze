@@ -81,7 +81,7 @@ function Profile() {
         )}
         <UpdateProfile
           handleVenueManagerChange={handleVenueManagerChange}
-          isVenueManager={userData.venueManager}
+          venueManager={userData.venueManager}
           setAvatarImageUrl={(url) => {
             setUserData({ ...userData, imageUrl: url });
             localStorage.setItem("imageUrl", url);

@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import "../../Layout/App.css";
 import { USER_API_UPDATE } from "../../../Common/constants";
 
-function UpdateProfile({ handleVenueManagerChange, isVenueManager, setAvatarImageUrl }) {
+function UpdateProfile({ handleVenueManagerChange, venueManager, setAvatarImageUrl }) {
   const [imageUrl, setImageUrl] = useState("");
-  const [venueManager, setVenueManager] = useState(isVenueManager);
+  const [isVenueManager, setIsVenueManager] = useState(venueManager);
   const [successMessage, setSuccessMessage] = useState("");
 
   const userName = localStorage.getItem("userName");
   console.log("userName", userName);
-  
 
   useEffect(() => {
     // Load the saved image URL from local storage when the component mounts
@@ -29,7 +28,7 @@ function UpdateProfile({ handleVenueManagerChange, isVenueManager, setAvatarImag
   };
 
   const handleVenueManagerCheckboxChange = (e) => {
-    setVenueManager(e.target.checked);
+    setIsVenueManager(e.target.checked);
   };
 
   const updateProfile = async (updates) => {
@@ -64,8 +63,8 @@ function UpdateProfile({ handleVenueManagerChange, isVenueManager, setAvatarImag
       if (imageUrl) {
         updates.avatar = { url: imageUrl, alt: "Profile Avatar" };
       }
-      if (venueManager !== isVenueManager) {
-        updates.venueManager = venueManager;
+      if (isVenueManager !== venueManager) {
+        updates.venueManager = isVenueManager;
       }
 
       if (Object.keys(updates).length > 0) {
@@ -76,9 +75,9 @@ function UpdateProfile({ handleVenueManagerChange, isVenueManager, setAvatarImag
           localStorage.setItem("avatarImageUrl", imageUrl);
           setAvatarImageUrl(imageUrl);
         }
-        if (venueManager !== isVenueManager) {
-          localStorage.setItem("isVenueManager", JSON.stringify(venueManager));
-          handleVenueManagerChange(venueManager);
+        if (isVenueManager !== venueManager) {
+          localStorage.setItem("venueManager", JSON.stringify(isVenueManager));
+          handleVenueManagerChange(isVenueManager);
         }
 
         setSuccessMessage("Profile updated successfully!");
@@ -123,7 +122,7 @@ function UpdateProfile({ handleVenueManagerChange, isVenueManager, setAvatarImag
           <label>
             <input
               type="checkbox"
-              checked={venueManager}
+              checked={isVenueManager}
               onChange={handleVenueManagerCheckboxChange}
             />
             I want to be a venue manager
