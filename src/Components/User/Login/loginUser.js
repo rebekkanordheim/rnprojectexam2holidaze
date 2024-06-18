@@ -78,7 +78,44 @@ export function isAuthenticated() {
   return localStorage.getItem("jwtToken") !== null;
 }
 
-// Function to generate and store API key (unchanged)
+/**
+ * Generates and stores an API key using the provided JWT token.
+ *
+ * @param {string} jwtToken - The JWT token.
+ * @param {string} createApiKeyUrl - The URL to create an API key.
+ * @returns {Promise<void>}
+ * @throws {Error} If the API key creation fails.
+ */
 async function generateAndStoreApiKey(jwtToken, createApiKeyUrl) {
-  // Implementation unchanged
+  try {
+    const apiKeyData = {
+      name: "My API Key name", // Optional, change if needed
+    };
+
+    const postData = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      body: JSON.stringify(apiKeyData),
+    };
+
+    const response = await fetch(createApiKeyUrl, postData);
+
+    if (response.ok) {
+      const data = await response.json();
+      const apiKey = data.data.key;
+
+      // Store the API key
+      localStorage.setItem("apiKey", apiKey);
+
+      console.log("API key generated and stored.");
+    } else {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to create API key.");
+    }
+  } catch (error) {
+    throw new Error("Failed to create API key.");
+  }
 }
