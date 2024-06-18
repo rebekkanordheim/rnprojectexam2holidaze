@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 import styles from "../../Button.module.css";
-import { VENUES_API_ENDPOINT } from "../../Common/constants";
+import {
+  VENUES_API_ENDPOINT,
+  BASE_API_URL,
+  AUTH_ENDPOINT_CREATE_API_KEY,
+} from "../../Common/constants";
+import { isAuthenticated } from "../User/authUtils";
 
-/**
- * NewVenueForm component allows users to create a new venue.
- * 
- * @returns {JSX.Element} JSX element representing the NewVenueForm component.
- */
 function NewVenueForm() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [price, setPrice] = useState("");
   const [maxGuests, setMaxGuests] = useState("");
-  const [wifi, setWifi] = useState("yes");
-  const [parking, setParking] = useState("yes");
-  const [breakfast, setBreakfast] = useState("yes");
-  const [pets, setPets] = useState("yes");
+  const [wifi, setWifi] = useState(true);
+  const [parking, setParking] = useState(true);
+  const [breakfast, setBreakfast] = useState(true);
+  const [pets, setPets] = useState(true);
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [zip, setZip] = useState("");
@@ -24,28 +24,36 @@ function NewVenueForm() {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  /**
-   * handleSubmit function handles form submission to create a new venue.
-   *
-   * @param {Event} event - The form submit event.
-   */ 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!isAuthenticated()) {
+      console.error("User not authenticated");
+      return;
+    }
+
+    const jwtToken = localStorage.getItem("jwtToken");
+    const apiKey = localStorage.getItem("apiKey");
 
     const venueData = {
       name,
       description,
-      media: [{ url: imageUrl, alt: "Venue Image" }],
+      media: imageUrl ? [{ url: imageUrl, alt: "Venue Image" }] : [],
       price: parseFloat(price),
       maxGuests: parseInt(maxGuests),
       rating: 0,
       meta: {
-        wifi: wifi === "yes",
-        parking: parking === "yes",
-        breakfast: breakfast === "yes",
-        pets: pets === "yes",
+        wifi,
+        parking,
+        breakfast,
+        pets,
       },
-      location: { address, city, zip, country },
+      location: {
+        address,
+        city,
+        zip,
+        country,
+      },
     };
 
     try {
@@ -53,6 +61,8 @@ function NewVenueForm() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          "X-Noroff-API-Key": localStorage.getItem("apiKey"),
         },
         body: JSON.stringify(venueData),
       });
@@ -102,7 +112,6 @@ function NewVenueForm() {
           value={imageUrl}
           placeholder="Image URL"
           onChange={(e) => setImageUrl(e.target.value)}
-          required
           className="form-input"
         />
         <input
@@ -129,84 +138,44 @@ function NewVenueForm() {
           <label>Wifi</label>
           <div>
             <input
-              type="radio"
-              name="wifi"
-              value="yes"
-              checked={wifi === "yes"}
-              onChange={() => setWifi("yes")}
+              type="checkbox"
+              checked={wifi}
+              onChange={(e) => setWifi(e.target.checked)}
             />{" "}
-            Yes
-            <input
-              type="radio"
-              name="wifi"
-              value="no"
-              checked={wifi === "no"}
-              onChange={() => setWifi("no")}
-            />{" "}
-            No
+            Wifi
           </div>
         </div>
         <div>
           <label>Parking</label>
           <div>
             <input
-              type="radio"
-              name="parking"
-              value="yes"
-              checked={parking === "yes"}
-              onChange={() => setParking("yes")}
+              type="checkbox"
+              checked={parking}
+              onChange={(e) => setParking(e.target.checked)}
             />{" "}
-            Yes
-            <input
-              type="radio"
-              name="parking"
-              value="no"
-              checked={parking === "no"}
-              onChange={() => setParking("no")}
-            />{" "}
-            No
+            Parking
           </div>
         </div>
         <div>
           <label>Breakfast</label>
           <div>
             <input
-              type="radio"
-              name="breakfast"
-              value="yes"
-              checked={breakfast === "yes"}
-              onChange={() => setBreakfast("yes")}
+              type="checkbox"
+              checked={breakfast}
+              onChange={(e) => setBreakfast(e.target.checked)}
             />{" "}
-            Yes
-            <input
-              type="radio"
-              name="breakfast"
-              value="no"
-              checked={breakfast === "no"}
-              onChange={() => setBreakfast("no")}
-            />{" "}
-            No
+            Breakfast
           </div>
         </div>
         <div>
           <label>Pets</label>
           <div>
             <input
-              type="radio"
-              name="pets"
-              value="yes"
-              checked={pets === "yes"}
-              onChange={() => setPets("yes")}
+              type="checkbox"
+              checked={pets}
+              onChange={(e) => setPets(e.target.checked)}
             />{" "}
-            Yes
-            <input
-              type="radio"
-              name="pets"
-              value="no"
-              checked={pets === "no"}
-              onChange={() => setPets("no")}
-            />{" "}
-            No
+            Pets
           </div>
         </div>
         <input
@@ -215,7 +184,6 @@ function NewVenueForm() {
           value={address}
           placeholder="Address"
           onChange={(e) => setAddress(e.target.value)}
-          required
           className="form-input"
         />
         <input
@@ -224,7 +192,6 @@ function NewVenueForm() {
           value={city}
           placeholder="City"
           onChange={(e) => setCity(e.target.value)}
-          required
           className="form-input"
         />
         <input
@@ -241,7 +208,6 @@ function NewVenueForm() {
           value={country}
           placeholder="Country"
           onChange={(e) => setCountry(e.target.value)}
-          required
           className="form-input"
         />
         <button type="submit" className={styles.button}>
