@@ -236,7 +236,7 @@ a:hover {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center; 
+  text-align: center;
 }
 
 .venue-title {
@@ -488,13 +488,13 @@ label {
 
 .avatar-input {
   padding-left: 25px;
-  margin: auto;
+  margin: 10px auto;
   height: 40px;
   border-radius: 5px;
   font-size: 20px;
   width: 100%;
   max-width: 350px;
-  border:none;
+  border: none;
 }
 
 .avatar-btn {
