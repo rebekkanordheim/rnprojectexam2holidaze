@@ -8,7 +8,6 @@ function UpdateProfile({ handleVenueManagerChange, venueManager, setAvatarImageU
   const [successMessage, setSuccessMessage] = useState("");
 
   const userName = localStorage.getItem("userName");
-  console.log("userName", userName);
 
   useEffect(() => {
     // Load the saved image URL from local storage when the component mounts
@@ -16,7 +15,7 @@ function UpdateProfile({ handleVenueManagerChange, venueManager, setAvatarImageU
     if (savedImageUrl !== imageUrl) {
       setImageUrl(savedImageUrl || "");
     }
-  }, []); // Empty dependency array ensures this effect runs only once
+  }, [imageUrl]); // Add imageUrl to the dependency array
 
   const handleImageUrlChange = (e) => {
     setImageUrl(e.target.value); // Update imageUrl state with user input
