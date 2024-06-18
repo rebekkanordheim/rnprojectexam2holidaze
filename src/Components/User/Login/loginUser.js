@@ -71,6 +71,7 @@ export function logoutUser() {
 
 /**
  * Checks if the user is authenticated.
+ *
  * @returns {boolean} True if the user is authenticated, false otherwise.
  */
 export function isAuthenticated() {
