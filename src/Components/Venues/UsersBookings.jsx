@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Helmet } from "react-helmet";
 
+/**
+ * UserBookings component displays the list of bookings for the user.
+ * The bookings data is retrieved from local storage.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered component.
+ */
 function UserBookings() {
   const [bookings, setBookings] = useState([]);
 
+  /**
+   * useEffect hook to retrieve bookings data from local storage when the component mounts.
+   */
   useEffect(() => {
     // Retrieve bookings from local storage
     const storedBookings = localStorage.getItem("userBookings");
@@ -15,9 +24,6 @@ function UserBookings() {
 
   return (
     <div className="formContainer">
-      <Helmet>
-        <title>Holidaze | Your Bookings</title>
-      </Helmet>
       <h2>Your Bookings:</h2>
       {bookings.length > 0 ? (
         bookings.map((booking, index) => (

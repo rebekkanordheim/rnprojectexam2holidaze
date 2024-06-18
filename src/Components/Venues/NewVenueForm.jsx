@@ -1,10 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../../Button.module.css";
-import {
-  VENUES_API_ENDPOINT,
-  BASE_API_URL,
-  AUTH_ENDPOINT_CREATE_API_KEY,
-} from "../../Common/constants";
+import { VENUES_API_ENDPOINT, USER_API_UPDATE } from "../../Common/constants";
 import { isAuthenticated } from "../User/authUtils";
 
 function NewVenueForm() {
@@ -23,12 +19,49 @@ function NewVenueForm() {
   const [country, setCountry] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isVenueManager, setIsVenueManager] = useState(false);
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      const fetchProfile = async () => {
+        const userName = localStorage.getItem("userName");
+        const jwtToken = localStorage.getItem("jwtToken");
+        const apiKey = localStorage.getItem("apiKey");
+
+        try {
+          const response = await fetch(`${USER_API_UPDATE}/${userName}`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+              "X-Noroff-API-Key": apiKey,
+            },
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            setIsVenueManager(data.data.venueManager);
+          } else {
+            throw new Error("Failed to fetch user profile");
+          }
+        } catch (error) {
+          console.error("Error fetching user profile:", error);
+        }
+      };
+
+      fetchProfile();
+    }
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!isAuthenticated()) {
-      console.error("User not authenticated");
+      setErrorMessage("User not authenticated");
+      return;
+    }
+
+    if (!isVenueManager) {
+      setErrorMessage("You must be a venue manager to create a venue.");
       return;
     }
 
@@ -61,8 +94,8 @@ function NewVenueForm() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-          "X-Noroff-API-Key": localStorage.getItem("apiKey"),
+          Authorization: `Bearer ${jwtToken}`,
+          "X-Noroff-API-Key": apiKey,
         },
         body: JSON.stringify(venueData),
       });

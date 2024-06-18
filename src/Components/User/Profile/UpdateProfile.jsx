@@ -8,6 +8,8 @@ function UpdateProfile({ handleVenueManagerChange, isVenueManager, setAvatarImag
   const [successMessage, setSuccessMessage] = useState("");
 
   const userName = localStorage.getItem("userName");
+  console.log("userName", userName);
+  
 
   useEffect(() => {
     // Load the saved image URL from local storage when the component mounts
@@ -32,22 +34,7 @@ function UpdateProfile({ handleVenueManagerChange, isVenueManager, setAvatarImag
 
   const updateProfile = async (updates) => {
     try {
-      const { bio, avatar, banner, venueManager } = updates;
-
-      const requestBody = {};
-
-      if (bio) {
-        requestBody.bio = bio;
-      }
-      if (avatar) {
-        requestBody.avatar = avatar;
-      }
-      if (banner) {
-        requestBody.banner = banner;
-      }
-      if (venueManager !== undefined) {
-        requestBody.venueManager = venueManager;
-      }
+      const requestBody = { ...updates };
 
       const response = await fetch(`${USER_API_UPDATE}/${userName}`, {
         method: "PUT",
@@ -75,7 +62,7 @@ function UpdateProfile({ handleVenueManagerChange, isVenueManager, setAvatarImag
     try {
       const updates = {};
       if (imageUrl) {
-        updates.avatar = { url: imageUrl };
+        updates.avatar = { url: imageUrl, alt: "Profile Avatar" };
       }
       if (venueManager !== isVenueManager) {
         updates.venueManager = venueManager;
@@ -104,9 +91,6 @@ function UpdateProfile({ handleVenueManagerChange, isVenueManager, setAvatarImag
           window.location.reload();
         }, 800);
       }
-
-      // Reset the checkbox
-      setVenueManager(false);
     } catch (error) {
       console.error("Error updating profile:", error);
     }
@@ -135,7 +119,6 @@ function UpdateProfile({ handleVenueManagerChange, isVenueManager, setAvatarImag
             </button>
           )}
         </div>
-       {/*  {imageUrl && <img src={imageUrl} alt="Profile Avatar" className="avatar-image" />} */}
         <div>
           <label>
             <input
