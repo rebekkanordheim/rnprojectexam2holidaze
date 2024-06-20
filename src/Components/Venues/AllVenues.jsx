@@ -23,7 +23,7 @@ function Venues() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(VENUES_API_ENDPOINT);
+        const response = await fetch(`${VENUES_API_ENDPOINT}?sort=created`);
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
