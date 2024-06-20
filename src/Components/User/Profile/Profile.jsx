@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import UpdateProfile from "./UpdateProfile";
 import UserBookings from "../../Venues/UsersBookings";
+import UserMadeVenues from "../../Venues/UserMadeVenues";
 import { isAuthenticated } from "../authUtils";
 import defaultImage from "../../../images/default.jpg";
 
@@ -88,6 +89,8 @@ function Profile() {
           }}
         />
         <UserBookings />
+        {/* Render UserMadeVenues component passing the userName */}
+        <UserMadeVenues userName={userData.userName} />
       </div>
     </div>
   );

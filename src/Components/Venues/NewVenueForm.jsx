@@ -107,6 +107,24 @@ function NewVenueForm() {
       const responseData = await response.json();
       console.log("Venue created:", responseData);
 
+      // Update the user profile with the new venue ID
+      const venueId = responseData.data.id;
+      const userName = localStorage.getItem("userName");
+
+      const updateUserResponse = await fetch(`${USER_API_UPDATE}/${userName}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`,
+          "X-Noroff-API-Key": apiKey,
+        },
+        body: JSON.stringify({ newVenueId: venueId }),
+      });
+
+      if (!updateUserResponse.ok) {
+        throw new Error("Failed to update user profile with new venue ID");
+      }
+
       setSuccessMessage("Venue created successfully");
       setErrorMessage("");
     } catch (error) {

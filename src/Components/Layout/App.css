@@ -513,8 +513,12 @@ label {
   cursor: pointer;
 }
 
+.user-venues,
+.specific-user-venues,
 .bookingCard {
-  background-color: var(--main-color-light);
+  background-color: var(--main-text);
+  border: 1px solid var(--main-color-light);
   padding: 20px;
   border-radius: 5px;
+  margin: 10px auto;
 }

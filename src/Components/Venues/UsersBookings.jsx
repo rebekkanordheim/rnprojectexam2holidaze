@@ -1,64 +1,79 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-/**
- * UserBookings component displays the list of bookings for the user.
- * The bookings data is retrieved from local storage.
- *
- * @component
- * @returns {JSX.Element} The rendered component.
- */
+const USER_BOOKINGS_ENDPOINT = `https://v2.api.noroff.dev/holidaze/profiles/{userName}/bookings`;
+
 function UserBookings() {
-  const [bookings, setBookings] = useState([]);
+  const { name } = useParams(); // Assuming 'name' is the parameter in your route
+  const [userBookings, setUserBookings] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  /**
-   * useEffect hook to retrieve bookings data from local storage when the component mounts.
-   */
   useEffect(() => {
-    // Retrieve bookings from local storage
-    const storedBookings = localStorage.getItem("userBookings");
-    if (storedBookings) {
-      const parsedBookings = JSON.parse(storedBookings);
-      setBookings(parsedBookings);
-    }
-  }, []);
+    const fetchUserBookings = async () => {
+      try {
+        setIsLoading(true);
+
+        const jwtToken = localStorage.getItem("jwtToken");
+        const apiKey = localStorage.getItem("apiKey");
+
+        const response = await fetch(USER_BOOKINGS_ENDPOINT.replace("{userName}", name), {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            "X-Noroff-API-Key": apiKey,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch user bookings");
+        }
+
+        const data = await response.json();
+        setUserBookings(data.data);
+        setIsLoading(false);
+      } catch (error) {
+        setError(error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserBookings();
+  }, [name]);
+
+  if (isLoading) {
+    return <div>Loading user bookings...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  if (userBookings.length === 0) {
+    return <div>No bookings found for {name}</div>;
+  }
 
   return (
-    <div className="formContainer">
-      <h2>Your Bookings:</h2>
-      {bookings.length > 0 ? (
-        bookings.map((booking, index) => (
-          <div key={index} className="bookingCard">
-            <h3 className="venue-title">{booking.name}</h3>
+    <div className="user-bookings">
+      <h2>Your Bookings</h2>
+      <ul>
+        {userBookings.map((booking) => (
+          <li key={booking.id}>
             <p>
-              <i>Description:</i> {booking.description}
-            </p>
-            {booking.media && booking.media.length > 0 && (
-              <img
-                className="venue-image"
-                src={booking.media[0].url}
-                alt={booking.media[0].alt || "Booking Media"}
-              />
-            )}
-            <p>
-              <i>Address:</i> {booking.location.address}, {booking.location.city},{" "}
-              {booking.location.country}
+              <strong>Booking ID:</strong> {booking.id}
             </p>
             <p>
-              <i>Max Guests:</i> {booking.maxGuests}
+              <strong>Check-in:</strong> {booking.dateFrom}
             </p>
             <p>
-              <i>Price:</i> ${booking.price}
+              <strong>Check-out:</strong> {booking.dateTo}
             </p>
             <p>
-              <i>Booking Dates:</i>{" "}
-              {new Date(booking.selectedDateRange.start).toLocaleDateString()} -{" "}
-              {new Date(booking.selectedDateRange.end).toLocaleDateString()}
+              <strong>Guests:</strong> {booking.guests}
             </p>
-          </div>
-        ))
-      ) : (
-        <p>No bookings found</p>
-      )}
+            {/* Additional booking details can be displayed here */}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
