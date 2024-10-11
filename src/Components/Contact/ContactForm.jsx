@@ -1,90 +1,88 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types"; // Optionally add propTypes
 import styles from "../../Button.module.css";
 
 /**
  * ContactForm component
  *
- * This component renders a contact form that allows users to submit their first name, last name,
- * subject, email, and message.
- * It includes form validation to ensure all fields are filled out correctly before submission.
- * Upon successful submission, the form displays a success message and clears the input fields.
+ * Renders a contact form that includes validation for first name, last name, subject, email,
+ * and message fields. Displays success or error messages based on form submission status.
  *
  * @returns {JSX.Element} The ContactForm component.
  */
 function ContactForm() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [subject, setSubject] = useState("");
-  const [email, setEmail] = useState("");
-  const [body, setBody] = useState("");
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    subject: "",
+    email: "",
+    body: "",
+  });
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formError, setFormError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  function onFormSubmit(event) {
-    event.preventDefault();
-    if (!validateForm()) {
-      setFormError("Please fill out all fields correctly.");
-      return;
-    }
-
-    console.log("Form Data:", { firstName, lastName, subject, email, body });
-    setFormSubmitted(true);
-    setFormError("");
-    setFirstName("");
-    setLastName("");
-    setSubject("");
-    setEmail("");
-    setBody("");
+  function handleInputChange(event) {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
   }
 
   function validateForm() {
-    return firstName && lastName && subject && email && body;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (
+      !formData.firstName ||
+      !formData.lastName ||
+      !formData.subject ||
+      !formData.body
+    ) {
+      return "All fields are required.";
+    }
+    if (!emailPattern.test(formData.email)) {
+      return "Please enter a valid email address.";
+    }
+    return null;
   }
 
-  function onFirstNameChange(event) {
-    setFirstName(event.target.value);
-  }
+  function onFormSubmit(event) {
+    event.preventDefault();
+    const validationError = validateForm();
+    if (validationError) {
+      setFormError(validationError);
+      return;
+    }
 
-  function onLastNameChange(event) {
-    setLastName(event.target.value);
-  }
-
-  function onSubjectChange(event) {
-    setSubject(event.target.value);
-  }
-
-  function onEmailChange(event) {
-    setEmail(event.target.value);
-  }
-
-  function onBodyChange(event) {
-    setBody(event.target.value);
+    setIsLoading(true);
+    setTimeout(() => {
+      console.log("Form Data:", formData);
+      setIsLoading(false);
+      setFormSubmitted(true);
+      setFormError("");
+      setFormData({ firstName: "", lastName: "", subject: "", email: "", body: "" });
+    }, 1000);
   }
 
   return (
     <div className="user-information">
-      {formSubmitted && <p className="success-message">Thank you for your submission!</p>}
-      {formError && <p className="error-message">{formError}</p>}
-      {/* <div className="form">
-        <h3>Opening Hours</h3>
-        <p>Monday - Friday: 08:00-16:00</p>
-        <h3>Email Us</h3>
-        <a href="mailto:hello@holidaze.com" className="contact-link">
-          hello@holidaze.com
-        </a>
-        <h3>Call Us</h3>
-        <a href="tel:+4745454545" className="contact-link">
-          +4745454545
-        </a>
-      </div> */}
+      {formSubmitted && (
+        <p className="success-message" aria-live="polite">
+          Thank you for your submission!
+        </p>
+      )}
+      {formError && (
+        <p className="error-message" aria-live="assertive">
+          {formError}
+        </p>
+      )}
+
       <form onSubmit={onFormSubmit} className="form">
         <h2>Or send us a message</h2>
+
         <label htmlFor="first-name">First name</label>
         <input
-          name="first-name"
-          value={firstName}
+          name="firstName"
+          value={formData.firstName}
           placeholder="Your first name"
-          onChange={onFirstNameChange}
+          onChange={handleInputChange}
           required
           minLength={3}
           className="form-input"
@@ -92,10 +90,10 @@ function ContactForm() {
 
         <label htmlFor="last-name">Last name</label>
         <input
-          name="last-name"
-          value={lastName}
+          name="lastName"
+          value={formData.lastName}
           placeholder="Your last name"
-          onChange={onLastNameChange}
+          onChange={handleInputChange}
           required
           minLength={3}
           className="form-input"
@@ -104,9 +102,9 @@ function ContactForm() {
         <label htmlFor="subject">Subject</label>
         <input
           name="subject"
-          value={subject}
+          value={formData.subject}
           placeholder="Subject"
-          onChange={onSubjectChange}
+          onChange={handleInputChange}
           required
           minLength={3}
           className="form-input"
@@ -116,26 +114,26 @@ function ContactForm() {
         <input
           type="email"
           name="email"
-          value={email}
+          value={formData.email}
           placeholder="Your email"
-          onChange={onEmailChange}
+          onChange={handleInputChange}
           required
           className="form-input"
         />
 
-        <label htmlFor="body">Body</label>
+        <label htmlFor="body">Message</label>
         <textarea
           name="body"
-          value={body}
+          value={formData.body}
           placeholder="Your message"
-          onChange={onBodyChange}
+          onChange={handleInputChange}
           required
           minLength={3}
           className="form-textarea"
         />
 
-        <button type="submit" className={styles.button}>
-          Submit
+        <button type="submit" className={styles.button} disabled={isLoading}>
+          {isLoading ? "Submitting..." : "Submit"}
         </button>
       </form>
     </div>

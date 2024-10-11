@@ -13,14 +13,18 @@ import { Helmet } from "react-helmet";
  */
 function ContactPage() {
   return (
-    <div>
+    <main className="contact-page">
       <Helmet>
         <title>Holidaze | Contact</title>
+        <meta
+          name="description"
+          content="Get in touch with Holidaze for any inquiries, support, or booking questions. Contact us via email, phone, or our convenient contact form."
+        />
       </Helmet>
       <h2>Contact us</h2>
       <ContactInformation />
       <ContactForm />
-    </div>
+    </main>
   );
 }
 

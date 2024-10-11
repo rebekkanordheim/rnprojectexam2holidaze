@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import styles from "../../Button.module.css";
 import { isAuthenticated } from "../User/authUtils";
+import { Link } from "react-router-dom";
 
 /**
  * Clears the local storage and redirects to the home page.
@@ -22,28 +23,23 @@ const handleLogout = () => {
 function Footer() {
   const loggedIn = isAuthenticated();
 
-  /**
-   * Redirects to the new venue creation page.
-   */
-  const handleNewVenueClick = () => {
-    window.location.href = "/newvenue";
-  };
-
   return (
     <footer className="footer">
       <p>&copy; Rebekka Nordheim 2024</p>
       <div>
-        {/* Renders the "Create New Venue" button if the user is logged in */}
+        {/* Show buttons for creating a new venue and logging out if the user is logged in */}
         {loggedIn && (
-          <button onClick={handleNewVenueClick} className={styles.button}>
-            Create New Venue
-          </button>
-        )}
-        {/* Renders the "Logout" button if the user is logged in */}
-        {loggedIn && (
-          <button onClick={handleLogout} className={styles.button}>
-            Logout
-          </button>
+          <>
+            <Link
+              to="/newvenue"
+              className={styles.button}
+              aria-label="Create a new venue">
+              Create New Venue
+            </Link>
+            <button onClick={handleLogout} className={styles.button} aria-label="Logout">
+              Logout
+            </button>
+          </>
         )}
       </div>
     </footer>

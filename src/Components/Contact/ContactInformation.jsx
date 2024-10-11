@@ -7,18 +7,32 @@ import React from "react";
  */
 function ContactInformation() {
   return (
-    <div className="contact-information">
+    <section
+      className="contact-information"
+      itemScope
+      itemType="http://schema.org/Organization">
       <h3>Opening Hours</h3>
       <p>Monday - Friday: 08:00-16:00</p>
+
       <h3>Email Us</h3>
-      <a href="mailto:hello@holidaze.com" className="contact-link">
+      <a
+        href="mailto:hello@holidaze.com"
+        className="contact-link"
+        itemProp="email"
+        aria-label="Send an email to hello@holidaze.com">
         hello@holidaze.com
       </a>
+
       <h3>Call Us</h3>
-      <a href="tel:+4745454545" className="contact-link">
-        +4745454545
+      <a
+        href="tel:+4745454545"
+        className="contact-link"
+        itemProp="telephone"
+        aria-label="Call us at +47 45 45 45 45">
+        +47 45 45 45 45
       </a>
-    </div>
+    </section>
   );
 }
+
 export default ContactInformation;
