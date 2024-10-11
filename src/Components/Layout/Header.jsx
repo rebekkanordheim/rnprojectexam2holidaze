@@ -5,6 +5,7 @@ import Logo from "../../images/Holidaze-transparent.png";
 import { isAuthenticated } from "../User/authUtils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons"; // Import user icon
 
 /**
  * Component representing the header navigation bar.
@@ -16,48 +17,65 @@ function Header() {
   const loggedIn = isAuthenticated();
 
   return (
-    <nav className="nav">
-      <div>
-        <Link to="/">
-          <img src={Logo} className="logo" alt="Logo" />
-        </Link>
-      </div>
-      <div>
-        <ul>
-          <li>
-            <Link to="/">Venues</Link>
-          </li>
-          <li>
-            <Link to="/contact">Contact</Link>
-          </li>
-          <li>
-            <Link to="/about">About</Link>
-          </li>
-          {!loggedIn && (
-            <>
-              <li>
-                <Link to="/register">Register</Link>
-              </li>
-              <li>
-                <Link to="/login">Login</Link>
-              </li>
-            </>
-          )}
-          {loggedIn && (
-            <>
-              <li>
-                <Link to="/profile">Profile</Link>
-              </li>
-              <li>
-                <Link to="/booking-cart">
-                  <FontAwesomeIcon icon={faCartShopping} />{" "}
-                </Link>
-              </li>
-            </>
-          )}
-        </ul>
-      </div>
-    </nav>
+    <header>
+      <nav className="nav">
+        <div>
+          <Link to="/" aria-label="Go to Home">
+            <img src={Logo} className="logo" alt="Holidaze Logo" />
+          </Link>
+        </div>
+        <div>
+          <ul>
+            <li>
+              <Link to="/" aria-label="View Venues">
+                Venues
+              </Link>
+            </li>
+            <li>
+              <Link to="/contact" aria-label="Contact Us">
+                Contact
+              </Link>
+            </li>
+            <li>
+              <Link to="/about" aria-label="Learn About Us">
+                About
+              </Link>
+            </li>
+            {!loggedIn && (
+              <>
+                <li>
+                  <Link to="/register" aria-label="Register">
+                    Register
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/login" aria-label="Login">
+                    Login
+                  </Link>
+                </li>
+              </>
+            )}
+            {loggedIn && (
+              <>
+                <li>
+                  <Link
+                    to="/profile"
+                    aria-label="View Profile"
+                    style={{ marginLeft: "15px" }}>
+                    <FontAwesomeIcon icon={faUser} aria-hidden="true" />
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/booking-cart" aria-label="View Booking Cart">
+                    <FontAwesomeIcon icon={faCartShopping} aria-hidden="true" />
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
+        </div>
+      </nav>
+    </header>
   );
 }
 

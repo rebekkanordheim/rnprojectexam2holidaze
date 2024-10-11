@@ -37,7 +37,7 @@ function Footer() {
               Create New Venue
             </Link>
             <button onClick={handleLogout} className={styles.button} aria-label="Logout">
-              Logout
+              <i className="fa-solid fa-right-from-bracket"></i>
             </button>
           </>
         )}

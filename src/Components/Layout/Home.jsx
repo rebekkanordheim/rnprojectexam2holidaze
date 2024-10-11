@@ -1,5 +1,6 @@
 import React from "react";
 import Venues from "../Venues/AllVenues";
+import "./App.css"; // Ensure this is included to apply styles
 
 /**
  * Home component that serves as the main landing page.
@@ -9,7 +10,12 @@ import Venues from "../Venues/AllVenues";
 function Home() {
   return (
     <div>
-      <h1>Welcome to Holidaze!</h1>
+      <header>
+        <h1>Welcome to Holidaze!</h1>
+        <p className="card">
+          Your ultimate destination for hassle-free accommodation booking.
+        </p>
+      </header>
       <Venues />
     </div>
   );

@@ -106,6 +106,17 @@ a:hover {
   height: 60px;
   z-index: 1;
 }
+.footer button {
+  font-size: 20px; /* Adjust icon size */
+  padding: 5px; /* Adjust padding */
+  background-color: var(--secondary-text); /* Remove default button styling */
+  border: none; /* Remove border */
+  cursor: pointer; /* Change cursor to pointer */
+}
+
+/* .footer button:hover {
+  color: var(--secondary-text);
+} */
 
 /* Button Links */
 .button-link,
