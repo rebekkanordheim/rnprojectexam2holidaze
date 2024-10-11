@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types"; // Optionally add propTypes
 import styles from "../../Button.module.css";
 
 /**
