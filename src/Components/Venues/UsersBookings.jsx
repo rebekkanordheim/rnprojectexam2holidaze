@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-
-const USER_BOOKINGS_ENDPOINT = `https://v2.api.noroff.dev/holidaze/profiles/{userName}/bookings`;
+import { USER_BOOKINGS_ENDPOINT } from "../../Common/constants"; // Ensure you import the constant
 
 function UserBookings() {
   const { name } = useParams(); // Assuming 'name' is the parameter in your route
@@ -17,7 +16,11 @@ function UserBookings() {
         const jwtToken = localStorage.getItem("jwtToken");
         const apiKey = localStorage.getItem("apiKey");
 
-        const response = await fetch(USER_BOOKINGS_ENDPOINT.replace("{userName}", name), {
+        // Log the URL to debug
+        const bookingsUrl = USER_BOOKINGS_ENDPOINT.replace("{userName}", name);
+        console.log("Fetching user bookings from:", bookingsUrl);
+
+        const response = await fetch(bookingsUrl, {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
             "X-Noroff-API-Key": apiKey,
@@ -29,15 +32,21 @@ function UserBookings() {
         }
 
         const data = await response.json();
-        setUserBookings(data.data);
-        setIsLoading(false);
+        setUserBookings(data.data); // Assuming 'data.data' contains bookings
       } catch (error) {
         setError(error);
+      } finally {
         setIsLoading(false);
       }
     };
 
-    fetchUserBookings();
+    // Only fetch user bookings if name is defined
+    if (name) {
+      fetchUserBookings();
+    } else {
+      setError(new Error("User name is undefined"));
+      setIsLoading(false);
+    }
   }, [name]);
 
   if (isLoading) {

@@ -27,15 +27,34 @@ function SearchBar({ onSearch }) {
     onSearch(searchTerm);
   };
 
+  /**
+   * Clears the search term state and refreshes the page.
+   */
+  const handleClear = () => {
+    setSearchTerm(""); // Clear the search input
+    window.location.reload(); // Refresh the page
+  };
+
   return (
     <form className="searchbar-container" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Search..."
-        value={searchTerm}
-        onChange={handleChange}
-        className="searchbar"
-      />
+      <div className="searchbar-wrapper">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={handleChange}
+          className="searchbar"
+        />
+        {searchTerm && ( // Only show clear button if there's text in the input
+          <button
+            type="button"
+            className="clear-btn"
+            onClick={handleClear}
+            aria-label="Clear search">
+            X {/* Change from "Clear" to "X" */}
+          </button>
+        )}
+      </div>
       <button className="search-btn" type="submit">
         Search
       </button>

@@ -155,7 +155,8 @@ a:hover {
   max-width: 100%;
 }
 
-.search-btn {
+.search-btn,
+.clear-btn {
   padding: 10px 20px;
   height: 40px;
   border: 1px solid var(--secondary-text);

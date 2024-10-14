@@ -3,16 +3,20 @@ import Footer from "./Footer";
 
 /**
  * Layout component that defines the overall layout structure of the application.
- * It includes a header and footer component.
+ * It includes a header and footer component, and a main content area for nested content.
  *
  * @returns {JSX.Element} The rendered Layout component.
  */
-function Layout() {
+function Layout({ children }) {
   return (
-    <div>
+    <div className="layout">
       <Header />
+      <main>
+        {children}
+      </main>
       <Footer />
     </div>
   );
 }
+
 export default Layout;

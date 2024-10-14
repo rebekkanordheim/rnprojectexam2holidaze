@@ -1,5 +1,6 @@
+// Profile.jsx
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Redirect } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import UpdateProfile from "./UpdateProfile";
 import UserBookings from "../../Venues/UsersBookings";
@@ -20,13 +21,14 @@ function Profile() {
 
         // Check if the user is authenticated
         if (!isAuthenticated()) {
-          // Redirect the user to the login page or handle unauthorized access
+          // Redirect to login or show a message
+          setError("You are not authorized to view this page.");
           return;
         }
 
         // Retrieve user data from local storage
         const imageUrl = localStorage.getItem("imageUrl") || defaultImage; // Ensure default image fallback
-        const userName = localStorage.getItem("userName");
+        const userName = localStorage.getItem("userName") || name; // Use name from params if local storage doesn't have it
         const venueManager = localStorage.getItem("venueManager") === "true";
 
         if (!userName) {
@@ -36,7 +38,7 @@ function Profile() {
         setUserData({ imageUrl, userName, venueManager });
         setIsLoading(false);
       } catch (error) {
-        setError(error);
+        setError(error.message); // Store the error message
         setIsLoading(false);
       }
     };
@@ -50,8 +52,6 @@ function Profile() {
       const updatedUserData = { ...userData, venueManager: newValue };
       setUserData(updatedUserData);
       localStorage.setItem("venueManager", newValue.toString());
-
-      return "Venue manager status updated successfully!";
     } catch (error) {
       throw new Error(`Failed to update venue manager status: ${error.message}`);
     }
@@ -62,7 +62,7 @@ function Profile() {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div>Error: {error}</div>;
   }
 
   if (!userData) {
@@ -77,9 +77,12 @@ function Profile() {
       <div className="profile-container">
         <h1>Welcome, {userData.userName}!</h1>
         <img src={userData.imageUrl} alt="User Avatar" className="avatar-image" />
+
+        {/* Conditionally render the venue manager text */}
         {userData.venueManager && (
           <p className="venue-manager-status">You are a venue manager.</p>
         )}
+
         <UpdateProfile
           handleVenueManagerChange={handleVenueManagerChange}
           venueManager={userData.venueManager}
@@ -88,7 +91,8 @@ function Profile() {
             localStorage.setItem("imageUrl", url);
           }}
         />
-        <UserBookings />
+        {/* Pass userName to UserBookings */}
+        <UserBookings userName={userData.userName} />
         {/* Render UserMadeVenues component passing the userName */}
         <UserMadeVenues userName={userData.userName} />
       </div>

@@ -127,6 +127,11 @@ function NewVenueForm() {
 
       setSuccessMessage("Venue created successfully");
       setErrorMessage("");
+
+      // Redirect to home after 1 second
+      setTimeout(() => {
+        window.location.href = "/"; // Redirect to home page
+      }, 1000);
     } catch (error) {
       console.error("Error creating venue:", error);
       setErrorMessage("Failed to create venue. Please try again.");
