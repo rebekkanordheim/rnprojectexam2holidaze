@@ -96,7 +96,6 @@ function UserMadeVenues({ userName }) {
 
   return (
     <div className="user-venues">
-      <h2>Your Created Venues</h2>
       {userVenues.length === 0 ? (
         <p>You have no created venues.</p>
       ) : (
