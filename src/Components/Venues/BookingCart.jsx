@@ -1,4 +1,3 @@
-//BookingCart.jsx - OLD
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
@@ -15,26 +14,20 @@ import styles from "../../Button.module.css";
  * @returns {JSX.Element} JSX element representing the BookingCart component.
  */
 function BookingCart({ bookingCart, setBookingCart }) {
-  // Calculate total price of items in the booking cart
   const totalPrice = bookingCart
-    .reduce((total, item) => {
-      return total + item.price;
-    }, 0)
+    .reduce((total, item) => total + item.price, 0)
     .toFixed(2);
 
-  // Update booking cart in localStorage when bookingCart state changes
   useEffect(() => {
     localStorage.setItem("bookingCart", JSON.stringify(bookingCart));
   }, [bookingCart]);
 
-  // Remove item from booking cart
   const handleRemoveItem = (index) => {
     const updatedCart = bookingCart.filter((_, i) => i !== index);
     setBookingCart(updatedCart);
     localStorage.setItem("bookingCart", JSON.stringify(updatedCart));
   };
 
-  // Clear booking cart from localStorage and remove item from booking cart when continuing to checkout
   const handleContinueToCheckout = () => {
     localStorage.removeItem("bookingCart");
     setBookingCart([]);
@@ -62,12 +55,23 @@ function BookingCart({ bookingCart, setBookingCart }) {
                 {item.media.length > 0 && (
                   <img src={item.media[0].url} alt={item.name} className="venue-image" />
                 )}
-                <p>${item.price.toFixed(2)}</p>
+                <p>Price: ${item.price.toFixed(2)}</p>
+
+                {/* Display booking dates */}
+                {item.dates && item.dates.length > 0 && (
+                  <div className="booking-dates">
+                    <h5>Booking Dates:</h5>
+                    <ul>
+                      {item.dates.map((date, i) => (
+                        <li key={i}>{new Date(date).toLocaleDateString()}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
           <p className="total-price">Total Price: ${totalPrice}</p>
-          {/* Added onClick event handler to handle clearing localStorage and removing item from booking cart */}
           <Link
             to="/checkout"
             className={styles.button}
