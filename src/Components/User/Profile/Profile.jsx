@@ -1,6 +1,5 @@
-// Profile.jsx
 import React, { useState, useEffect } from "react";
-import { useParams, Redirect } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import UpdateProfile from "./UpdateProfile";
 import UserBookings from "../../Venues/UsersBookings";
@@ -13,6 +12,7 @@ function Profile() {
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userBookings, setUserBookings] = useState([]); // Add state for user bookings
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -21,14 +21,13 @@ function Profile() {
 
         // Check if the user is authenticated
         if (!isAuthenticated()) {
-          // Redirect to login or show a message
           setError("You are not authorized to view this page.");
           return;
         }
 
         // Retrieve user data from local storage
-        const imageUrl = localStorage.getItem("imageUrl") || defaultImage; // Ensure default image fallback
-        const userName = localStorage.getItem("userName") || name; // Use name from params if local storage doesn't have it
+        const imageUrl = localStorage.getItem("imageUrl") || defaultImage;
+        const userName = localStorage.getItem("userName") || name;
         const venueManager = localStorage.getItem("venueManager") === "true";
 
         if (!userName) {
@@ -37,8 +36,24 @@ function Profile() {
 
         setUserData({ imageUrl, userName, venueManager });
         setIsLoading(false);
+
+        // Retrieve user bookings from local storage
+        const bookings = JSON.parse(localStorage.getItem("userBookings")) || [];
+
+        // Convert the bookedDate to a valid date format if necessary
+        const updatedBookings = bookings.map((booking) => {
+          // Check if the bookedDate is a valid date
+          const validDate = new Date(booking.bookedDate);
+          if (isNaN(validDate)) {
+            console.warn(`Invalid date format: ${booking.bookedDate}`);
+            booking.bookedDate = ""; // Reset to empty string if invalid
+          }
+          return booking;
+        });
+
+        setUserBookings(updatedBookings); // Set the bookings to state
       } catch (error) {
-        setError(error.message); // Store the error message
+        setError(error.message);
         setIsLoading(false);
       }
     };
@@ -47,14 +62,9 @@ function Profile() {
   }, [name]);
 
   const handleVenueManagerChange = (newValue) => {
-    try {
-      // Update venue manager status in local storage and state
-      const updatedUserData = { ...userData, venueManager: newValue };
-      setUserData(updatedUserData);
-      localStorage.setItem("venueManager", newValue.toString());
-    } catch (error) {
-      throw new Error(`Failed to update venue manager status: ${error.message}`);
-    }
+    const updatedUserData = { ...userData, venueManager: newValue };
+    setUserData(updatedUserData);
+    localStorage.setItem("venueManager", newValue.toString());
   };
 
   if (isLoading) {
@@ -63,10 +73,6 @@ function Profile() {
 
   if (error) {
     return <div>Error: {error}</div>;
-  }
-
-  if (!userData) {
-    return <div>No user data found</div>;
   }
 
   return (
@@ -78,7 +84,6 @@ function Profile() {
         <h1>Welcome, {userData.userName}!</h1>
         <img src={userData.imageUrl} alt="User Avatar" className="avatar-image" />
 
-        {/* Conditionally render the venue manager text */}
         {userData.venueManager && (
           <p className="venue-manager-status">You are a venue manager.</p>
         )}
@@ -91,9 +96,33 @@ function Profile() {
             localStorage.setItem("imageUrl", url);
           }}
         />
-        {/* Pass userName to UserBookings */}
-        <UserBookings userName={userData.userName} />
-        {/* Render UserMadeVenues component passing the userName */}
+
+        {/* Render user bookings */}
+        <h2>Your Bookings</h2>
+        {userBookings.length === 0 ? (
+          <p>You have no bookings yet.</p>
+        ) : (
+          <div className="user-venues">
+            {userBookings.map((booking, index) => (
+              <div key={index} className="booking-card">
+                <h3>{booking.title}</h3> {/* Display the title */}
+                <p>{booking.description}</p> {/* Display the description */}
+                <p>Price: ${booking.price.toFixed(2)}</p> {/* Display the price */}
+                {/* Ensure the bookedDate is valid before formatting */}
+                <p>
+                  Booked Date:{" "}
+                  {booking.bookedDate
+                    ? new Date(booking.bookedDate).toLocaleDateString()
+                    : "Invalid Date"}
+                </p>
+                {/* Add more details if needed */}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Display user-made venues */}
+        <h2>Your Created Venues</h2>
         <UserMadeVenues userName={userData.userName} />
       </div>
     </div>

@@ -51,7 +51,6 @@ function UserMadeVenues({ userName }) {
     const updatedVenue = {
       name: e.target.name.value,
       description: e.target.description.value,
-      // Add other fields as necessary
     };
 
     try {
@@ -78,14 +77,13 @@ function UserMadeVenues({ userName }) {
           venue.id === updatedData.data.id ? updatedData.data : venue
         )
       );
-      setEditingVenue(null); // Close the edit form
+      setEditingVenue(null);
     } catch (error) {
       setError(error);
     }
   };
 
   const handleDeleteVenue = async (venueId) => {
-    // Existing delete logic
   };
 
   if (isLoading) {

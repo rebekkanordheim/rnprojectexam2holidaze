@@ -1,88 +1,73 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { USER_BOOKINGS_ENDPOINT } from "../../Common/constants"; // Ensure you import the constant
 
-function UserBookings() {
-  const { name } = useParams(); // Assuming 'name' is the parameter in your route
+function UserBookings({ userName }) {
   const [userBookings, setUserBookings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchUserBookings = async () => {
+    const fetchUserBookings = () => {
       try {
         setIsLoading(true);
 
-        const jwtToken = localStorage.getItem("jwtToken");
-        const apiKey = localStorage.getItem("apiKey");
+        // Retrieve bookings from localStorage
+        const bookings = JSON.parse(localStorage.getItem("userBookings")) || [];
 
-        // Log the URL to debug
-        const bookingsUrl = USER_BOOKINGS_ENDPOINT.replace("{userName}", name);
-        console.log("Fetching user bookings from:", bookingsUrl);
-
-        const response = await fetch(bookingsUrl, {
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
-            "X-Noroff-API-Key": apiKey,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch user bookings");
+        if (bookings.length === 0) {
+          setError("No bookings found.");
+        } else {
+          // Filter bookings by userName, if necessary
+          const filteredBookings = bookings.filter(
+            (booking) => booking.userName === userName
+          );
+          setUserBookings(filteredBookings);
         }
-
-        const data = await response.json();
-        setUserBookings(data.data); // Assuming 'data.data' contains bookings
       } catch (error) {
-        setError(error);
+        setError("Failed to fetch bookings from localStorage.");
       } finally {
         setIsLoading(false);
       }
     };
 
-    // Only fetch user bookings if name is defined
-    if (name) {
-      fetchUserBookings();
-    } else {
-      setError(new Error("User name is undefined"));
-      setIsLoading(false);
-    }
-  }, [name]);
+    fetchUserBookings();
+  }, [userName]);
+
+  const handleDeleteBooking = (bookingId) => {
+    // Delete logic for a booking
+    const updatedBookings = userBookings.filter((booking) => booking.id !== bookingId);
+    setUserBookings(updatedBookings);
+    localStorage.setItem("userBookings", JSON.stringify(updatedBookings));
+  };
 
   if (isLoading) {
-    return <div>Loading user bookings...</div>;
+    return <div>Loading your bookings...</div>;
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
-  }
-
-  if (userBookings.length === 0) {
-    return <div>No bookings found for {name}</div>;
+    return <div>Error: {error}</div>;
   }
 
   return (
     <div className="user-bookings">
       <h2>Your Bookings</h2>
-      <ul>
-        {userBookings.map((booking) => (
-          <li key={booking.id}>
-            <p>
-              <strong>Booking ID:</strong> {booking.id}
-            </p>
-            <p>
-              <strong>Check-in:</strong> {booking.dateFrom}
-            </p>
-            <p>
-              <strong>Check-out:</strong> {booking.dateTo}
-            </p>
-            <p>
-              <strong>Guests:</strong> {booking.guests}
-            </p>
-            {/* Additional booking details can be displayed here */}
-          </li>
-        ))}
-      </ul>
+      {userBookings.length === 0 ? (
+        <p>You have no bookings yet.</p>
+      ) : (
+        <ul>
+          {userBookings.map((booking) => (
+            <div className="specific-user-booking" key={booking.id}>
+              <h3>{booking.title}</h3>
+              <p>Booked Date: {new Date(booking.bookedDate).toLocaleDateString()}</p>
+              <p>Price: ${booking.price}</p>
+              <button
+                onClick={() => handleDeleteBooking(booking.id)}
+                className="delete-booking-btn btn btn-danger">
+                Cancel Booking
+              </button>
+            </div>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

@@ -19,6 +19,7 @@ function BookingCart({ bookingCart, setBookingCart }) {
     .toFixed(2);
 
   useEffect(() => {
+    // Update localStorage whenever bookingCart changes
     localStorage.setItem("bookingCart", JSON.stringify(bookingCart));
   }, [bookingCart]);
 
@@ -29,6 +30,10 @@ function BookingCart({ bookingCart, setBookingCart }) {
   };
 
   const handleContinueToCheckout = () => {
+    // Store the current bookingCart in localStorage as userBookings
+    localStorage.setItem("userBookings", JSON.stringify(bookingCart));
+
+    // Clear the booking cart (both state and localStorage)
     localStorage.removeItem("bookingCart");
     setBookingCart([]);
   };
@@ -71,12 +76,11 @@ function BookingCart({ bookingCart, setBookingCart }) {
             ))}
           </ul>
           <p className="total-price">Total Price: ${totalPrice}</p>
-          <Link
-            to="/checkout"
-            className={styles.button}
-            onClick={handleContinueToCheckout}>
+
+          {/* Change to button instead of link for more control */}
+          <button onClick={handleContinueToCheckout} className={styles.button}>
             Continue to Checkout
-          </Link>
+          </button>
         </div>
       )}
     </div>

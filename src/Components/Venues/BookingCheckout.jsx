@@ -12,7 +12,7 @@ function Checkout({ bookingCart, clearCart }) {
   const navigate = useNavigate();
 
   /**
-   * handleCheckout function sends booking data to the backend and removes the booking cart from localStorage.
+   * handleCheckout function sends booking data to the backend and saves it to local storage.
    */
   const handleCheckout = async () => {
     const jwtToken = localStorage.getItem("jwtToken");
@@ -20,6 +20,9 @@ function Checkout({ bookingCart, clearCart }) {
     const userName = localStorage.getItem("userName"); // Get the user name
 
     try {
+      // Initialize or retrieve the existing userBookings array in local storage
+      const userBookings = JSON.parse(localStorage.getItem("userBookings")) || [];
+
       // Send each booking in the cart to the backend
       for (const booking of bookingCart) {
         const response = await fetch(
@@ -33,9 +36,9 @@ function Checkout({ bookingCart, clearCart }) {
             },
             body: JSON.stringify({
               venueId: booking.id,
-              guests: booking.maxGuests, // Adjust this according to your booking object structure
-              dateFrom: booking.selectedDateRange.start, // Adjust accordingly
-              dateTo: booking.selectedDateRange.end, // Adjust accordingly
+              guests: booking.maxGuests,
+              dateFrom: booking.selectedDateRange.start,
+              dateTo: booking.selectedDateRange.end,
             }),
           }
         );
@@ -43,7 +46,19 @@ function Checkout({ bookingCart, clearCart }) {
         if (!response.ok) {
           throw new Error("Failed to submit booking");
         }
+
+        // If booking is successful, add it to the userBookings array
+        userBookings.push({
+          venueId: booking.id,
+          name: booking.name,
+          guests: booking.maxGuests,
+          dateFrom: booking.selectedDateRange.start,
+          dateTo: booking.selectedDateRange.end,
+        });
       }
+
+      // Update userBookings in local storage
+      localStorage.setItem("userBookings", JSON.stringify(userBookings));
 
       // Clear booking cart after successful checkout
       clearCart();

@@ -13,7 +13,7 @@ function Home() {
       <header>
         <h1>Welcome to Holidaze!</h1>
         <h2 className="h2-extra">
-          Your ultimate destination for hassle-free accommodation booking.
+          <i>Your ultimate destination for hassle-free accommodation booking.</i>
         </h2>
       </header>
       <Venues />
