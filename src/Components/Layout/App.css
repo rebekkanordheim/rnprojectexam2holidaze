@@ -27,6 +27,9 @@ h2,
 h3 {
   text-align: center;
 }
+.h2-extra {
+  font-size: 18px;
+}
 
 a {
   text-decoration: none;

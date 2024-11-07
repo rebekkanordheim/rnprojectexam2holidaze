@@ -1,14 +1,16 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { registerUser } from "./registerUser";
 import styles from "../../../Button.module.css";
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { Link } from "react-router-dom";
 
 const RegisterForm = () => {
+  const navigate = useNavigate(); // Initialize navigate
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    venueManager: false, // Added venueManager field with default value false
+    venueManager: false,
   });
 
   const [errors, setErrors] = useState({});
@@ -17,7 +19,6 @@ const RegisterForm = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    // If the input type is checkbox, update value as checked status, else use normal value
     const inputValue = type === "checkbox" ? checked : value;
     setFormData({
       ...formData,
@@ -54,8 +55,8 @@ const RegisterForm = () => {
         });
         setErrors({});
 
-        // Store user information in local storage
-        localStorage.setItem("userData", JSON.stringify(formData));
+        // Redirect to the login page after successful registration
+        navigate("/login");
       } catch (error) {
         console.error("Registration failed:", error);
         setSuccessMessage("");
@@ -141,7 +142,6 @@ const RegisterForm = () => {
         <button type="submit" className={styles.button}>
           Register
         </button>
-        {/* Link to another page */}
         <Link to="/login">Already have an account? Login here.</Link>
       </form>
     </div>

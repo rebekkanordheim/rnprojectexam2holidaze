@@ -12,9 +12,9 @@ function Home() {
     <div>
       <header>
         <h1>Welcome to Holidaze!</h1>
-        <p className="card">
+        <h2 className="h2-extra">
           Your ultimate destination for hassle-free accommodation booking.
-        </p>
+        </h2>
       </header>
       <Venues />
     </div>
