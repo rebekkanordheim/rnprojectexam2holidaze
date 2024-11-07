@@ -57,15 +57,14 @@ function BookingCart({ bookingCart, setBookingCart }) {
                 )}
                 <p>Price: ${item.price.toFixed(2)}</p>
 
-                {/* Display booking dates */}
-                {item.dates && item.dates.length > 0 && (
+                {/* Display selected date range */}
+                {item.selectedDateRange && (
                   <div className="booking-dates">
-                    <h5>Booking Dates:</h5>
-                    <ul>
-                      {item.dates.map((date, i) => (
-                        <li key={i}>{new Date(date).toLocaleDateString()}</li>
-                      ))}
-                    </ul>
+                    <h5>Selected Date Range:</h5>
+                    <p>
+                      {new Date(item.selectedDateRange.start).toLocaleDateString()} -{" "}
+                      {new Date(item.selectedDateRange.end).toLocaleDateString()}
+                    </p>
                   </div>
                 )}
               </li>
