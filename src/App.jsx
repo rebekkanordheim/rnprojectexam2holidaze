@@ -10,27 +10,14 @@ import RegisterPage from "./Components/User/Register/RegisterPage";
 import LoginPage from "./Components/User/Login/LoginPage";
 import BookingCart from "./Components/Venues/BookingCart";
 import BookingCheckout from "./Components/Venues/BookingCheckout";
-import Profile from "./Components/User/Profile/Profile";
+import Profile from "./Components/User/Profile/Profile"; // Make sure to import the Profile component
 
-/**
- * App component is the root component that sets up routing and manages the booking cart state.
- *
- * @returns {JSX.Element} JSX element representing the App component.
- */
 function App() {
-  /**
-   * State hook to manage the booking cart.
-   */
   const [bookingCart, setBookingCart] = useState(() => {
     const savedCart = localStorage.getItem("bookingCart");
     return savedCart ? JSON.parse(savedCart) : [];
   });
 
-  /**
-   * Function to add a venue to the booking cart.
-   *
-   * @param {Object} venue - The venue object to be added to the cart.
-   */
   const addToBookingCart = (venue) => {
     setBookingCart((prevCart) => [...prevCart, venue]);
   };
@@ -48,7 +35,7 @@ function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<Profile />} /> {/* Add the Profile route */}
         <Route path="/newvenue" element={<NewVenueForm />} />
         <Route
           path="/booking-cart"

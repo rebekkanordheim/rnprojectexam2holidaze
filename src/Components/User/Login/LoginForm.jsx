@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { loginUser } from "./loginUser";
 import styles from "../../../Button.module.css";
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 
 /**
  * LoginForm component for user authentication.
@@ -50,30 +50,49 @@ const LoginForm = () => {
    * Handles form submission events.
    * @param {Object} e - The form submission event object.
    */
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (validateForm()) {
-    try {
-      const user = await loginUser(formData.email, formData.password);
-      setSuccessMessage("Login successful!");
-      setFormData({
-        email: "",
-        password: "",
-      });
-      setErrors({});
-      localStorage.setItem("jwtToken", user.data.accessToken);
-      setTimeout(() => {
-        setSuccessMessage("");
-        window.location.href = "/";
-      }, 1500); 
-    } catch (error) {
-      console.error("Login failed:", error);
-      setSuccessMessage("");
-      setErrors({ apiError: "Login failed. Please try again." });
-    }
-  }
-};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      try {
+        const user = await loginUser(formData.email, formData.password);
+        setSuccessMessage("Login successful!");
 
+        // Log the successful login data to the console
+        console.log("User login data:", user.data);
+
+        // Set user data in local storage
+        localStorage.setItem("jwtToken", user.data.accessToken);
+        localStorage.setItem("venueManager", JSON.stringify(user.data.venueManager));
+
+        // Optionally, store additional user data like name, email, etc.
+        localStorage.setItem("name", user.data.name); // Add this line
+        localStorage.setItem("email", user.data.email); // Add this line
+        localStorage.setItem(
+          "avatarImage",
+          user.data.avatarImage ||
+            "https://images.unsplash.com/photo-1579547945413-497e1b99dac0?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&h=400&w=400"
+        ); // Default avatar
+        localStorage.setItem(
+          "bio",
+          user.data.bio || "This is a default bio for the user."
+        ); // Default bio
+
+        // Reset form and errors
+        setFormData({ email: "", password: "" });
+        setErrors({});
+
+        // Delay redirect to allow log to display
+        setTimeout(() => {
+          setSuccessMessage("");
+          window.location.href = "/";
+        }, 2000); // Delay for 2 seconds
+      } catch (error) {
+        console.error("Login failed:", error);
+        setSuccessMessage("");
+        setErrors({ apiError: "Login failed. Please try again." });
+      }
+    }
+  };
 
   /**
    * Toggles the visibility of the password input.

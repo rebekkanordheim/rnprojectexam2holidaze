@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import { registerUser } from "./registerUser";
 import styles from "../../../Button.module.css";
 import { Link } from "react-router-dom";
 
 const RegisterForm = () => {
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    venueManager: false,
+    venueManager: "", // Initially set as an empty string to be handled by dropdown
   });
 
   const [errors, setErrors] = useState({});
@@ -18,11 +18,17 @@ const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    const inputValue = type === "checkbox" ? checked : value;
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: inputValue,
+      [name]: value,
+    });
+  };
+
+  const handleVenueManagerChange = (e) => {
+    setFormData({
+      ...formData,
+      venueManager: e.target.value, // Update venueManager value from dropdown
     });
   };
 
@@ -31,11 +37,16 @@ const RegisterForm = () => {
     if (!formData.name.trim()) {
       errors.name = "Name is required.";
     }
-    if (!formData.email.trim() || !formData.email.endsWith("@stud.noroff.no")) {
+    // Email validation for @stud.noroff.no
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@stud\.noroff\.no$/;
+    if (!formData.email.trim() || !emailRegex.test(formData.email)) {
       errors.email = "Email must be a valid stud.noroff.no email address.";
     }
     if (!formData.password.trim() || formData.password.length < 8) {
       errors.password = "Password must be at least 8 characters.";
+    }
+    if (!formData.venueManager) {
+      errors.venueManager = "Please select whether you are a venue manager.";
     }
     setErrors(errors);
     return Object.keys(errors).length === 0;
@@ -45,17 +56,31 @@ const RegisterForm = () => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        await registerUser(formData);
+        // Prepare the data to send to the API
+        const registrationData = {
+          ...formData,
+          venueManager: formData.venueManager === "true", // Ensure venueManager is sent as a boolean
+        };
+
+        // Call the registerUser function to send the data to the API
+        await registerUser(registrationData); // Assuming registerUser sends the data to the correct endpoint
+
+        // Save user data to localStorage
+        localStorage.setItem("name", formData.name);
+        localStorage.setItem("email", formData.email);
+        localStorage.setItem("avatarImage", "/path/to/default-avatar.jpg"); // Adjust as needed
+        localStorage.setItem("bio", "This is a default bio for the user.");
+
+        // Show success message and reset form
         setSuccessMessage("Registration successful!");
         setFormData({
           name: "",
           email: "",
           password: "",
-          venueManager: false,
+          venueManager: "", // Reset venueManager after form submission
         });
         setErrors({});
 
-        // Redirect to the login page after successful registration
         navigate("/login");
       } catch (error) {
         console.error("Registration failed:", error);
@@ -130,14 +155,20 @@ const RegisterForm = () => {
           )}
         </div>
         <div className="form-group">
-          <label htmlFor="venueManager">Become a venue manager:</label>
-          <input
-            type="checkbox"
+          <label htmlFor="venueManager">Are you a venue manager?</label>
+          <select
             id="venueManager"
             name="venueManager"
-            checked={formData.venueManager}
-            onChange={handleChange}
-          />
+            value={formData.venueManager}
+            onChange={handleVenueManagerChange}
+            className="form-input">
+            <option value="">Select...</option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+          {errors.venueManager && (
+            <span className="error error-message">{errors.venueManager}</span>
+          )}
         </div>
         <button type="submit" className={styles.button}>
           Register

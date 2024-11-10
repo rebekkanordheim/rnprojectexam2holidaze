@@ -12,3 +12,4 @@ export const USER_API_UPDATE = `${BASE_API_ENDPOINT}/profiles`;
 export const USER_BOOKINGS_ENDPOINT = `${BASE_API_ENDPOINT}/profiles/{userName}/bookings`;
 export const USER_MADE_VENUES = `${BASE_API_ENDPOINT}/profiles/{userName}/venues`;
 export const VENUE_BOOKINGS_ENDPOINT = `${BASE_API_ENDPOINT}/venues/{venueId}/bookings`;
+

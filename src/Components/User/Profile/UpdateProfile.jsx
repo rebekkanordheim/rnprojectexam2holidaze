@@ -6,24 +6,25 @@ function UpdateProfile({ handleVenueManagerChange, venueManager, setAvatarImageU
   const [imageUrl, setImageUrl] = useState("");
   const [isVenueManager, setIsVenueManager] = useState(venueManager); // Use local state for checkbox
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const userName = localStorage.getItem("userName");
 
   useEffect(() => {
     // Load the saved image URL from local storage when the component mounts
     const savedImageUrl = localStorage.getItem("avatarImageUrl");
-    if (savedImageUrl !== imageUrl) {
-      setImageUrl(savedImageUrl || "");
+    if (savedImageUrl && savedImageUrl !== imageUrl) {
+      setImageUrl(savedImageUrl); // Set saved image URL to state
     }
-  }, [imageUrl]);
+  }, []); // Only run this effect on mount
 
   const handleImageUrlChange = (e) => {
-    setImageUrl(e.target.value);
+    setImageUrl(e.target.value); // Update image URL state on input change
   };
 
   const handleClearImageUrl = () => {
-    setImageUrl("");
-    localStorage.removeItem("avatarImageUrl");
+    setImageUrl(""); // Clear image URL state
+    localStorage.removeItem("avatarImageUrl"); // Remove from localStorage
   };
 
   const handleVenueManagerCheckboxChange = (e) => {
@@ -58,7 +59,7 @@ function UpdateProfile({ handleVenueManagerChange, venueManager, setAvatarImageU
 
     const updates = {};
     if (imageUrl) {
-      updates.avatar = { url: imageUrl, alt: "Profile Avatar" }; // Update avatar
+      updates.avatar = { url: imageUrl, alt: "Profile Avatar" }; // Add avatar URL to updates
     }
     if (isVenueManager !== venueManager) {
       updates.venueManager = isVenueManager; // Update venue manager status if changed
@@ -67,27 +68,28 @@ function UpdateProfile({ handleVenueManagerChange, venueManager, setAvatarImageU
     try {
       if (Object.keys(updates).length > 0) {
         // Send the updates to the API
-        await updateProfile(updates);
+        const result = await updateProfile(updates);
 
-        // Update the local state and local storage
+        // Save the new image URL to localStorage
         if (imageUrl) {
-          localStorage.setItem("avatarImageUrl", imageUrl);
-          setAvatarImageUrl(imageUrl);
+          localStorage.setItem("avatarImageUrl", imageUrl); // Save new image URL to localStorage
+          setAvatarImageUrl(imageUrl); // Update parent component state (if needed)
         }
+
+        // Update venue manager status if needed
         if (isVenueManager !== venueManager) {
           localStorage.setItem("venueManager", JSON.stringify(isVenueManager));
           handleVenueManagerChange(isVenueManager); // Update venue manager in parent
         }
 
         setSuccessMessage("Profile updated successfully!");
-        setTimeout(() => {
-          window.location.reload(); // Optionally reload the page to reflect the changes
-        }, 900);
+        setErrorMessage(""); // Clear error message if successful
       } else {
         setSuccessMessage("No changes to update.");
       }
     } catch (error) {
-      console.error("Error updating profile:", error);
+      setErrorMessage(error.message || "Error updating profile image.");
+      setSuccessMessage(""); // Clear success message on error
     }
   };
 
@@ -104,6 +106,7 @@ function UpdateProfile({ handleVenueManagerChange, venueManager, setAvatarImageU
             value={imageUrl}
             onChange={handleImageUrlChange}
             className="avatar-input"
+            placeholder="Enter a valid image URL"
           />
           {imageUrl && (
             <button
@@ -127,7 +130,9 @@ function UpdateProfile({ handleVenueManagerChange, venueManager, setAvatarImageU
         <button type="submit" className="avatar-btn">
           Save
         </button>
+
         {successMessage && <p className="success-message">{successMessage}</p>}
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
       </form>
     </div>
   );

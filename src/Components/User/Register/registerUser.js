@@ -7,6 +7,7 @@ import { AUTH_ENDPOINT_REGISTER } from "../../../Common/constants";
  * @param {string} formData.name - The user's name.
  * @param {string} formData.email - The user's email.
  * @param {string} formData.password - The user's password.
+ * @param {boolean} formData.venueManager - Indicates if the user is a venue manager.
  * @returns {Promise<Object>} A promise that resolves to the registration data.
  * @throws {Error} If registration fails.
  */
@@ -18,6 +19,7 @@ export async function registerUser(formData) {
       name: formData.name,
       email: formData.email,
       password: formData.password,
+      venueManager: formData.venueManager === "true", // Ensure the venueManager is sent as a boolean
     };
 
     const postData = {
@@ -32,7 +34,6 @@ export async function registerUser(formData) {
 
     if (response.ok) {
       const data = await response.json();
-
       return data;
     } else {
       const errorData = await response.json();
