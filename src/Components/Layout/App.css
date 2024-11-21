@@ -362,20 +362,18 @@ label {
 
 /* Success and Error Messages */
 .success-message {
-  color: greenyellow;
-  background-color: var(--main-color);
+  color: var(--main-text);
+  background-color: rgb(149, 206, 62);
   border-radius: 5px;
   padding: 5px;
-  font-size: 30px;
   margin-top: 5px;
 }
 
 .error-message {
-  color: rgb(255, 132, 0);
-  background-color: var(--main-color);
+  color: var(--main-text);
+  background-color: rgba(255, 30, 0, 0.594);
   border-radius: 5px;
   padding: 5px;
-  font-size: 30px;
   margin-top: 5px;
 }
 
@@ -511,11 +509,6 @@ label {
 .user-venues,
 .specific-user-venues,
 .booking-card {
-  /*  background-color: var(--main-text);
-  border: 1px solid var(--main-color-light);
-  padding: 20px;
-  border-radius: 5px;
-  margin: 10px auto; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -531,12 +524,6 @@ label {
   width: 70%;
   max-width: 700px;
 }
-
-
-
-
-
-
 
 .profile-container {
   max-width: 600px;
