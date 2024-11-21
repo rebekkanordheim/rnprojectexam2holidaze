@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import UpdateProfile from "./UpdateProfile";
+import UserMadeVenues from "../../Venues/UserMadeVenues";
 
 const Profile = () => {
   const [userData, setUserData] = useState({
@@ -104,6 +105,9 @@ const Profile = () => {
           venueManager={userData.venueManager}
           onUpdateProfile={handleUpdateProfile}
         />
+      </div>
+      <div className="user-venues-section">
+        <UserMadeVenues userName={userName} />
       </div>
     </div>
   );

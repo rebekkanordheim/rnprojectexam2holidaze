@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
+import styles from "../../Button.module.css";
 
 function UserMadeVenues({ userName }) {
   const [userVenues, setUserVenues] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [editingVenue, setEditingVenue] = useState(null); // State for editing venue
+  const [editingVenue, setEditingVenue] = useState(null);
 
   useEffect(() => {
     const fetchUserVenues = async () => {
@@ -48,12 +49,34 @@ function UserMadeVenues({ userName }) {
     const jwtToken = localStorage.getItem("jwtToken");
     const apiKey = localStorage.getItem("apiKey");
 
-    const updatedVenue = {
-      name: e.target.name.value,
-      description: e.target.description.value,
-    };
+    const updatedTitle = e.target.name.value;
 
     try {
+      // Fetch the current venue data to preserve all other fields
+      const venueResponse = await fetch(
+        `https://v2.api.noroff.dev/holidaze/venues/${editingVenue.id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            "X-Noroff-API-Key": apiKey,
+          },
+        }
+      );
+
+      if (!venueResponse.ok) {
+        throw new Error("Failed to fetch venue data");
+      }
+
+      const venueData = await venueResponse.json();
+
+      // Update only the title
+      const updatedVenue = {
+        ...venueData.data, // Keep all existing data
+        name: updatedTitle, // Update only the name
+      };
+
+      // Send the updated data back to the API
       const response = await fetch(
         `https://v2.api.noroff.dev/holidaze/venues/${editingVenue.id}`,
         {
@@ -68,22 +91,52 @@ function UserMadeVenues({ userName }) {
       );
 
       if (!response.ok) {
-        throw new Error("Failed to update venue");
+        throw new Error("Failed to update venue title");
       }
 
       const updatedData = await response.json();
+
+      // Update the local state with the new title
       setUserVenues((prevVenues) =>
         prevVenues.map((venue) =>
           venue.id === updatedData.data.id ? updatedData.data : venue
         )
       );
-      setEditingVenue(null);
+
+      setEditingVenue(null); // Close the edit form after successful update
     } catch (error) {
       setError(error);
     }
   };
 
   const handleDeleteVenue = async (venueId) => {
+    if (!window.confirm("Are you sure you want to delete this venue?")) {
+      return;
+    }
+
+    try {
+      const jwtToken = localStorage.getItem("jwtToken");
+      const apiKey = localStorage.getItem("apiKey");
+
+      const response = await fetch(
+        `https://v2.api.noroff.dev/holidaze/venues/${venueId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            "X-Noroff-API-Key": apiKey,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete venue");
+      }
+
+      setUserVenues((prevVenues) => prevVenues.filter((venue) => venue.id !== venueId));
+    } catch (error) {
+      setError(error);
+    }
   };
 
   if (isLoading) {
@@ -96,58 +149,61 @@ function UserMadeVenues({ userName }) {
 
   return (
     <div className="user-venues">
+      <h2>Your Venues</h2>
       {userVenues.length === 0 ? (
-        <p>You have no created venues.</p>
+        <p>You have not created any venues yet.</p>
       ) : (
         <ul>
           {userVenues.map((venue) => (
-            <div className="specific-user-venues" key={venue.id}>
-              <h3>{venue.name}</h3>
-              <p>Description: {venue.description}</p>
-              {/* Display other venue details */}
+            <div className="venue" key={venue.id}>
+              <div className="venue-info">
+                <img
+                  src={venue.media?.[0]?.url || "https://via.placeholder.com/150"}
+                  alt={venue.media?.[0]?.alt || "Venue Image"}
+                  className="venue-image"
+                />
+                <h3 className="venue-title">{venue.name}</h3>
+              </div>
               <button
-                onClick={() => handleEditVenue(venue)}
-                className="edit-venue-btn btn btn-dark">
+                onClick={() => handleEditVenue(venue)} 
+                className={styles.button}>
                 Edit Venue
               </button>
               <button
-                onClick={() => handleDeleteVenue(venue.id)}
-                className="delete-venue-btn btn btn-danger">
+                onClick={() => handleDeleteVenue(venue.id)} 
+                className={styles.buttondanger}>
                 Delete Venue
               </button>
+
+              {/* Only show the edit form if this is the venue being edited */}
+              {editingVenue && editingVenue.id === venue.id && (
+                <form
+                  id="edit-venue-form"
+                  onSubmit={handleUpdateVenue}
+                  className="specific-booking">
+                  <h3>Edit Venue:</h3>
+                  <input
+                    className="form-input"
+                    type="text"
+                    name="name"
+                    defaultValue={editingVenue.name}
+                    placeholder="Venue Name"
+                    required
+                  />
+                  <button type="submit" className={styles.button}>
+                    Save Changes
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.button}
+                    onClick={() => setEditingVenue(null)}> {/* Close the edit form */}
+                    Cancel
+                  </button>
+                </form>
+              )}
             </div>
           ))}
         </ul>
-      )}
-      {editingVenue && (
-        <form id="edit-venue-form" onSubmit={handleUpdateVenue}>
-          <h3>Edit Venue</h3>
-          <input
-            className="form-input"
-            type="text"
-            name="name"
-            defaultValue={editingVenue.name}
-            placeholder="Venue Name"
-            required
-          />
-          <textarea
-            className="form-input"
-            name="description"
-            placeholder="Description"
-            defaultValue={editingVenue.description}
-            required
-          />
-          {/* Add other input fields for media, price, maxGuests, etc. */}
-          <button type="submit" className="btn btn-dark">
-            Save Changes
-          </button>
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={() => setEditingVenue(null)}>
-            Cancel
-          </button>
-        </form>
       )}
     </div>
   );

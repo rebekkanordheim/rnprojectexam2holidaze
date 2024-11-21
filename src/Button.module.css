@@ -1,7 +1,7 @@
 .button {
   background-color: var(--secondary-text);
   color: var(--main-text);
-  padding: 5px;
+  padding: 10px;
   border-radius: 5px;
   border: none;
   margin: 10px;
@@ -11,4 +11,13 @@
   background-color: var(--secondary-color);
   color: var(--main-text);
   cursor: pointer;
+}
+
+.buttondanger{
+  background-color: var(--secondary-text);
+  color: red;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  margin: 10px;
 }

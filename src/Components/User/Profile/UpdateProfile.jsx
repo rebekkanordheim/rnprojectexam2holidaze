@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../../Layout/App.css";
+import styles from "../../../Button.module.css";
 import { USER_API_UPDATE } from "../../../Common/constants";
 
 function UpdateProfile({ venueManager, avatarImageUrl, onUpdateProfile }) {
@@ -49,7 +50,6 @@ function UpdateProfile({ venueManager, avatarImageUrl, onUpdateProfile }) {
 
   return (
     <div className="formContainer">
-      <h2>Update your profile:</h2>
       <form onSubmit={handleSubmit} className="avatarform">
         <label htmlFor="imageUrl">Image URL:</label>
         <div className="image-url-input">
@@ -65,20 +65,20 @@ function UpdateProfile({ venueManager, avatarImageUrl, onUpdateProfile }) {
           {imageUrl && (
             <button
               type="button"
-              className="clear-image-url"
+              className={styles.button}
               onClick={handleClearImageUrl}>
               Clear
             </button>
           )}
         </div>
-
+        <br></br>
         <div>
           <label>
             <input
               type="checkbox"
               checked={isVenueManager}
               onChange={handleVenueManagerCheckboxChange}
-              disabled={venueManager} // Disable checkbox if the user is already a venue manager
+              disabled={venueManager}
             />
             I want to be a venue manager
           </label>
@@ -87,7 +87,7 @@ function UpdateProfile({ venueManager, avatarImageUrl, onUpdateProfile }) {
           )}
         </div>
 
-        <button type="submit" className="avatar-btn">
+        <button type="submit" className={styles.button}>
           Save
         </button>
 

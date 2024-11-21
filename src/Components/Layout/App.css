@@ -212,7 +212,6 @@ a:hover {
 
 /* Card styles */
 .venue,
-.specific-booking,
 .checkout-message,
 .contact-information {
   display: flex;
@@ -506,7 +505,7 @@ label {
   cursor: pointer;
 }
 
-.user-venues,
+/* .user-venues,
 .specific-user-venues,
 .booking-card {
   display: flex;
@@ -523,7 +522,7 @@ label {
   margin-bottom: 80px;
   width: 70%;
   max-width: 700px;
-}
+} */
 
 .profile-container {
   max-width: 600px;
@@ -555,4 +554,9 @@ footer {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+}
+
+#edit-venue-form {
+  border-radius: 5px;
+  padding: 5px;
 }
