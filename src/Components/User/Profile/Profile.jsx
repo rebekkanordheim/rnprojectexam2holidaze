@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import UpdateProfile from "./UpdateProfile";
 import UserMadeVenues from "../../Venues/UserMadeVenues";
-import UserBookings from "../../Venues/UsersBookings"; // Make sure this is imported correctly
+import UserBookings from "../../Venues/UserBookings"; // Ensure this is imported correctly
 import { USER_API_UPDATE } from "../../../Common/constants";
 
 const Profile = () => {
@@ -14,10 +14,10 @@ const Profile = () => {
     },
     venueManager: false,
   });
-
   const [message, setMessage] = useState(""); // State to show success/error message
   const userName = localStorage.getItem("userName");
 
+  // Fetch user profile when component mounts
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -45,6 +45,7 @@ const Profile = () => {
         });
       } catch (error) {
         console.error("Error fetching user profile:", error);
+        setMessage("Failed to load user profile.");
       }
     };
 
@@ -55,12 +56,11 @@ const Profile = () => {
 
   // Handle profile update, ensuring avatar and venueManager are handled separately
   const handleUpdateProfile = async (updates) => {
-    // Ensure we compare current state with updates to check for changes
     const updatedAvatar = updates.avatar ? updates.avatar : userData.avatar;
     const updatedVenueManager =
       updates.venueManager !== undefined ? updates.venueManager : userData.venueManager;
 
-    // Check if the updates actually change any data
+    // Prevent API call if no data changed
     if (
       updates.name === userData.name &&
       updates.email === userData.email &&
@@ -68,12 +68,12 @@ const Profile = () => {
       updatedVenueManager === userData.venueManager
     ) {
       setMessage("No changes made");
-      return; // Prevent the API call if no changes
+      return;
     }
 
     try {
       const updatedData = {
-        ...updates, // Include any changes made to name, email, etc.
+        ...updates,
         avatar: updatedAvatar,
         venueManager: updatedVenueManager,
       };
@@ -97,7 +97,7 @@ const Profile = () => {
 
       const result = await response.json();
 
-      // Update the state with the new data
+      // Update state with new user data
       setUserData((prev) => ({
         ...prev,
         ...updates,
@@ -108,7 +108,7 @@ const Profile = () => {
       setMessage("Profile updated successfully!");
     } catch (error) {
       console.error("Error updating profile:", error);
-      setMessage("Error updating profile");
+      setMessage("Error updating profile.");
     }
   };
 
@@ -139,7 +139,7 @@ const Profile = () => {
       <div className="user-venues-section">
         <UserMadeVenues userName={userName} />
       </div>
-      <div className="user-venues-section">
+      <div className="user-bookings-section">
         <UserBookings userName={userName} /> {/* User bookings */}
       </div>
     </div>

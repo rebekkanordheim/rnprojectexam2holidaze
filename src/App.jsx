@@ -9,7 +9,6 @@ import Layout from "./Components/Layout/Layout";
 import RegisterPage from "./Components/User/Register/RegisterPage";
 import LoginPage from "./Components/User/Login/LoginPage";
 import BookingCart from "./Components/Venues/BookingCart";
-import BookingCheckout from "./Components/Venues/BookingCheckout";
 import Profile from "./Components/User/Profile/Profile"; // Make sure to import the Profile component
 
 function App() {
@@ -43,7 +42,6 @@ function App() {
             <BookingCart bookingCart={bookingCart} setBookingCart={setBookingCart} />
           }
         />
-        <Route path="/checkout" element={<BookingCheckout />} />
         <Route path="*" element={<div>Route not found</div>} />
       </Routes>
     </BrowserRouter>

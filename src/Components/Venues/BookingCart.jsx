@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
@@ -78,7 +77,11 @@ function BookingCart({ bookingCart, setBookingCart }) {
           <p className="total-price">Total Price: ${totalPrice}</p>
 
           {/* Change to button instead of link for more control */}
-          <button onClick={handleContinueToCheckout} className={styles.button}>
+          <button
+            onClick={handleContinueToCheckout}
+            className={styles.button}
+            disabled={bookingCart.length === 0} // Disable the button if the cart is empty
+          >
             Continue to Checkout
           </button>
         </div>

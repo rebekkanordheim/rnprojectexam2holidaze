@@ -564,3 +564,10 @@ footer {
   border-radius: 5px;
   padding: 5px;
 }
+
+
+.react-calendar__tile--disabled {
+  background-color: #d3d3d3 !important;
+  color: #a9a9a9 !important;
+  cursor: not-allowed !important;
+}
