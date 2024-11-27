@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import UpdateProfile from "./UpdateProfile";
 import UserMadeVenues from "../../Venues/UserMadeVenues";
+import UserBookings from "../../Venues/UsersBookings"; // Make sure this is imported correctly
+import { USER_API_UPDATE } from "../../../Common/constants";
 
 const Profile = () => {
   const [userData, setUserData] = useState({
@@ -13,6 +15,7 @@ const Profile = () => {
     venueManager: false,
   });
 
+  const [message, setMessage] = useState(""); // State to show success/error message
   const userName = localStorage.getItem("userName");
 
   useEffect(() => {
@@ -50,12 +53,30 @@ const Profile = () => {
     }
   }, [userName]);
 
+  // Handle profile update, ensuring avatar and venueManager are handled separately
   const handleUpdateProfile = async (updates) => {
+    // Ensure we compare current state with updates to check for changes
+    const updatedAvatar = updates.avatar ? updates.avatar : userData.avatar;
+    const updatedVenueManager =
+      updates.venueManager !== undefined ? updates.venueManager : userData.venueManager;
+
+    // Check if the updates actually change any data
+    if (
+      updates.name === userData.name &&
+      updates.email === userData.email &&
+      updatedAvatar.url === userData.avatar.url &&
+      updatedVenueManager === userData.venueManager
+    ) {
+      setMessage("No changes made");
+      return; // Prevent the API call if no changes
+    }
+
     try {
-      // Ensure avatar is always included in the updates if not explicitly changed
-      if (!updates.avatar) {
-        updates.avatar = userData.avatar;
-      }
+      const updatedData = {
+        ...updates, // Include any changes made to name, email, etc.
+        avatar: updatedAvatar,
+        venueManager: updatedVenueManager,
+      };
 
       const response = await fetch(
         `https://v2.api.noroff.dev/holidaze/profiles/${userName}`,
@@ -66,7 +87,7 @@ const Profile = () => {
             Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
             "X-Noroff-API-Key": localStorage.getItem("apiKey"),
           },
-          body: JSON.stringify(updates),
+          body: JSON.stringify(updatedData),
         }
       );
 
@@ -74,14 +95,20 @@ const Profile = () => {
         throw new Error("Failed to update profile");
       }
 
-      const updatedData = await response.json();
+      const result = await response.json();
+
+      // Update the state with the new data
       setUserData((prev) => ({
         ...prev,
-        ...updates, // Merge the updates into the existing userData
-        avatar: updates.avatar, // Ensure the avatar is explicitly updated
+        ...updates,
+        avatar: updatedAvatar,
+        venueManager: updatedVenueManager,
       }));
+
+      setMessage("Profile updated successfully!");
     } catch (error) {
       console.error("Error updating profile:", error);
+      setMessage("Error updating profile");
     }
   };
 
@@ -106,8 +133,14 @@ const Profile = () => {
           onUpdateProfile={handleUpdateProfile}
         />
       </div>
+
+      {message && <p className="message">{message}</p>}
+
       <div className="user-venues-section">
         <UserMadeVenues userName={userName} />
+      </div>
+      <div className="user-venues-section">
+        <UserBookings userName={userName} /> {/* User bookings */}
       </div>
     </div>
   );

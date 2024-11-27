@@ -1,75 +1,58 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { USER_BOOKINGS_ENDPOINT } from "../../Common/constants";
 
-function UserBookings({ userName }) {
-  const [userBookings, setUserBookings] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+const UserBookings = ({ userName }) => {
+  const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
-    const fetchUserBookings = () => {
+    const fetchBookings = async () => {
       try {
-        setIsLoading(true);
+        const response = await fetch(
+          USER_BOOKINGS_ENDPOINT.replace("{userName}", userName),
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+              "X-Noroff-API-Key": localStorage.getItem("apiKey"),
+            },
+          }
+        );
 
-        // Retrieve bookings from localStorage
-        const bookings = JSON.parse(localStorage.getItem("userBookings")) || [];
-
-        if (bookings.length === 0) {
-          setError("No bookings found.");
-        } else {
-          // Filter bookings by userName, if necessary
-          const filteredBookings = bookings.filter(
-            (booking) => booking.userName === userName
-          );
-          setUserBookings(filteredBookings);
+        if (!response.ok) {
+          throw new Error("Failed to fetch bookings");
         }
+
+        const data = await response.json();
+        setBookings(data.data || []); // Assuming the bookings are under 'data'
       } catch (error) {
-        setError("Failed to fetch bookings from localStorage.");
-      } finally {
-        setIsLoading(false);
+        console.error("Error fetching bookings:", error);
       }
     };
 
-    fetchUserBookings();
+    if (userName) {
+      fetchBookings();
+    }
   }, [userName]);
 
-  const handleDeleteBooking = (bookingId) => {
-    // Delete logic for a booking
-    const updatedBookings = userBookings.filter((booking) => booking.id !== bookingId);
-    setUserBookings(updatedBookings);
-    localStorage.setItem("userBookings", JSON.stringify(updatedBookings));
-  };
-
-  if (isLoading) {
-    return <div>Loading your bookings...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
+  if (bookings.length === 0) {
+    return <p>No bookings found for {userName}.</p>;
   }
 
   return (
-    <div className="user-bookings">
-      <h2>Your Bookings</h2>
-      {userBookings.length === 0 ? (
-        <p>You have no bookings yet.</p>
-      ) : (
-        <ul>
-          {userBookings.map((booking) => (
-            <div className="specific-user-booking" key={booking.id}>
-              <h3>{booking.title}</h3>
-              <p>Booked Date: {new Date(booking.bookedDate).toLocaleDateString()}</p>
-              <p>Price: ${booking.price}</p>
-              <button
-                onClick={() => handleDeleteBooking(booking.id)}
-                className="delete-booking-btn btn btn-danger">
-                Cancel Booking
-              </button>
-            </div>
-          ))}
-        </ul>
-      )}
+    <div>
+      <h2>User Bookings</h2>
+      <ul>
+        {bookings.map((booking) => (
+          <li key={booking.id}>
+            <p>Venue: {booking.venue.name}</p>
+            <p>Check-in: {booking.checkIn}</p>
+            <p>Check-out: {booking.checkOut}</p>
+            {/* Add any other relevant booking details here */}
+          </li>
+        ))}
+      </ul>
     </div>
   );
-}
+};
 
 export default UserBookings;
