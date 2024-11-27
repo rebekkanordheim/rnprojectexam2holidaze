@@ -457,6 +457,10 @@ label {
   max-width: 700px;
 }
 
+li {
+  list-style-type: none;
+}
+
 .avatar-image {
   height: 250px;
   width: 250px;

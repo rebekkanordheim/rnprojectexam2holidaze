@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "../../Layout/App.css";
 import styles from "../../../Button.module.css";
-import { USER_API_UPDATE } from "../../../Common/constants";
 
 function UpdateProfile({ venueManager, avatarImageUrl, onUpdateProfile }) {
   const [imageUrl, setImageUrl] = useState(avatarImageUrl || "");
@@ -9,14 +8,8 @@ function UpdateProfile({ venueManager, avatarImageUrl, onUpdateProfile }) {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const userName = localStorage.getItem("userName");
-
   const handleImageUrlChange = (e) => {
     setImageUrl(e.target.value); // Update image URL state
-  };
-
-  const handleClearImageUrl = () => {
-    setImageUrl(""); // Clear image URL state
   };
 
   const handleVenueManagerCheckboxChange = (e) => {
@@ -26,22 +19,26 @@ function UpdateProfile({ venueManager, avatarImageUrl, onUpdateProfile }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const updates = {};
-    if (imageUrl) {
-      updates.avatar = { url: imageUrl, alt: "Profile Avatar" }; // Add avatar URL to updates
-    }
-    if (isVenueManager !== venueManager) {
-      updates.venueManager = isVenueManager; // Update venue manager status if changed
+    // Check if there are any changes
+    if (imageUrl === avatarImageUrl && isVenueManager === venueManager) {
+      setSuccessMessage(""); // Clear previous success message
+      setErrorMessage("No changes made."); // Show a message indicating no changes
+      return; // Stop execution
     }
 
+    // Prepare updates object
+    const updates = {
+      avatar: {
+        url: imageUrl || avatarImageUrl, // Use the updated URL or the current avatar URL
+        alt: "Profile Avatar",
+      },
+      venueManager: isVenueManager, // Always include the current venueManager status
+    };
+
     try {
-      if (Object.keys(updates).length > 0) {
-        await onUpdateProfile(updates); // Call the parent function to update profile
-        setSuccessMessage("Profile updated successfully!");
-        setErrorMessage(""); // Clear error message if successful
-      } else {
-        setSuccessMessage("No changes to update.");
-      }
+      await onUpdateProfile(updates); // Call the parent function to update profile
+      setSuccessMessage("Profile updated successfully!");
+      setErrorMessage(""); // Clear error message if successful
     } catch (error) {
       setErrorMessage(error.message || "Error updating profile.");
       setSuccessMessage(""); // Clear success message on error
@@ -62,14 +59,6 @@ function UpdateProfile({ venueManager, avatarImageUrl, onUpdateProfile }) {
             className="avatar-input"
             placeholder="Enter a valid image URL"
           />
-          {imageUrl && (
-            <button
-              type="button"
-              className={styles.button}
-              onClick={handleClearImageUrl}>
-              Clear
-            </button>
-          )}
         </div>
         <br></br>
         <div>
@@ -83,7 +72,9 @@ function UpdateProfile({ venueManager, avatarImageUrl, onUpdateProfile }) {
             I want to be a venue manager
           </label>
           {venueManager && (
-            <p className="error-message">You are already a venue manager.</p>
+            <p>
+              <b>You are already a venue manager.</b>
+            </p>
           )}
         </div>
 
