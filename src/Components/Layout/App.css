@@ -257,7 +257,7 @@ a:hover {
   align-self: flex-end;
   background: none;
   border: none;
-  color: var(--main-color-light);
+  color: var(--main-text);
   cursor: pointer;
   font-size: 1em;
   margin-top: -10px;
@@ -565,9 +565,27 @@ footer {
   padding: 5px;
 }
 
-
 .react-calendar__tile--disabled {
-  background-color: #d3d3d3 !important;
   color: #a9a9a9 !important;
   cursor: not-allowed !important;
+}
+
+.react-calendar__month-view__weekdays {
+  color:var(--main-color);
+}
+.guests {
+  padding: 20px;
+}
+#guests {
+  width: 50px;
+  height: 30px;
+}
+
+.booking-cart-list,
+.userbookings-list {
+  border: 2px solid rgba(255, 255, 255, 0.533);
+  background-color: rgba(255, 255, 255, 0.249);
+  padding: 20px;
+  margin: 20px;
+  border-radius: 5px;
 }

@@ -12,7 +12,8 @@ function SpecificVenue({ addToBookingCart }) {
   const [selectedDateRange, setSelectedDateRange] = useState(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [unavailableDates, setUnavailableDates] = useState([]);
-  const loggedIn = isAuthenticated(); // Use your isAuthenticated function here
+  const [numGuests, setNumGuests] = useState(1); // Added numGuests state
+  const loggedIn = isAuthenticated();
 
   // Fetch the venue details
   useEffect(() => {
@@ -36,11 +37,14 @@ function SpecificVenue({ addToBookingCart }) {
     fetchVenueData();
   }, [id]);
 
-  // Fetch the bookings and extract unavailable dates
+  // Fetch bookings and extract unavailable dates
   useEffect(() => {
     async function fetchBookings() {
       try {
         const response = await fetch("https://v2.api.noroff.dev/holidaze/bookings");
+        if (!response.ok) {
+          throw new Error("Failed to fetch bookings");
+        }
         const data = await response.json();
         const bookings = data.data;
 
@@ -49,10 +53,10 @@ function SpecificVenue({ addToBookingCart }) {
           const startDate = new Date(booking.dateFrom);
           const endDate = new Date(booking.dateTo);
           const dates = [];
-
           let currentDate = startDate;
+
           while (currentDate <= endDate) {
-            dates.push(currentDate.toISOString().split("T")[0]); // format YYYY-MM-DD
+            dates.push(currentDate.toISOString().split("T")[0]); // Format YYYY-MM-DD
             currentDate.setDate(currentDate.getDate() + 1);
           }
 
@@ -72,48 +76,23 @@ function SpecificVenue({ addToBookingCart }) {
     setSelectedDateRange(dateRange);
   };
 
-  // Check venue availability
-  const checkAvailability = (selectedStartDate, selectedEndDate) => {
-    return fetch("https://v2.api.noroff.dev/holidaze/bookings")
-      .then((response) => response.json())
-      .then((data) => {
-        const bookings = data.data;
-        let isAvailable = true;
-        bookings.forEach((booking) => {
-          const existingStartDate = new Date(booking.dateFrom);
-          const existingEndDate = new Date(booking.dateTo);
-          if (
-            (selectedStartDate >= existingStartDate &&
-              selectedStartDate <= existingEndDate) ||
-            (selectedEndDate >= existingStartDate &&
-              selectedEndDate <= existingEndDate) ||
-            (selectedStartDate <= existingStartDate && selectedEndDate >= existingEndDate)
-          ) {
-            isAvailable = false;
-          }
-        });
-        return isAvailable;
-      })
-      .catch((error) => {
-        console.error("Error fetching bookings:", error);
-        return false;
-      });
-  };
-
   const handleAddToBookingCart = async () => {
     if (!loggedIn) {
       alert("You need to be logged in to book this venue.");
       return;
     }
-    if (!selectedDateRange) {
-      alert("Please select a date range before booking.");
+    if (!selectedDateRange || !numGuests) {
+      alert("Please select a valid date range and number of guests before booking.");
       return;
     }
 
-    const isAvailable = await checkAvailability(
-      new Date(selectedDateRange.start),
-      new Date(selectedDateRange.end)
+    // Ensure selected dates are available
+    const selectedStartDate = selectedDateRange.start;
+    const selectedEndDate = selectedDateRange.end;
+    const isAvailable = !unavailableDates.some(
+      (date) => date >= selectedStartDate && date <= selectedEndDate
     );
+
     if (!isAvailable) {
       alert("The venue is not available for the selected dates.");
       return;
@@ -121,31 +100,18 @@ function SpecificVenue({ addToBookingCart }) {
 
     const booking = {
       venueId: venue.id,
-      dateFrom: selectedDateRange.start,
-      dateTo: selectedDateRange.end,
+      name: venue.name, // Add the venue name
+      price: venue.price, // Add the price
+      media: venue.media, // Add media for image display
+      selectedDateRange, // Add selected date range
+      guests: numGuests, // Add number of guests
     };
 
-    try {
-      const response = await fetch("https://v2.api.noroff.dev/holidaze/bookings", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-        },
-        body: JSON.stringify(booking),
-      });
+    // Add the new booking to the booking cart (this assumes setBookingCart is passed as a prop)
+    addToBookingCart(booking);
 
-      if (!response.ok) {
-        throw new Error("Failed to create booking");
-      }
-
-      const data = await response.json();
-      console.log("Booking successfully created:", data);
-      setShowSuccessMessage(true);
-    } catch (error) {
-      console.error("Error adding booking:", error);
-      setIsError(true);
-    }
+    // Optionally, you can display a success message
+    setShowSuccessMessage(true);
   };
 
   if (isLoading) {
@@ -190,13 +156,25 @@ function SpecificVenue({ addToBookingCart }) {
         )}
 
         {showSuccessMessage && (
-          <p className="success-message">Venue successfully booked!</p>
+          <p className="success-message">Venue successfully added to cart!</p>
         )}
 
         <div className="calendar">
           <CustomCalendar
-            unavailableDates={unavailableDates} // Pass unavailable dates to CustomCalendar
+            unavailableDates={unavailableDates} // Pass unavailable dates
             onDateRangeSelected={handleDateRangeSelected}
+          />
+        </div>
+
+        <div className="guests">
+          <label htmlFor="guests">Number of Guests:</label>
+          <input
+            type="number"
+            id="guests"
+            value={numGuests}
+            min="1"
+            max={venue.maxGuests} // Restrict the number of guests to the venue's max capacity
+            onChange={(e) => setNumGuests(e.target.value)}
           />
         </div>
 
