@@ -76,12 +76,12 @@ CustomCalendar.propTypes = {
 };
 
 export default CustomCalendar;
- */
+*/
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import PropTypes from "prop-types";
-
+import styles from "../../Button.module.css";
 
 const CustomCalendar = ({ bookings, pricePerNight, maxGuests, onBookingSubmit }) => {
   const [value, setValue] = useState([new Date(), new Date()]);
@@ -96,20 +96,6 @@ const CustomCalendar = ({ bookings, pricePerNight, maxGuests, onBookingSubmit })
           date >= new Date(booking.dateFrom) && date <= new Date(booking.dateTo)
       )
     );
-  };
-
-  const tileClassName = ({ date, view }) => {
-    if (view === "month") {
-      const today = new Date();
-      if (
-        date.getDate() === today.getDate() &&
-        date.getMonth() === today.getMonth() &&
-        date.getFullYear() === today.getFullYear()
-      ) {
-        return "current-day";
-      }
-    }
-    return null;
   };
 
   const calculateTotalCost = (startDate, endDate, guests) => {
@@ -132,6 +118,11 @@ const CustomCalendar = ({ bookings, pricePerNight, maxGuests, onBookingSubmit })
     onBookingSubmit({ startDate, endDate, guests, totalCost });
   };
 
+  // Go to today function
+  const goToToday = () => {
+    setValue([new Date(), new Date()]);
+  };
+
   return (
     <div>
       <Calendar
@@ -139,7 +130,6 @@ const CustomCalendar = ({ bookings, pricePerNight, maxGuests, onBookingSubmit })
         value={value}
         selectRange={true}
         tileDisabled={tileDisabled}
-        tileClassName={tileClassName} // Highlight current day
       />
       <div>
         <label>
@@ -153,7 +143,12 @@ const CustomCalendar = ({ bookings, pricePerNight, maxGuests, onBookingSubmit })
           </select>
         </label>
         <p>Total Cost: ${totalCost}</p>
-        <button onClick={handleBookingSubmit}>Book Now</button>
+        <button onClick={handleBookingSubmit} className={styles.button}>
+          Book Now
+        </button>
+        <button onClick={goToToday} className={styles.button}>
+          Go to Today
+        </button>
       </div>
     </div>
   );
