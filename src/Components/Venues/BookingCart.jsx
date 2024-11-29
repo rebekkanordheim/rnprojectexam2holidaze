@@ -18,7 +18,7 @@ function BookingCart({ bookingCart, setBookingCart }) {
   };
 
   const handleContinueToCheckout = () => {
-    // Make sure the user has selected a date range and guests
+    // Ensure the user has selected a date range and guests
     if (bookingCart.length === 0 || !bookingCart[0].selectedDateRange) {
       alert("Please complete your booking details.");
       return;
@@ -27,7 +27,7 @@ function BookingCart({ bookingCart, setBookingCart }) {
     const { selectedDateRange } = bookingCart[0];
     const { start, end } = selectedDateRange;
 
-    // Validate date range before proceeding
+    // Validate the date range before proceeding
     if (
       !start ||
       !end ||
@@ -41,7 +41,7 @@ function BookingCart({ bookingCart, setBookingCart }) {
     handleCreateBooking(start, end);
   };
 
-  // New function to create the booking
+  // Function to create the booking
   const handleCreateBooking = async (start, end) => {
     const bookingData = {
       dateFrom: new Date(start).toISOString(),
@@ -67,9 +67,8 @@ function BookingCart({ bookingCart, setBookingCart }) {
 
       const data = await response.json();
       alert("Booking created successfully!");
-      // Clear cart and navigate if needed
-      setBookingCart([]);
-      localStorage.removeItem("bookingCart");
+      setBookingCart([]); // Clear the cart
+      localStorage.removeItem("bookingCart"); // Clear localStorage
     } catch (error) {
       console.error("Error creating booking:", error);
       alert("Error creating booking. Please try again.");
@@ -92,7 +91,7 @@ function BookingCart({ bookingCart, setBookingCart }) {
                   <FontAwesomeIcon icon={faX} />
                 </button>
                 <h4 className="venue-title">{item.name}</h4>
-                {item.media.length > 0 && (
+                {item.media?.length > 0 && (
                   <img className="venue-image" src={item.media[0].url} alt={item.name} />
                 )}
                 <p className="venue-price">Price: ${item.price.toFixed(2)}</p>

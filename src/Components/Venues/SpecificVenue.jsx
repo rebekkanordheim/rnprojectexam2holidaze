@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import CustomCalendar from "./CustomCalendar";
-import { Helmet } from "react-helmet";
-import { isAuthenticated } from "../User/authUtils";
+import CustomCalendar from "../Calendar/CustomCalendar";
+import BookingCart from "./BookingCart";
 
-function SpecificVenue({ addToBookingCart }) {
+const SpecificVenue = () => {
   const { id } = useParams();
   const [venue, setVenue] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const [unavailableDates, setUnavailableDates] = useState([]);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const loggedIn = isAuthenticated();
+  const [bookingCart, setBookingCart] = useState([]); // State for the booking cart
 
   useEffect(() => {
     async function fetchVenueData() {
@@ -22,8 +19,8 @@ function SpecificVenue({ addToBookingCart }) {
           throw new Error("Failed to fetch venue data");
         }
         const data = await response.json();
-        console.log("Fetched venue data:", data);
-        setVenue(data.data);
+        console.log("Venue data:", data); // Debugging log
+        setVenue(data.data); // Use 'data.data' as per your API response structure
       } catch (error) {
         console.error("Error fetching venue data:", error);
         setIsError(true);
@@ -35,100 +32,62 @@ function SpecificVenue({ addToBookingCart }) {
     fetchVenueData();
   }, [id]);
 
-  useEffect(() => {
-    async function fetchBookings() {
-      try {
-        const response = await fetch("https://v2.api.noroff.dev/holidaze/bookings");
-        if (!response.ok) {
-          throw new Error("Failed to fetch bookings");
-        }
-        const data = await response.json();
-        console.log("Fetched bookings data:", data);
+  // Handle the date range selection from the CustomCalendar component
+  const handleDateRangeSelected = (dateRange) => {
+    console.log("Selected date range:", dateRange);
 
-        const bookings = data.data || [];
-        if (Array.isArray(bookings)) {
-          const unavailable = bookings.flatMap((booking) => {
-            const startDate = new Date(booking.dateFrom);
-            const endDate = new Date(booking.dateTo);
-            const dates = [];
-            let currentDate = startDate;
+    if (venue) {
+      // Add the selected date range to the booking cart
+      const newBooking = {
+        ...venue,
+        selectedDateRange: dateRange, // Add the selected date range
+        price: venue.price, // Add the price
+      };
 
-            while (currentDate <= endDate) {
-              dates.push(currentDate.toISOString().split("T")[0]);
-              currentDate.setDate(currentDate.getDate() + 1);
-            }
-
-            return dates;
-          });
-
-          setUnavailableDates(unavailable);
-        } else {
-          console.error("Unexpected bookings format:", bookings);
-        }
-      } catch (error) {
-        console.error("Error fetching bookings:", error);
-      }
+      // Update the booking cart state
+      setBookingCart((prevCart) => [...prevCart, newBooking]);
     }
-
-    fetchBookings();
-  }, []);
-
-  const handleBookingSubmit = (bookingDetails) => {
-    if (!loggedIn) {
-      alert("You need to be logged in to book this venue.");
-      return;
-    }
-
-    const booking = {
-      venueId: venue.id,
-      name: venue.name,
-      price: venue.price,
-      media: venue.media,
-      selectedDateRange: [bookingDetails.startDate, bookingDetails.endDate],
-      guests: bookingDetails.guests,
-      totalCost: bookingDetails.totalCost,
-    };
-
-    addToBookingCart(booking);
-    setShowSuccessMessage(true);
   };
 
-  if (isLoading) return <div>Loading venue details...</div>;
-  if (isError || !venue) return <div>Error loading venue details.</div>;
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (isError) {
+    return <p>Something went wrong while fetching venue data.</p>;
+  }
 
   return (
-    <div key={venue.id} className="venue">
-      <Helmet>
-        <title>Holidaze | {venue?.name || "Loading..."}</title>
-      </Helmet>
+    <div className="venue-container">
       <div className="venue-info">
         <h2 className="venue-title">{venue.name}</h2>
         {venue.media?.length > 0 ? (
           <img
             className="venue-image"
-            src={venue.media[0]?.url || ""}
-            alt={venue.media[0]?.alt || "Venue image"}
+            src={venue.media[0].url}
+            alt={venue.media[0].alt || `Image of ${venue.name}`}
           />
         ) : (
-          <p>No images available for this venue.</p>
+          <img
+            className="venue-image"
+            src="/path/to/placeholder-image.jpg"
+            alt="No image available"
+          />
         )}
-
-        {/* Calendar Component */}
-        <CustomCalendar
-          bookings={unavailableDates.map((date) => ({
-            dateFrom: date,
-            dateTo: date,
-          }))}
-          pricePerNight={venue.price || 100}
-          maxGuests={venue.maxGuests || 10}
-          onBookingSubmit={handleBookingSubmit}
-        />
-
-        {/* Success Message */}
-        {showSuccessMessage && <p>Booking added to cart successfully!</p>}
+        <p>Price per night: ${venue.price}</p>
+        <p>Max guests: {venue.maxGuests}</p>
       </div>
+
+      <CustomCalendar
+        onDateRangeSelected={handleDateRangeSelected} // Pass the date range handler to CustomCalendar
+      />
+
+      <BookingCart
+        bookingCart={bookingCart} // Pass the booking cart state to BookingCart
+        setBookingCart={setBookingCart} // Pass the setter function to BookingCart
+      />
     </div>
   );
-}
+};
 
 export default SpecificVenue;
