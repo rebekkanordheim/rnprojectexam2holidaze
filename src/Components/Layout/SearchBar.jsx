@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styles from "../../Button.module.css";
 
 /**
  * SearchBar component for entering search terms and triggering search actions.
@@ -48,14 +49,14 @@ function SearchBar({ onSearch }) {
         {searchTerm && ( // Only show clear button if there's text in the input
           <button
             type="button"
-            className="clear-btn"
+            className={styles.button}
             onClick={handleClear}
             aria-label="Clear search">
-            X {/* Change from "Clear" to "X" */}
+            X
           </button>
         )}
       </div>
-      <button className="search-btn" type="submit">
+      <button className={styles.button} type="submit">
         Search
       </button>
     </form>

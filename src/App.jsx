@@ -9,7 +9,7 @@ import Layout from "./Components/Layout/Layout";
 import RegisterPage from "./Components/User/Register/RegisterPage";
 import LoginPage from "./Components/User/Login/LoginPage";
 import BookingCart from "./Components/Venues/BookingCart";
-import Profile from "./Components/User/Profile/Profile"; // Make sure to import the Profile component
+import Profile from "./Components/User/Profile/Profile";
 
 function App() {
   const [bookingCart, setBookingCart] = useState(() => {

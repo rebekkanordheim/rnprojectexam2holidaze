@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from "react";
-import UpdateProfile from "./UpdateProfile";
+import UpdateAvatarUrl from "./UpdateAvatarUrl";
+import UpdateVenueManager from "./UpdateVenueManager";
 import UserMadeVenues from "../../Venues/UserMadeVenues";
-import UserBookings from "../../Venues/UserBookings"; // Ensure this is imported correctly
-import { USER_API_UPDATE } from "../../../Common/constants";
+import UserBookings from "../../Venues/UserBookings";
 
 const Profile = () => {
   const [userData, setUserData] = useState({
     name: "",
     email: "",
     avatar: {
-      url: "https://images.unsplash.com/photo-1579547945413-497e1b99dac0?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&h=400&w=400", // Default image
+      url: "",
       alt: "Profile Avatar",
     },
     venueManager: false,
   });
-  const [message, setMessage] = useState(""); // State to show success/error message
   const userName = localStorage.getItem("userName");
 
-  // Fetch user profile when component mounts
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -38,14 +36,13 @@ const Profile = () => {
 
         const data = await response.json();
         setUserData({
-          name: data.data.name,
-          email: data.data.email,
-          avatar: data.data.avatar || userData.avatar,
-          venueManager: data.data.venueManager,
+          name: data.name,
+          email: data.email,
+          avatar: data.avatar || userData.avatar,
+          venueManager: data.venueManager,
         });
       } catch (error) {
         console.error("Error fetching user profile:", error);
-        setMessage("Failed to load user profile.");
       }
     };
 
@@ -54,30 +51,8 @@ const Profile = () => {
     }
   }, [userName]);
 
-  // Handle profile update, ensuring avatar and venueManager are handled separately
-  const handleUpdateProfile = async (updates) => {
-    const updatedAvatar = updates.avatar ? updates.avatar : userData.avatar;
-    const updatedVenueManager =
-      updates.venueManager !== undefined ? updates.venueManager : userData.venueManager;
-
-    // Prevent API call if no data changed
-    if (
-      updates.name === userData.name &&
-      updates.email === userData.email &&
-      updatedAvatar.url === userData.avatar.url &&
-      updatedVenueManager === userData.venueManager
-    ) {
-      setMessage("No changes made");
-      return;
-    }
-
+  const handleUpdateAvatar = async (newAvatar) => {
     try {
-      const updatedData = {
-        ...updates,
-        avatar: updatedAvatar,
-        venueManager: updatedVenueManager,
-      };
-
       const response = await fetch(
         `https://v2.api.noroff.dev/holidaze/profiles/${userName}`,
         {
@@ -87,28 +62,48 @@ const Profile = () => {
             Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
             "X-Noroff-API-Key": localStorage.getItem("apiKey"),
           },
-          body: JSON.stringify(updatedData),
+          body: JSON.stringify({ avatar: newAvatar }),
         }
       );
 
       if (!response.ok) {
-        throw new Error("Failed to update profile");
+        throw new Error("Failed to update avatar");
       }
 
-      const result = await response.json();
-
-      // Update state with new user data
       setUserData((prev) => ({
         ...prev,
-        ...updates,
-        avatar: updatedAvatar,
-        venueManager: updatedVenueManager,
+        avatar: newAvatar,
       }));
-
-      setMessage("Profile updated successfully!");
     } catch (error) {
-      console.error("Error updating profile:", error);
-      setMessage("Error updating profile.");
+      console.error("Error updating avatar:", error);
+    }
+  };
+
+  const handleUpdateVenueManager = async (newVenueManagerStatus) => {
+    try {
+      const response = await fetch(
+        `https://v2.api.noroff.dev/holidaze/profiles/${userName}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+            "X-Noroff-API-Key": localStorage.getItem("apiKey"),
+          },
+          body: JSON.stringify({ venueManager: newVenueManagerStatus }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update venue manager status");
+      }
+
+      setUserData((prev) => ({
+        ...prev,
+        venueManager: newVenueManagerStatus,
+      }));
+    } catch (error) {
+      console.error("Error updating venue manager status:", error);
     }
   };
 
@@ -125,22 +120,24 @@ const Profile = () => {
         <p>{userData.email}</p>
       </div>
 
-      <div className="update-profile-form">
-        <h2>Update Profile</h2>
-        <UpdateProfile
+      <div className="update-profile-section">
+        <h3>Update Avatar</h3>
+        <UpdateAvatarUrl
           avatarImageUrl={userData.avatar.url}
+          onUpdateAvatar={handleUpdateAvatar}
+        />
+        <h3>Update Venue Manager</h3>
+        <UpdateVenueManager
           venueManager={userData.venueManager}
-          onUpdateProfile={handleUpdateProfile}
+          onUpdateVenueManager={handleUpdateVenueManager}
         />
       </div>
-
-      {message && <p className="message">{message}</p>}
 
       <div className="user-venues-section">
         <UserMadeVenues userName={userName} />
       </div>
       <div className="user-bookings-section">
-        <UserBookings userName={userName} /> {/* User bookings */}
+        <UserBookings userName={userName} />
       </div>
     </div>
   );

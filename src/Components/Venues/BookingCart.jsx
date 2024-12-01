@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 
-function BookingCart({ bookingCart, setBookingCart }) {
+const BookingCart = ({ bookingCart, setBookingCart }) => {
   const totalPrice = bookingCart
     .reduce((total, item) => total + item.price, 0)
     .toFixed(2);
@@ -17,8 +17,7 @@ function BookingCart({ bookingCart, setBookingCart }) {
     localStorage.setItem("bookingCart", JSON.stringify(updatedCart));
   };
 
-  const handleContinueToCheckout = () => {
-    // Ensure the user has selected a date range and guests
+  const handleConfirmBooking = async () => {
     if (bookingCart.length === 0 || !bookingCart[0].selectedDateRange) {
       alert("Please complete your booking details.");
       return;
@@ -27,7 +26,7 @@ function BookingCart({ bookingCart, setBookingCart }) {
     const { selectedDateRange } = bookingCart[0];
     const { start, end } = selectedDateRange;
 
-    // Validate the date range before proceeding
+    // Make sure the dates are valid
     if (
       !start ||
       !end ||
@@ -38,16 +37,11 @@ function BookingCart({ bookingCart, setBookingCart }) {
       return;
     }
 
-    handleCreateBooking(start, end);
-  };
-
-  // Function to create the booking
-  const handleCreateBooking = async (start, end) => {
     const bookingData = {
       dateFrom: new Date(start).toISOString(),
       dateTo: new Date(end).toISOString(),
-      guests: bookingCart[0].guests,
-      venueId: bookingCart[0].id, // Ensure this contains the correct venue ID
+      guests: bookingCart[0].maxGuests, // Assuming guests info is stored in the venue data
+      venueId: bookingCart[0].id, // Venue ID to associate the booking with
     };
 
     try {
@@ -66,7 +60,7 @@ function BookingCart({ bookingCart, setBookingCart }) {
       }
 
       const data = await response.json();
-      alert("Booking created successfully!");
+      alert("Booking confirmed successfully!");
       setBookingCart([]); // Clear the cart
       localStorage.removeItem("bookingCart"); // Clear localStorage
     } catch (error) {
@@ -76,27 +70,22 @@ function BookingCart({ bookingCart, setBookingCart }) {
   };
 
   return (
-    <div className="booking-cart venue">
-      <h1 className="booking-cart-title">Booking Cart</h1>
+    <div className="booking-cart">
+      <h1>Booking Cart</h1>
       {bookingCart.length === 0 ? (
-        <p className="empty-cart-message">Your booking cart is empty.</p>
+        <p>Your booking cart is empty.</p>
       ) : (
-        <div className="booking-cart-items">
-          <ul className="booking-cart-list">
+        <div>
+          <ul>
             {bookingCart.map((item, index) => (
-              <li key={index} className="booking-cart-item">
-                <button
-                  onClick={() => handleRemoveItem(index)}
-                  className="remove-item-btn">
+              <li key={index}>
+                <button onClick={() => handleRemoveItem(index)}>
                   <FontAwesomeIcon icon={faX} />
                 </button>
-                <h4 className="venue-title">{item.name}</h4>
-                {item.media?.length > 0 && (
-                  <img className="venue-image" src={item.media[0].url} alt={item.name} />
-                )}
-                <p className="venue-price">Price: ${item.price.toFixed(2)}</p>
+                <h4>{item.name}</h4>
+                <p>Price: ${item.price}</p>
                 {item.selectedDateRange && (
-                  <div className="date-range">
+                  <div>
                     <h5>Selected Date Range:</h5>
                     <p>
                       {new Date(item.selectedDateRange.start).toLocaleDateString()} -{" "}
@@ -104,23 +93,17 @@ function BookingCart({ bookingCart, setBookingCart }) {
                     </p>
                   </div>
                 )}
-                <div className="guests">
-                  <h5>Number of Guests:</h5>
-                  <p>{item.guests}</p>
-                </div>
               </li>
             ))}
           </ul>
-          <div className="total-price">
+          <div>
             <p>Total Price: ${totalPrice}</p>
+            <button onClick={handleConfirmBooking}>Confirm Booking</button>
           </div>
-          <button onClick={handleContinueToCheckout} className="continue-checkout-btn">
-            Continue to Checkout
-          </button>
         </div>
       )}
     </div>
   );
-}
+};
 
 export default BookingCart;

@@ -2,90 +2,105 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import CustomCalendar from "../Calendar/CustomCalendar";
 import BookingCart from "./BookingCart";
+import { VENUES_API_ENDPOINT } from "../../Common/constants";
+import styles from "../../Button.module.css"; // Importing styles for buttons
 
 const SpecificVenue = () => {
   const { id } = useParams();
   const [venue, setVenue] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const [bookingCart, setBookingCart] = useState([]); // State for the booking cart
+  const [bookingCart, setBookingCart] = useState([]);
 
   useEffect(() => {
-    async function fetchVenueData() {
+    /**
+     * Fetches specific venue data from the API.
+     */
+    const fetchVenueData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`https://v2.api.noroff.dev/holidaze/venues/${id}`);
+        const response = await fetch(`${VENUES_API_ENDPOINT}/${id}`);
         if (!response.ok) {
           throw new Error("Failed to fetch venue data");
         }
         const data = await response.json();
-        console.log("Venue data:", data); // Debugging log
-        setVenue(data.data); // Use 'data.data' as per your API response structure
+        setVenue(data.data);
       } catch (error) {
         console.error("Error fetching venue data:", error);
         setIsError(true);
       } finally {
         setIsLoading(false);
       }
-    }
-
+    };
     fetchVenueData();
   }, [id]);
 
-  // Handle the date range selection from the CustomCalendar component
+  /**
+   * Handles date range selection for the booking cart.
+   */
   const handleDateRangeSelected = (dateRange) => {
-    console.log("Selected date range:", dateRange);
-
     if (venue) {
-      // Add the selected date range to the booking cart
       const newBooking = {
         ...venue,
-        selectedDateRange: dateRange, // Add the selected date range
-        price: venue.price, // Add the price
+        selectedDateRange: dateRange,
+        price: venue.price,
       };
 
-      // Update the booking cart state
       setBookingCart((prevCart) => [...prevCart, newBooking]);
     }
   };
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <div className="loading-message">Loading venue...</div>;
   }
 
   if (isError) {
-    return <p>Something went wrong while fetching venue data.</p>;
+    return (
+      <div className="error-message">Something went wrong while fetching venue data.</div>
+    );
   }
 
   return (
-    <div className="venue-container">
-      <div className="venue-info">
+    <div className="specific-venue-container">
+      <div className="venue">
         <h2 className="venue-title">{venue.name}</h2>
-        {venue.media?.length > 0 ? (
-          <img
-            className="venue-image"
-            src={venue.media[0].url}
-            alt={venue.media[0].alt || `Image of ${venue.name}`}
-          />
-        ) : (
-          <img
-            className="venue-image"
-            src="/path/to/placeholder-image.jpg"
-            alt="No image available"
-          />
+        <p className="venue-description">
+          Price: ${venue.price} | Max Guests: {venue.maxGuests}
+        </p>
+
+        {/* Display venue image */}
+        {venue.media && venue.media.length > 0 && (
+          <div className="venue-image">
+            <img
+              className="venue-image"
+              src={venue.media[0].url}
+              alt={venue.media[0].alt}
+            />
+          </div>
         )}
-        <p>Price per night: ${venue.price}</p>
-        <p>Max guests: {venue.maxGuests}</p>
+
+        {/* Booking Calendar */}
+        <CustomCalendar onDateRangeSelected={handleDateRangeSelected} />
+
+        {/* Add to Cart button */}
+        <button onClick={() => {}} className={styles.button}>
+          Add to Cart
+        </button>
       </div>
 
-      <CustomCalendar
-        onDateRangeSelected={handleDateRangeSelected} // Pass the date range handler to CustomCalendar
-      />
+      {/* Booking Cart */}
+      <BookingCart bookingCart={bookingCart} />
 
-      <BookingCart
-        bookingCart={bookingCart} // Pass the booking cart state to BookingCart
-        setBookingCart={setBookingCart} // Pass the setter function to BookingCart
-      />
+      {/* Confirm Booking Button */}
+      {bookingCart.length > 0 && (
+        <button
+          onClick={() => {
+            // Call API to confirm booking
+          }}
+          className={styles.button}>
+          Confirm Booking
+        </button>
+      )}
     </div>
   );
 };
