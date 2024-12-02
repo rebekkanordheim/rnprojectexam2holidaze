@@ -34,7 +34,7 @@ const Profile = () => {
           throw new Error("Failed to fetch user data");
         }
 
-        const data = await response.json();
+        const { data } = await response.json(); // Extract 'data' from the response
         setUserData({
           name: data.name,
           email: data.email,

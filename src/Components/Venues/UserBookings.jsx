@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { USER_BOOKINGS_ENDPOINT } from "../../Common/constants";
+import styles from "../../Button.module.css";
 
 const UserBookings = ({ userName }) => {
   const [bookings, setBookings] = useState([]);
@@ -109,7 +110,9 @@ const UserBookings = ({ userName }) => {
             <p>
               <strong>Created At:</strong> {new Date(booking.created).toLocaleString()}
             </p>
-            <button onClick={() => handleDeleteBooking(booking.id)}>
+            <button
+              className={styles.buttondanger}
+              onClick={() => handleDeleteBooking(booking.id)}>
               Delete Booking
             </button>
           </li>

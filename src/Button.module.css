@@ -14,10 +14,10 @@
 }
 
 .buttondanger{
-  background-color: var(--secondary-text);
-  color: red;
+  color: rgb(255, 0, 0);
   padding: 10px;
   border-radius: 5px;
   border: none;
   margin: 10px;
+  text-transform: uppercase;
 }
