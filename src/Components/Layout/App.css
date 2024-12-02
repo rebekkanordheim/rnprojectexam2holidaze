@@ -28,7 +28,6 @@ h3 {
   text-align: center;
 }
 
-
 a {
   text-decoration: none;
   color: var(--main-text);
@@ -301,16 +300,18 @@ label {
   border-radius: 5px;
   padding: 5px;
   margin-top: 5px;
+  font-size: 16px;
 }
 
 .error-message {
   color: var(--main-text);
-  background-color: rgba(255, 30, 0, 0.594);
+  background-color: rgba(255, 0, 0, 0.572);
+  padding: 10px;
   border-radius: 5px;
   padding: 5px;
-  margin-top: 5px;
+  margin-top: 10px;
+  font-size: 16px;
 }
-
 
 /* Profile site styling */
 .profile-container {
