@@ -11,32 +11,34 @@ function UpdateVenueManager({ venueManager, onUpdateVenueManager }) {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (isVenueManager === venueManager) {
-    setErrorMessage("No changes made.");
-    setSuccessMessage("");
+    if (venueManager) {
+      // Show error message when user is already a venue manager
+      setErrorMessage("No changes made.");
+      setSuccessMessage("");
+      setTimeout(() => setErrorMessage(""), 3000);
+      return;
+    }
 
-    // Automatically clear the error message after 3 seconds
-    setTimeout(() => setErrorMessage(""), 3000);
-    return;
-  }
+    if (isVenueManager === venueManager) {
+      setErrorMessage("No changes made.");
+      setSuccessMessage("");
+      setTimeout(() => setErrorMessage(""), 3000);
+      return;
+    }
 
-  try {
-    await onUpdateVenueManager(isVenueManager);
-    setSuccessMessage("Venue Manager status updated successfully!");
-    setErrorMessage("");
-
-    // Automatically clear the success message after 3 seconds
-    setTimeout(() => setSuccessMessage(""), 3000);
-  } catch (error) {
-    setErrorMessage(error.message || "Error updating venue manager status.");
-    setSuccessMessage("");
-
-    // Automatically clear the error message after 3 seconds
-    setTimeout(() => setErrorMessage(""), 3000);
-  }
-};
+    try {
+      await onUpdateVenueManager(isVenueManager);
+      setSuccessMessage("Venue Manager status updated successfully!");
+      setErrorMessage("");
+      setTimeout(() => setSuccessMessage(""), 3000);
+    } catch (error) {
+      setErrorMessage(error.message || "Error updating venue manager status.");
+      setSuccessMessage("");
+      setTimeout(() => setErrorMessage(""), 3000);
+    }
+  };
 
   return (
     <div className="formContainer">
@@ -50,11 +52,7 @@ function UpdateVenueManager({ venueManager, onUpdateVenueManager }) {
           />
           I want to be a venue manager
         </label>
-        {venueManager && (
-          <p className="info-text">
-            You are already a venue manager. This option cannot be changed.
-          </p>
-        )}
+        <br />
         <button className={styles.button} type="submit">
           Save Venue Manager Status
         </button>
