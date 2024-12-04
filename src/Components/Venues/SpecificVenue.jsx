@@ -4,6 +4,7 @@ import CustomCalendar from "../Calendar/CustomCalendar";
 import BookingCart from "./BookingCart";
 import { VENUES_API_ENDPOINT } from "../../Common/constants";
 import styles from "../../Button.module.css"; // Importing styles for buttons
+import { isAuthenticated } from "../User/authUtils"; // Utility to check user authentication
 
 const SpecificVenue = () => {
   const { id } = useParams();
@@ -11,6 +12,7 @@ const SpecificVenue = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [bookingCart, setBookingCart] = useState([]);
+  const isUserLoggedIn = isAuthenticated(); // Check if user is logged in
 
   useEffect(() => {
     /**
@@ -62,7 +64,7 @@ const SpecificVenue = () => {
 
   return (
     <div className="specific-venue-container">
-      <div className="venue">
+      <div className="specific-venue">
         <h2 className="venue-title">{venue.name}</h2>
         <p className="venue-description">
           Price: ${venue.price} | Max Guests: {venue.maxGuests}
@@ -79,17 +81,24 @@ const SpecificVenue = () => {
           </div>
         )}
         <br />
-        {/* Booking Calendar */}
-        <CustomCalendar onDateRangeSelected={handleDateRangeSelected} />
 
-        {/* Add to Cart button */}
-        <button onClick={() => {}} className={styles.button}>
-          Add to Cart
-        </button>
+        {/* Show calendar and button only if user is logged in */}
+        {isUserLoggedIn ? (
+          <>
+            {/* Booking Calendar */}
+            <CustomCalendar onDateRangeSelected={handleDateRangeSelected} />
+            {/* Add to Cart button */}
+            <button onClick={() => {}} className={styles.button}>
+              Add to Cart
+            </button>
+          </>
+        ) : (
+          <p className="login-prompt">Please log in to book this venue.</p>
+        )}
       </div>
 
       {/* Booking Cart */}
-      <BookingCart bookingCart={bookingCart} />
+     {/*  <BookingCart bookingCart={bookingCart} /> */}
 
       {/* Confirm Booking Button */}
       {bookingCart.length > 0 && (

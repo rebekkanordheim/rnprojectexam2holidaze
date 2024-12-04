@@ -32,9 +32,9 @@ function Footer() {
           <>
             <Link
               to="/newvenue"
-              className={styles.button}
-              aria-label="Create a new venue">
-              Create New Venue
+              className="link"
+              aria-label="Create venue">
+              Create Venue
             </Link>
             <button onClick={handleLogout} className={styles.button} aria-label="Logout">
               <i className="fa-solid fa-right-from-bracket"></i>

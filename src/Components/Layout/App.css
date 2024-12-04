@@ -1,4 +1,55 @@
 /* ========================
+   Global Styles
+======================== */
+:root {
+  --main-text: #ffffff;
+  --secondary-text: #385064;
+  --main-color: #587284;
+  --main-color-light: #4f6d82a8;
+  --secondary-color: #6c9eb4;
+  --border-radius: 5px;
+  --font-family: "Syne", sans-serif;
+  --font-size-base: 16px;
+  --transition: all 0.3s ease-in-out;
+}
+/* Utilities */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.rounded {
+  border-radius: var(--border-radius);
+}
+
+.padded {
+  padding: 10px;
+}
+
+.transition {
+  transition: var(--transition);
+}
+
+html {
+  font-size: var(--font-size-base);
+}
+
+body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  background-color: var(--main-color);
+  color: var(--main-text);
+  font-family: var(--font-family);
+  font-size: 1.5rem;
+  padding-bottom: 100px;
+}
+/* ========================
    Logo styles
 ======================== */
 .logo {
@@ -17,7 +68,7 @@
 }
 
 /* ========================
-   Search Bar Styles
+   Bar Styles
 ======================== */
 .searchbar-container {
   display: flex;
@@ -28,17 +79,21 @@
   width: 100%;
 }
 
-.searchbar {
+.searchbar,
+.form-input,
+.form-textarea {
   display: flex;
-  width: 100%;
+  max-width: 70%;
   padding: 10px 20px;
   margin: 10px;
   background-color: var(--main-text);
   border-radius: var(--border-radius);
   overflow: hidden;
+  font-family: var(--font-family);
 }
 
-.searchinput {
+.searchinput,
+.form-input input {
   flex: 1;
   padding: 10px 15px;
   border: none;
@@ -57,99 +112,22 @@
   outline: none;
 }
 
-/* ========================
-   Loading and Error Messages
-======================== */
-.loading-message {
+/* Headings */
+h1,
+h2,
+h3 {
   text-align: center;
-  font-size: 1.2rem;
-  color: var(--secondary-color);
-  padding: 20px;
-  margin: 20px auto;
+  margin: 0;
 }
 
-.error-message {
-  text-align: center;
-  padding: 15px;
-  margin: 20px auto;
-  font-size: 1rem;
-  border-radius: var(--border-radius);
-  background-color: rgba(255, 0, 0, 0.6);
-  color: #fff;
+.h2-info {
+  font-size: 1.25rem;
 }
 
 /* ========================
-   Venues Styles
+   Links
 ======================== */
-.venues-container {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  padding: 20px;
-  margin: 0 auto;
-}
-
-.venue {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  background-color: #ffffff2c;
-  color: var(--main-text);
-  border-radius: var(--border-radius);
-  padding: 20px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  transition: var(--transition);
-}
-
-.venue:hover {
-  transform: scale(1.03);
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.venue-info {
-  margin-top: 15px;
-}
-
-.venue-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: var(--main-text);
-  transition: var(--transition);
-}
-
-.venue-title:hover {
-  color: var(--secondary-color);
-}
-
-.venue-description {
-  font-size: 1rem;
-  color: var(--main-text);
-  margin-bottom: 10px;
-}
-
-.venue-image {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: var(--border-radius);
-  margin-bottom: 15px;
-}
-.specific-venue-image  {
-  width: 70%;
-  height: 360px;
-  object-fit: cover;
-  object-position: center center; /* Center the image */
-  border-radius: var(--border-radius);
-  margin-bottom: 10px;
-  transition: var(--transition);
-}
-
-/* ========================
-   Buttons
-======================== */
-button {
+.link {
   padding: 10px 20px;
   font-size: 1rem;
   color: #fff;
@@ -160,8 +138,18 @@ button {
   transition: var(--transition);
 }
 
-button:hover {
+link:hover {
   background-color: var(--main-color);
+}
+
+a {
+  text-decoration: none;
+  color: var(--main-text);
+  transition: var(--transition);
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 /* ========================
@@ -192,82 +180,6 @@ button:hover {
   .venues-container {
     grid-template-columns: repeat(3, 1fr); /* 3 venues per row on larger screens */
   }
-}
-
-/* ========================
-   Global Styles
-======================== */
-:root {
-  --main-text: #ffffff;
-  --secondary-text: #385064;
-  --main-color: #587284;
-  --main-color-light: #4f6d82a8;
-  --secondary-color: #6c9eb4;
-  --border-radius: 5px;
-  --font-family: "Syne", sans-serif;
-  --font-size-base: 16px;
-  --transition: all 0.3s ease-in-out;
-}
-
-html {
-  font-size: var(--font-size-base);
-}
-
-body {
-  overflow-x: hidden;
-  margin: 0;
-  padding: 0;
-  background-color: var(--main-color);
-  color: var(--main-text);
-  font-family: var(--font-family);
-  font-size: 1.5rem;
-  padding-bottom: 100px;
-}
-
-/* Headings */
-h1,
-h2,
-h3 {
-  text-align: center;
-  margin: 0;
-}
-
-.h2-info {
-  font-size: 1.25rem;
-}
-
-/* Links */
-a {
-  text-decoration: none;
-  color: var(--main-text);
-  transition: var(--transition);
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-/* Utilities */
-.flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.rounded {
-  border-radius: var(--border-radius);
-}
-
-.padded {
-  padding: 10px;
-}
-
-.transition {
-  transition: var(--transition);
 }
 
 /* ========================
@@ -317,6 +229,93 @@ a:hover {
 }
 
 /* ========================
+   Venues Styles
+======================== */
+.venues-container {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  padding: 20px;
+  margin: 0 auto;
+}
+
+.venue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: #ffffff2c;
+  color: var(--main-text);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  margin: 20px auto; /* Center horizontally */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+  max-width: 800px; /* Set a maximum width */
+  width: 70%; /* Make it responsive */
+}
+
+.venue:hover {
+  transform: scale(1.03);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.venue-info {
+  margin-top: 15px;
+}
+
+.venue-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: var(--main-text);
+  transition: var(--transition);
+}
+
+.venue-title:hover {
+  color: var(--secondary-color);
+}
+
+.venue-description {
+  font-size: 1rem;
+  color: var(--main-text);
+  margin-bottom: 10px;
+}
+
+.venue-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+  margin-bottom: 15px;
+}
+
+.specific-venue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: #ffffff2c;
+  color: var(--main-text);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  margin: 30px auto; /* Center horizontally */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 800px; /* Set a maximum width */
+  width: 70%; /* Make it responsive */
+}
+
+.specific-venue-image {
+  width: 70%;
+  height: 360px;
+  object-fit: cover;
+  object-position: center center;
+  border-radius: var(--border-radius);
+  margin-bottom: 10px;
+  transition: var(--transition);
+}
+
+/* ========================
    Footer
 ======================== */
 footer {
@@ -337,4 +336,63 @@ footer {
 /* Add padding-bottom to body for footer space */
 body {
   padding-bottom: 70px;
+}
+
+/* ========================
+   Forms and cards
+======================== */
+.contact-information,
+.form {
+  display: flex;
+  margin: 10px;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: #ffffff2c;
+  color: var(--main-text);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  margin: 30px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ========================
+   About page
+======================== */
+.about-page {
+  display: flex;
+  margin: 10px;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: #ffffff2c;
+  color: var(--main-text);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  margin: 30px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ========================
+   Loading and Error Messages
+======================== */
+.loading-message,
+.error-message,
+.success-message {
+  text-align: center;
+  padding: 15px;
+  font-size: 1.2rem;
+  border-radius: var(--border-radius);
+  max-width: 400px;
+  width: 80%;
+}
+
+.error-message {
+  background-color: rgba(255, 0, 0, 0.6);
+  color: var(--main-text);
+}
+
+.success-message {
+  background-color: rgba(0, 255, 13, 0.696);
+  color: var(--main-text);
 }

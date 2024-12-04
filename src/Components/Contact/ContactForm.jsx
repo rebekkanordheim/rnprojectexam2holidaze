@@ -61,7 +61,7 @@ function ContactForm() {
   }
 
   return (
-    <div className="user-information">
+    <div className="contact-form">
       {formSubmitted && (
         <p className="success-message" aria-live="polite">
           Thank you for your submission!
