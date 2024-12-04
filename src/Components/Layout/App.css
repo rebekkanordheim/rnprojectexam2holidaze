@@ -1,14 +1,216 @@
-/* General styling */
+/* ========================
+   Logo styles
+======================== */
+.logo {
+  max-width: 200px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 600px) {
+  .logo {
+    max-width: 150px;
+  }
+}
+
+/* ========================
+   Search Bar Styles
+======================== */
+.searchbar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px auto;
+  max-width: 600px;
+  width: 100%;
+}
+
+.searchbar {
+  display: flex;
+  width: 100%;
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: var(--main-text);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.searchinput {
+  flex: 1;
+  padding: 10px 15px;
+  border: none;
+  font-size: 1rem;
+  background-color: transparent;
+  color: var(--main-text);
+  font-family: var(--font-family);
+}
+
+.searchinput::placeholder {
+  color: var(--secondary-text);
+  opacity: 0.7;
+}
+
+.searchinput:focus {
+  outline: none;
+}
+
+/* ========================
+   Loading and Error Messages
+======================== */
+.loading-message {
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--secondary-color);
+  padding: 20px;
+  margin: 20px auto;
+}
+
+.error-message {
+  text-align: center;
+  padding: 15px;
+  margin: 20px auto;
+  font-size: 1rem;
+  border-radius: var(--border-radius);
+  background-color: rgba(255, 0, 0, 0.6);
+  color: #fff;
+}
+
+/* ========================
+   Venues Styles
+======================== */
+.venues-container {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  padding: 20px;
+  margin: 0 auto;
+}
+
+.venue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: #ffffff2c;
+  color: var(--main-text);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+}
+
+.venue:hover {
+  transform: scale(1.03);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.venue-info {
+  margin-top: 15px;
+}
+
+.venue-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: var(--main-text);
+  transition: var(--transition);
+}
+
+.venue-title:hover {
+  color: var(--secondary-color);
+}
+
+.venue-description {
+  font-size: 1rem;
+  color: var(--main-text);
+  margin-bottom: 10px;
+}
+
+.venue-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+  margin-bottom: 15px;
+}
+.specific-venue-image  {
+  width: 70%;
+  height: 360px;
+  object-fit: cover;
+  object-position: center center; /* Center the image */
+  border-radius: var(--border-radius);
+  margin-bottom: 10px;
+  transition: var(--transition);
+}
+
+/* ========================
+   Buttons
+======================== */
+button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: var(--secondary-color);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+button:hover {
+  background-color: var(--main-color);
+}
+
+/* ========================
+   Responsive Adjustments
+======================== */
+@media (max-width: 600px) {
+  .search-bar-container {
+    padding: 0 10px;
+  }
+
+  .search-button {
+    font-size: 0.9rem;
+    padding: 10px 15px;
+  }
+
+  .venues-container {
+    grid-template-columns: repeat(1, 1fr); /* 1 venue per row on small screens */
+  }
+}
+
+@media (min-width: 900px) {
+  .venues-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 venues per row on medium screens */
+  }
+}
+
+@media (min-width: 1356px) {
+  .venues-container {
+    grid-template-columns: repeat(3, 1fr); /* 3 venues per row on larger screens */
+  }
+}
+
+/* ========================
+   Global Styles
+======================== */
 :root {
   --main-text: #ffffff;
   --secondary-text: #385064;
   --main-color: #587284;
   --main-color-light: #4f6d82a8;
   --secondary-color: #6c9eb4;
+  --border-radius: 5px;
+  --font-family: "Syne", sans-serif;
+  --font-size-base: 16px;
+  --transition: all 0.3s ease-in-out;
 }
 
 html {
-  font-size: 16px;
+  font-size: var(--font-size-base);
 }
 
 body {
@@ -17,33 +219,60 @@ body {
   padding: 0;
   background-color: var(--main-color);
   color: var(--main-text);
-  font-family: "Syne", sans-serif;
-  font-size: 24px;
+  font-family: var(--font-family);
+  font-size: 1.5rem;
   padding-bottom: 100px;
 }
 
+/* Headings */
 h1,
 h2,
 h3 {
   text-align: center;
-  padding: 0;
   margin: 0;
 }
+
 .h2-info {
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 
+/* Links */
 a {
   text-decoration: none;
   color: var(--main-text);
-  transition: color 0.3s ease;
+  transition: var(--transition);
 }
 
 a:hover {
   text-decoration: underline;
 }
 
-/* Navigation */
+/* Utilities */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.rounded {
+  border-radius: var(--border-radius);
+}
+
+.padded {
+  padding: 10px;
+}
+
+.transition {
+  transition: var(--transition);
+}
+
+/* ========================
+   Navigation
+======================== */
 .nav {
   background-color: var(--main-text);
   display: flex;
@@ -75,14 +304,11 @@ a:hover {
 @media (max-width: 790px) {
   .nav {
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
   }
 
   .nav ul {
     flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
   }
 
   .nav ul li {
@@ -90,304 +316,25 @@ a:hover {
   }
 }
 
-/* Logo */
-.logo {
-  max-width: 200px;
-  margin-left: auto;
-}
-
-/* Footer */
+/* ========================
+   Footer
+======================== */
 footer {
   background-color: var(--main-text);
   color: var(--secondary-text);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   text-align: center;
   padding: 10px;
   position: fixed;
   bottom: 0;
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   height: 60px;
   z-index: 1;
-  margin-top: 30px;
 }
 
-/* Search Bar */
-.searchbar-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 50px;
-}
-
-.searchbar,
-.avatarUrl {
-  padding-left: 25px;
-  margin: 10px;
-  height: 40px;
-  border: 1px solid var(--secondary-text);
-  border-radius: 5px;
-  font-size: 20px;
-  max-width: 100%;
-}
-
-/* Venues styling */
-.loading-message,
-.success-message,
-.error-message {
-  text-align: center;
-  display: grid;
-}
-
-.venues-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 10px;
-}
-
-/* Change to display 3 venues on larger screens */
-@media (min-width: 1356px) {
-  .venues-container {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* Change to display 2 venues on medium screens */
-@media (max-width: 1355px) and (min-width: 901px) {
-  .venues-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* For smaller screens, revert to single column layout */
-@media (max-width: 900px) {
-  .venues-container {
-    grid-template-columns: repeat(1, 1fr);
-  }
-}
-
-.venue,
-.checkout-message,
-.contact-information,
-.form,
-.about-page,
-.contact-information,
-.info-text {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #ffffff2c;
-  color: var(--main-text);
-  border-radius: 5px;
-  width: 100%;
-  max-width: 400px;
-  margin: 20px auto;
-  padding: 20px;
-  position: relative;
-}
-
-.venue-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.venue-title {
-  margin-bottom: 5px;
-}
-
-.venue-image {
-  height: 250px;
-  width: 250px;
-  padding: 5px;
-  object-fit: cover;
-}
-
-/* Booking cart */
-/* .specific-booking {
-  width: 80%;
-  margin-bottom: 20px;
-} */
-
-/* About */
-.about p {
-  align-items: center;
-  padding: 10px 20px;
-}
-
-.contact-link {
-  color: var(--main-text);
-  text-decoration: none;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.form-group label {
-  margin-bottom: 0.5rem;
-}
-
-label {
-  text-align: left;
-}
-
-.form-input,
-.form-textarea {
-  max-width: 90%;
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
-  margin-top: 0.5rem;
-  border-radius: 10px;
-  border: 1px solid var(--main-color);
-  background-color: var(--main-color-light);
-  font-size: 18px;
-  color: var(--main-text);
-  font-family: "Syne", sans-serif;
-}
-
-/* Password input styling */
-.password-input-container {
-  position: relative;
-  width: 100%;
-}
-
-.password-input-container input {
-  width: 100%;
-  padding-right: 10px;
-}
-
-.password-input-container .toggle-password {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-::placeholder {
-  color: var(--main-text);
-  opacity: 1;
-}
-
-/* Success and Error Messages */
-.success-message {
-  color: var(--main-text);
-  background-color: rgb(149, 206, 62);
-  border-radius: 5px;
-  padding: 5px;
-  margin-top: 5px;
-  font-size: 16px;
-}
-
-.error-message {
-  color: var(--main-text);
-  background-color: rgba(255, 0, 0, 0.572);
-  padding: 10px;
-  border-radius: 5px;
-  padding: 5px;
-  margin-top: 10px;
-  font-size: 16px;
-  align-items: center;
-}
-
-/* Profile site styling */
-.profile-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 10px;
-  background-color: #ffffff2c;
-  color: var(--main-text);
-  border-radius: 10px;
-  margin: 0 auto;
-  margin-top: 20px;
-  margin-bottom: 80px;
-  width: 100%;
-  max-width: 700px;
-}
-
-li {
-  list-style-type: none;
-}
-
-.avatar-image {
-  height: 250px;
-  width: 250px;
-  border-radius: 50%;
-}
-
-.formContainer {
-  align-items: center;
-  justify-content: center;
-  margin-top: 50px;
-}
-
-.avatarform {
-  padding: 25px;
-  margin: 10px;
-  border-radius: 5px;
-  font-size: 20px;
-  max-width: 100%;
-}
-
-.avatar-input {
-  padding-left: 25px;
-  margin: 10px auto;
-  height: 40px;
-  border-radius: 5px;
-  font-size: 20px;
-  width: 100%;
-  max-width: 350px;
-  border: none;
-}
-
-.profile-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.profile-header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.profile-avatar {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-}
-
-.profile-details {
-  text-align: left;
-}
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-#edit-venue-form {
-  border-radius: 5px;
-  padding: 5px;
-}
-
-.booking-cart-list,
-.userbookings-list {
-  border: 2px solid rgba(255, 255, 255, 0.533);
-  background-color: rgba(255, 255, 255, 0.249);
-  padding: 20px;
-  margin: 20px;
-  border-radius: 5px;
+/* Add padding-bottom to body for footer space */
+body {
+  padding-bottom: 70px;
 }

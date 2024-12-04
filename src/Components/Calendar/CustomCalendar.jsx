@@ -46,8 +46,9 @@ const CustomCalendar = ({ onDateRangeSelected, addToBookingCart }) => {
   };
 
   return (
-    <div>
+    <div className="calendar">
       <label htmlFor="calendar">Select a date range:</label>
+      <br />
       <DatePicker
         id="calendar"
         selected={startDate}

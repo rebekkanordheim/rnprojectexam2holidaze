@@ -70,15 +70,15 @@ const SpecificVenue = () => {
 
         {/* Display venue image */}
         {venue.media && venue.media.length > 0 && (
-          <div className="venue-image">
+          <div className="specific-venue-image">
             <img
-              className="venue-image"
+              className="specific-venue-image"
               src={venue.media[0].url}
               alt={venue.media[0].alt}
             />
           </div>
         )}
-
+        <br />
         {/* Booking Calendar */}
         <CustomCalendar onDateRangeSelected={handleDateRangeSelected} />
 
