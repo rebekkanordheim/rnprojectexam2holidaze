@@ -32,12 +32,11 @@ const UserBookings = ({ userName }) => {
         }
 
         const data = await response.json();
-        console.log(data);
         setBookings(data.data || []);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching bookings:", error);
         setError("Error fetching bookings. Please try again.");
+      } finally {
         setLoading(false);
       }
     };
@@ -66,7 +65,6 @@ const UserBookings = ({ userName }) => {
         throw new Error("Failed to delete booking");
       }
 
-      // Remove the deleted booking from local state
       setBookings((prevBookings) =>
         prevBookings.filter((booking) => booking.id !== bookingId)
       );
@@ -78,11 +76,11 @@ const UserBookings = ({ userName }) => {
   };
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <div>Loading bookings...</div>;
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return <div>Error: {error}</div>;
   }
 
   if (bookings.length === 0) {
@@ -90,32 +88,41 @@ const UserBookings = ({ userName }) => {
   }
 
   return (
-    <div>
-      <h2>User Bookings</h2>
+    <div className="user-bookings">
+      <h2>Your Bookings</h2>
       <ul>
         {bookings.map((booking) => (
-          <li className="userbookings-list" key={booking.id}>
-            <p>
-              <strong>Booking ID:</strong> {booking.id}
-            </p>
-            <p>
-              <strong>Check-in:</strong> {new Date(booking.dateFrom).toLocaleDateString()}
-            </p>
-            <p>
-              <strong>Check-out:</strong> {new Date(booking.dateTo).toLocaleDateString()}
-            </p>
-            <p>
-              <strong>Guests:</strong> {booking.guests}
-            </p>
-            <p>
-              <strong>Created At:</strong> {new Date(booking.created).toLocaleString()}
-            </p>
-            <button
-              className={styles.buttondanger}
-              onClick={() => handleDeleteBooking(booking.id)}>
-              Delete Booking
-            </button>
-          </li>
+          <div className=" venue" key={booking.id}>
+            <div className="booking-info">
+              <p>
+                Booking ID:
+                <br />
+                {booking.id}
+              </p>
+              <p>
+                Check-in:
+                <br /> {new Date(booking.dateFrom).toLocaleDateString()}
+              </p>
+              <p>
+                Check-out: <br />
+                {new Date(booking.dateTo).toLocaleDateString()}
+              </p>
+              <p>
+                Guests: <br />
+                {booking.guests}
+              </p>
+              <p>
+                Created At:
+                <br />
+                {new Date(booking.created).toLocaleString()}
+              </p>
+              <button
+                onClick={() => handleDeleteBooking(booking.id)}
+                className={styles.buttondanger}>
+                Delete Booking
+              </button>
+            </div>
+          </div>
         ))}
       </ul>
     </div>

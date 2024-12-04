@@ -5,6 +5,7 @@ function UserMadeVenues({ userName }) {
   const [userVenues, setUserVenues] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
   const [editingVenue, setEditingVenue] = useState(null);
 
   useEffect(() => {
@@ -42,6 +43,7 @@ function UserMadeVenues({ userName }) {
 
   const handleEditVenue = (venue) => {
     setEditingVenue(venue); // Set the venue being edited
+    setSuccessMessage(null); // Clear success message on edit start
   };
 
   const handleUpdateVenue = async (e) => {
@@ -104,6 +106,12 @@ function UserMadeVenues({ userName }) {
       );
 
       setEditingVenue(null); // Close the edit form after successful update
+      setSuccessMessage("Changes saved successfully!"); // Set success message
+
+      // Automatically hide success message after 3 seconds
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 3000);
     } catch (error) {
       setError(error);
     }
@@ -150,6 +158,8 @@ function UserMadeVenues({ userName }) {
   return (
     <div className="user-venues">
       <h2>Your Venues</h2>
+      {successMessage && <p className="success-message">{successMessage}</p>}{" "}
+      {/* Display success message */}
       {userVenues.length === 0 ? (
         <p>You have not created any venues yet.</p>
       ) : (
@@ -164,13 +174,11 @@ function UserMadeVenues({ userName }) {
                 />
                 <h3 className="venue-title">{venue.name}</h3>
               </div>
-              <button
-                onClick={() => handleEditVenue(venue)} 
-                className={styles.button}>
+              <button onClick={() => handleEditVenue(venue)} className={styles.button}>
                 Edit Venue
               </button>
               <button
-                onClick={() => handleDeleteVenue(venue.id)} 
+                onClick={() => handleDeleteVenue(venue.id)}
                 className={styles.buttondanger}>
                 Delete Venue
               </button>
@@ -190,13 +198,16 @@ function UserMadeVenues({ userName }) {
                     placeholder="Venue Name"
                     required
                   />
+                  <br />
                   <button type="submit" className={styles.button}>
                     Save Changes
                   </button>
                   <button
                     type="button"
                     className={styles.button}
-                    onClick={() => setEditingVenue(null)}> {/* Close the edit form */}
+                    onClick={() => setEditingVenue(null)}>
+                    {" "}
+                    {/* Close the edit form */}
                     Cancel
                   </button>
                 </form>

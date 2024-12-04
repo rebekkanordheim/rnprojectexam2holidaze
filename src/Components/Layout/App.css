@@ -8,7 +8,7 @@
 }
 
 html {
-  font-size: 16px; /* Base font size */
+  font-size: 16px;
 }
 
 body {
@@ -18,7 +18,7 @@ body {
   background-color: var(--main-color);
   color: var(--main-text);
   font-family: "Syne", sans-serif;
-  font-size: 1.5rem; /* 24px */
+  font-size: 24px;
   padding-bottom: 100px;
 }
 
@@ -26,12 +26,17 @@ h1,
 h2,
 h3 {
   text-align: center;
+  padding: 0;
+  margin: 0;
+}
+.h2-info {
+  font-size: 20px;
 }
 
 a {
   text-decoration: none;
   color: var(--main-text);
-  transition: color 0.3s ease; /* Added transition */
+  transition: color 0.3s ease;
 }
 
 a:hover {
@@ -58,7 +63,7 @@ a:hover {
 }
 
 .nav ul li {
-  flex: 1; /* Adjust item size */
+  flex: 1;
 }
 
 .nav ul li a {
@@ -75,7 +80,7 @@ a:hover {
   }
 
   .nav ul {
-    flex-wrap: wrap; /* Allow wrapping */
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
   }
@@ -162,15 +167,17 @@ footer {
   }
 }
 
-/* Card styles */
 .venue,
 .checkout-message,
-.contact-information {
+.contact-information,
+.form,
+.about-page,
+.contact-information,
+.info-text {
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #ffffff2c;
-
   color: var(--main-text);
   border-radius: 5px;
   width: 100%;
@@ -200,37 +207,15 @@ footer {
 }
 
 /* Booking cart */
-.specific-booking {
+/* .specific-booking {
   width: 80%;
   margin-bottom: 20px;
-}
+} */
 
 /* About */
 .about p {
   align-items: center;
   padding: 10px 20px;
-}
-
-/* Form and card styling */
-.form,
-.card,
-.about-page,
-.contact-information,
-.info-text {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 10px;
-  background-color: #ffffff2c;
-
-  color: var(--main-text);
-  border-radius: 10px;
-  margin: 0 auto;
-  margin-top: 20px;
-  margin-bottom: 80px;
-  width: 100%;
-  max-width: 700px;
 }
 
 .contact-link {
@@ -311,6 +296,7 @@ label {
   padding: 5px;
   margin-top: 10px;
   font-size: 16px;
+  align-items: center;
 }
 
 /* Profile site styling */
