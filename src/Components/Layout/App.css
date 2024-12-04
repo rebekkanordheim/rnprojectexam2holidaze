@@ -12,6 +12,7 @@
   --font-size-base: 16px;
   --transition: all 0.3s ease-in-out;
 }
+
 /* Utilities */
 .flex-center {
   display: flex;
@@ -49,6 +50,7 @@ body {
   font-size: 1.5rem;
   padding-bottom: 100px;
 }
+
 /* ========================
    Logo styles
 ======================== */
@@ -81,11 +83,12 @@ body {
 
 .searchbar,
 .form-input,
-.form-textarea {
+.form-textarea,
+.avatarUrl {
   display: flex;
   max-width: 70%;
   padding: 10px 20px;
-  margin: 10px;
+  margin-left: 77px;
   background-color: var(--main-text);
   border-radius: var(--border-radius);
   overflow: hidden;
@@ -138,7 +141,7 @@ h3 {
   transition: var(--transition);
 }
 
-link:hover {
+.link:hover {
   background-color: var(--main-color);
 }
 
@@ -374,25 +377,55 @@ body {
 }
 
 /* ========================
-   Loading and Error Messages
+   Profile Page Styles
 ======================== */
-.loading-message,
-.error-message,
-.success-message {
+
+/* Main container for the profile page */
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  padding: 15px;
-  font-size: 1.2rem;
+  background-color: #ffffff2c;
   border-radius: var(--border-radius);
-  max-width: 400px;
-  width: 80%;
+  padding: 20px;
+  margin: 30px auto;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 800px;
 }
 
-.error-message {
-  background-color: rgba(255, 0, 0, 0.6);
-  color: var(--main-text);
+.profile-container img {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
 }
 
-.success-message {
-  background-color: rgba(0, 255, 13, 0.696);
+.profile-container h2 {
+  font-size: 2rem;
   color: var(--main-text);
+  margin-top: 15px;
+}
+
+.profile-container p {
+  font-size: 1.1rem;
+  color: var(--main-text);
+  margin-top: 10px;
+}
+
+.profile-container .edit-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: var(--secondary-color);
+  color: var(--main-text);
+  font-size: 1rem;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.profile-container .edit-button:hover {
+  background-color: var(--main-color);
 }

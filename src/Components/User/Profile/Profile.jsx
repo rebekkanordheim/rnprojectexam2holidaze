@@ -108,24 +108,28 @@ const Profile = () => {
   };
 
   return (
-    <div className="profile-container">
-      <h1>Profile</h1>
-      <div className="profile-header">
+    <div className="profile-container padded rounded">
+      <h1 className="text-center">Profile</h1>
+      <div className="profile-header flex-center">
         <img
           src={userData.avatar.url}
           alt={userData.avatar.alt || "Profile Avatar"}
-          className="profile-avatar"
+          className="profile-avatar rounded transition"
         />
-        <h2>{userData.name}</h2>
-        <p>{userData.email}</p>
+        <div className="profile-info text-center">
+          <h2>{userData.name}</h2>
+          <p>{userData.email}</p>
+        </div>
       </div>
 
       <div className="update-profile-section">
-        <h3>Update Avatar</h3>
+        <br />
+        <h3>Update Image</h3>
         <UpdateAvatarUrl
           avatarImageUrl={userData.avatar.url}
           onUpdateAvatar={handleUpdateAvatar}
         />
+        <br />
         <h3>Update Venue Manager</h3>
         <UpdateVenueManager
           venueManager={userData.venueManager}
@@ -133,10 +137,10 @@ const Profile = () => {
         />
       </div>
 
-      <div className="user-venues-section">
+      <div className="user-venues-section venues-container">
         <UserMadeVenues userName={userName} />
       </div>
-      <div className="user-bookings-section">
+      <div className="user-bookings-section venues-container">
         <UserBookings userName={userName} />
       </div>
     </div>

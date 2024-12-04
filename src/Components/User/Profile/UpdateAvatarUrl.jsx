@@ -33,6 +33,7 @@ function UpdateAvatarUrl({ avatarImageUrl, onUpdateAvatar }) {
     <div className="formContainer">
       <form onSubmit={handleSubmit} className="avatarform">
         <label htmlFor="imageUrl">Image URL:</label>
+        <br />
         <input
           className="avatarUrl"
           type="text"
@@ -42,8 +43,9 @@ function UpdateAvatarUrl({ avatarImageUrl, onUpdateAvatar }) {
           onChange={handleImageUrlChange}
           placeholder="Enter a valid image URL"
         />
+        <br />
         <button className={styles.button} type="submit">
-          Save Avatar
+          Save image
         </button>
         {successMessage && <p className="success-message">{successMessage}</p>}
         {errorMessage && <p className="error-message">{errorMessage}</p>}
