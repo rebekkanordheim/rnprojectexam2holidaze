@@ -34,11 +34,11 @@ const Profile = () => {
           throw new Error("Failed to fetch user data");
         }
 
-        const { data } = await response.json(); // Extract 'data' from the response
+        const { data } = await response.json();
         setUserData({
           name: data.name,
           email: data.email,
-          avatar: data.avatar || userData.avatar,
+          avatar: data.avatar ,
           venueManager: data.venueManager,
         });
       } catch (error) {

@@ -441,10 +441,10 @@ body {
 .loading-message,
 .error-message,
 .success-message {
-  position: fixed; /* Fixes the position relative to the viewport */
-  top: 40%; /* Adjust for a higher placement */
+  position: fixed;
+  top: 40%;
   left: 50%;
-  transform: translateX(-50%); /* Only center horizontally */
+  transform: translateX(-50%);
   text-align: center;
   padding: 15px;
   border-radius: var(--border-radius);
