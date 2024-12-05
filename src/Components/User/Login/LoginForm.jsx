@@ -3,11 +3,6 @@ import { loginUser } from "./loginUser";
 import styles from "../../../Button.module.css";
 import { Link } from "react-router-dom";
 
-/**
- * LoginForm component for user authentication.
- *
- * @returns {JSX.Element} The rendered LoginForm component.
- */
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -18,10 +13,6 @@ const LoginForm = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  /**
-   * Handles input change events and updates the form data state.
-   * @param {Object} e - The input change event object.
-   */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -30,10 +21,6 @@ const LoginForm = () => {
     }));
   };
 
-  /**
-   * Validates the form input fields.
-   * @returns {boolean} True if the form is valid, otherwise false.
-   */
   const validateForm = () => {
     const errors = {};
     if (!formData.email.endsWith("@stud.noroff.no")) {
@@ -46,25 +33,20 @@ const LoginForm = () => {
     return Object.keys(errors).length === 0;
   };
 
-  /**
-   * Handles form submission events.
-   * @param {Object} e - The form submission event object.
-   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       try {
         const user = await loginUser(formData.email, formData.password);
         setSuccessMessage("Login successful!");
+        setErrors({});
 
-        // Log the successful login data to the console
-        console.log("User login data:", user.data);
+        // Clear the message after 3 seconds
+        setTimeout(() => setSuccessMessage(""), 3000);
 
-        // Set user data in local storage
+        // Save data to localStorage
         localStorage.setItem("jwtToken", user.data.accessToken);
         localStorage.setItem("venueManager", JSON.stringify(user.data.venueManager));
-
-        // Optionally, store additional user data like name, email, etc.
         localStorage.setItem("name", user.data.name);
         localStorage.setItem("email", user.data.email);
         localStorage.setItem(
@@ -78,16 +60,14 @@ const LoginForm = () => {
         );
 
         setFormData({ email: "", password: "" });
-        setErrors({});
 
         setTimeout(() => {
-          setSuccessMessage("");
           window.location.href = "/";
-        }, 2000);
+        }, 3000);
       } catch (error) {
         console.error("Login failed:", error);
-        setSuccessMessage("");
         setErrors({ apiError: "Login failed. Please try again." });
+        setTimeout(() => setErrors({}), 3000); // Clear the error message
       }
     }
   };
@@ -99,10 +79,8 @@ const LoginForm = () => {
   return (
     <div className="user-information">
       <h2>Login</h2>
-      {errors.apiError && <span className="error error-message">{errors.apiError}</span>}
-      {successMessage && (
-        <span className="success success-message">{successMessage}</span>
-      )}
+      {errors.apiError && <span className="error-message">{errors.apiError}</span>}
+      {successMessage && <span className="success-message">{successMessage}</span>}
       <form onSubmit={handleSubmit} className="form">
         <div className="form-group">
           <label htmlFor="email">Email:</label>
@@ -115,7 +93,7 @@ const LoginForm = () => {
             onChange={handleChange}
             className="form-input"
           />
-          {errors.email && <span className="error error-message">{errors.email}</span>}
+          {errors.email && <span className="error-message">{errors.email}</span>}
         </div>
         <div className="form-group">
           <label htmlFor="password">Password:</label>
@@ -139,9 +117,7 @@ const LoginForm = () => {
                 }></i>
             </button>
           </div>
-          {errors.password && (
-            <span className="error error-message">{errors.password}</span>
-          )}
+          {errors.password && <span className="error-message">{errors.password}</span>}
         </div>
         <button type="submit" className={styles.button}>
           Login

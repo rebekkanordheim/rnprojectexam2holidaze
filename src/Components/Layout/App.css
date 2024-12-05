@@ -235,11 +235,18 @@ a:hover {
    Venues Styles
 ======================== */
 .venues-container {
+  /*   display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  padding: 20px;
+  margin: 0 auto; */
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   padding: 20px;
   margin: 0 auto;
+  min-height: 300px;
+  align-items: center;
 }
 
 .venue {
@@ -379,8 +386,6 @@ body {
 /* ========================
    Profile Page Styles
 ======================== */
-
-/* Main container for the profile page */
 .profile-container {
   display: flex;
   flex-direction: column;
@@ -428,4 +433,37 @@ body {
 
 .profile-container .edit-button:hover {
   background-color: var(--main-color);
+}
+
+/* ========================
+   Loading, Error, and Success Messages
+======================== */
+.loading-message,
+.error-message,
+.success-message {
+  position: fixed; /* Fixes the position relative to the viewport */
+  top: 40%; /* Adjust for a higher placement */
+  left: 50%;
+  transform: translateX(-50%); /* Only center horizontally */
+  text-align: center;
+  padding: 15px;
+  border-radius: var(--border-radius);
+  z-index: 10;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.error-message {
+  background-color: rgba(255, 0, 0, 0.6);
+  color: var(--main-text);
+}
+
+.success-message {
+  background-color: rgba(0, 255, 13, 0.696);
+  color: var(--main-text);
+}
+
+.loading-message {
+  background-color: rgba(255, 255, 0, 0.5);
+  color: var(--main-text);
 }

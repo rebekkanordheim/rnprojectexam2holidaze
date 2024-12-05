@@ -54,7 +54,7 @@ const RegisterForm = () => {
         localStorage.setItem("bio", "This is a default bio for the user.");
 
         // Show success message and reset form
-        setSuccessMessage("Registration successful!");
+        setSuccessMessage("Registration successful! Redirecting to login...");
         setFormData({
           name: "",
           email: "",
@@ -62,11 +62,19 @@ const RegisterForm = () => {
         });
         setErrors({});
 
-        navigate("/login");
+        // Hide the success message after 3 seconds and redirect to login
+        setTimeout(() => {
+          setSuccessMessage("");
+          navigate("/login");
+        }, 3000);
       } catch (error) {
         console.error("Registration failed:", error);
-        setSuccessMessage("");
+
+        // Show error message
         setErrors({ apiError: "Registration failed. Please try again." });
+
+        // Hide the error message after 3 seconds
+        setTimeout(() => setErrors({}), 3000);
       }
     }
   };

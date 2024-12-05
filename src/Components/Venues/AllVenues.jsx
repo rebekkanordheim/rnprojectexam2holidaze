@@ -60,40 +60,42 @@ function Venues() {
         <title>Holidaze | Home</title>
       </Helmet>
       <SearchBar onSearch={handleSearch} />
-      {isLoading && <div className="loading-message">Loading venues...</div>}
-      {isError && <div className="error-message">Error loading venues</div>}
-      {!isLoading && !isError && (
-        <div className="venues-container">
-          {filteredVenues.length > 0 ? (
-            filteredVenues.map((venue) => (
-              <div key={venue.id} className="venue">
-                <div className="venue-info">
-                  <Link to={`/venue/${venue.id}`}>
-                    <h2 className="venue-title">{venue.name}</h2>
-                  </Link>
-                  <p className="venue-description">
-                    Price: ${venue.price} | Max Guests: {venue.maxGuests}
-                  </p>
-                  {venue.media.length > 0 && (
-                    <img
-                      className="venue-image"
-                      src={venue.media[0].url}
-                      alt={venue.media[0].alt}
-                    />
-                  )}
-                  <Link to={`/venue/${venue.id}`}>
-                    <button type="submit" className={styles.button}>
-                      View Venue
-                    </button>
-                  </Link>
+      <div className="venues-container">
+        {isLoading && <div className="loading-message">Loading venues...</div>}
+        {isError && <div className="error-message">Error loading venues</div>}
+        {!isLoading && !isError && (
+          <>
+            {filteredVenues.length > 0 ? (
+              filteredVenues.map((venue) => (
+                <div key={venue.id} className="venue">
+                  <div className="venue-info">
+                    <Link to={`/venue/${venue.id}`}>
+                      <h2 className="venue-title">{venue.name}</h2>
+                    </Link>
+                    <p className="venue-description">
+                      Price: ${venue.price} | Max Guests: {venue.maxGuests}
+                    </p>
+                    {venue.media.length > 0 && (
+                      <img
+                        className="venue-image"
+                        src={venue.media[0].url}
+                        alt={venue.media[0].alt}
+                      />
+                    )}
+                    <Link to={`/venue/${venue.id}`}>
+                      <button type="submit" className={styles.button}>
+                        View Venue
+                      </button>
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            ))
-          ) : (
-            <div className="error-message">No venues found</div>
-          )}
-        </div>
-      )}
+              ))
+            ) : (
+              <div className="error-message">No venues found</div>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 }
