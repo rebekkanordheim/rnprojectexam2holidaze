@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import CustomCalendar from "../Calendar/CustomCalendar";
-import BookingCart from "./BookingCart";
 import { VENUES_API_ENDPOINT } from "../../Common/constants";
-import styles from "../../Button.module.css"; // Importing styles for buttons
-import { isAuthenticated } from "../User/authUtils"; // Utility to check user authentication
+import styles from "../../Button.module.css"; // Importing button styles
+import { isAuthenticated } from "../User/authUtils"; // Check user authentication
 
 const SpecificVenue = () => {
   const { id } = useParams();
@@ -12,12 +11,18 @@ const SpecificVenue = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [bookingCart, setBookingCart] = useState([]);
-  const isUserLoggedIn = isAuthenticated(); // Check if user is logged in
+  const isUserLoggedIn = isAuthenticated();
+
+  // Load booking cart from localStorage on mount (this is done only once)
+  useEffect(() => {
+    const storedCart = localStorage.getItem("bookingCart");
+    if (storedCart) {
+      setBookingCart(JSON.parse(storedCart));
+    }
+  }, []);
 
   useEffect(() => {
-    /**
-     * Fetches specific venue data from the API.
-     */
+    // Fetch specific venue data
     const fetchVenueData = async () => {
       setIsLoading(true);
       try {
@@ -26,7 +31,7 @@ const SpecificVenue = () => {
           throw new Error("Failed to fetch venue data");
         }
         const data = await response.json();
-        setVenue(data.data);
+        setVenue(data.data); // Assuming venue data is under `data`
       } catch (error) {
         console.error("Error fetching venue data:", error);
         setIsError(true);
@@ -34,6 +39,7 @@ const SpecificVenue = () => {
         setIsLoading(false);
       }
     };
+
     fetchVenueData();
   }, [id]);
 
@@ -43,13 +49,40 @@ const SpecificVenue = () => {
   const handleDateRangeSelected = (dateRange) => {
     if (venue) {
       const newBooking = {
-        ...venue,
-        selectedDateRange: dateRange,
+        venueId: venue.id,
+        venueName: venue.name,
         price: venue.price,
+        selectedDateRange: dateRange,
+        media: venue.media, // Including media for the venue
+        maxGuests: venue.maxGuests,
       };
 
-      setBookingCart((prevCart) => [...prevCart, newBooking]);
+      // Avoid adding the same booking if it's already in the cart
+      const updatedCart = [...bookingCart, newBooking];
+      setBookingCart(updatedCart);
+
+      // Save the updated booking cart to localStorage only if changed
+      if (JSON.stringify(updatedCart) !== JSON.stringify(bookingCart)) {
+        localStorage.setItem("bookingCart", JSON.stringify(updatedCart));
+      }
+      alert("Booking added to cart and saved.");
     }
+  };
+
+  const handleConfirmBooking = () => {
+    // Make sure the cart isn't empty before confirming
+    if (bookingCart.length === 0) {
+      alert("Please add a booking to the cart before confirming.");
+      return;
+    }
+
+    alert("Booking confirmed!");
+
+    // Optionally, remove the cart from localStorage if the booking is confirmed
+    localStorage.removeItem("bookingCart");
+
+    // Clear the cart state
+    setBookingCart([]);
   };
 
   if (isLoading) {
@@ -65,48 +98,35 @@ const SpecificVenue = () => {
   return (
     <div className="specific-venue-container">
       <div className="specific-venue">
+        {/* Venue Title */}
         <h2 className="venue-title">{venue.name}</h2>
         <p className="venue-description">
           Price: ${venue.price} | Max Guests: {venue.maxGuests}
         </p>
 
-        {/* Display venue image */}
+        {/* Venue Image */}
         {venue.media && venue.media.length > 0 && (
           <div className="specific-venue-image">
             <img
+              src={venue.media[0].url} // Display the first image
+              alt={venue.media[0].alt || "Venue image"} // Fallback alt text
               className="specific-venue-image"
-              src={venue.media[0].url}
-              alt={venue.media[0].alt}
             />
           </div>
         )}
         <br />
 
-        {/* Show calendar and button only if user is logged in */}
+        {/* Booking Calendar */}
         {isUserLoggedIn ? (
-          <>
-            {/* Booking Calendar */}
-            <CustomCalendar onDateRangeSelected={handleDateRangeSelected} />
-            {/* Add to Cart button */}
-            <button onClick={() => {}} className={styles.button}>
-              Add to Cart
-            </button>
-          </>
+          <CustomCalendar onDateRangeSelected={handleDateRangeSelected} />
         ) : (
           <p className="login-prompt">Please log in to book this venue.</p>
         )}
       </div>
 
-      {/* Booking Cart */}
-     {/*  <BookingCart bookingCart={bookingCart} /> */}
-
       {/* Confirm Booking Button */}
       {bookingCart.length > 0 && (
-        <button
-          onClick={() => {
-            // Call API to confirm booking
-          }}
-          className={styles.button}>
+        <button onClick={handleConfirmBooking} className={styles.button}>
           Confirm Booking
         </button>
       )}

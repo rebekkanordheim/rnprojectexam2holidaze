@@ -1,20 +1,33 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
+import styles from "../../Button.module.css";
 
-const BookingCart = ({ bookingCart, setBookingCart }) => {
+const BookingCart = () => {
+  const [bookingCart, setBookingCart] = useState([]);
+
+  // Load booking cart data from local storage when the component mounts
+  useEffect(() => {
+    const storedCart = localStorage.getItem("bookingCart");
+    if (storedCart) {
+      setBookingCart(JSON.parse(storedCart));
+    }
+  }, []);
+
+  // Save booking cart data to local storage whenever it updates
+  useEffect(() => {
+    if (bookingCart.length > 0) {
+      localStorage.setItem("bookingCart", JSON.stringify(bookingCart));
+    }
+  }, [bookingCart]);
+
   const totalPrice = bookingCart
     .reduce((total, item) => total + item.price, 0)
     .toFixed(2);
 
-  useEffect(() => {
-    localStorage.setItem("bookingCart", JSON.stringify(bookingCart));
-  }, [bookingCart]);
-
   const handleRemoveItem = (index) => {
     const updatedCart = bookingCart.filter((_, i) => i !== index);
     setBookingCart(updatedCart);
-    localStorage.setItem("bookingCart", JSON.stringify(updatedCart));
   };
 
   const handleConfirmBooking = async () => {
@@ -26,7 +39,6 @@ const BookingCart = ({ bookingCart, setBookingCart }) => {
     const { selectedDateRange } = bookingCart[0];
     const { start, end } = selectedDateRange;
 
-    // Make sure the dates are valid
     if (
       !start ||
       !end ||
@@ -41,7 +53,7 @@ const BookingCart = ({ bookingCart, setBookingCart }) => {
       dateFrom: new Date(start).toISOString(),
       dateTo: new Date(end).toISOString(),
       guests: bookingCart[0].maxGuests, // Assuming guests info is stored in the venue data
-      venueId: bookingCart[0].id, // Venue ID to associate the booking with
+      venueId: bookingCart[0].venueId, // Venue ID to associate the booking with
     };
 
     try {
@@ -61,8 +73,10 @@ const BookingCart = ({ bookingCart, setBookingCart }) => {
 
       const data = await response.json();
       alert("Booking confirmed successfully!");
-      setBookingCart([]); // Clear the cart
-      localStorage.removeItem("bookingCart"); // Clear localStorage
+
+      // Only clear the cart and localStorage if booking is successfully completed
+      setBookingCart([]);
+      localStorage.removeItem("bookingCart");
     } catch (error) {
       console.error("Error creating booking:", error);
       alert("Error creating booking. Please try again.");
@@ -78,27 +92,39 @@ const BookingCart = ({ bookingCart, setBookingCart }) => {
         <div>
           <ul>
             {bookingCart.map((item, index) => (
-              <li key={index}>
-                <button onClick={() => handleRemoveItem(index)}>
+              <li key={index} className="venue">
+                <button onClick={() => handleRemoveItem(index)} className="remove-item">
                   <FontAwesomeIcon icon={faX} />
                 </button>
-                <h4>{item.name}</h4>
-                <p>Price: ${item.price}</p>
-                {item.selectedDateRange && (
-                  <div>
-                    <h5>Selected Date Range:</h5>
-                    <p>
-                      {new Date(item.selectedDateRange.start).toLocaleDateString()} -{" "}
-                      {new Date(item.selectedDateRange.end).toLocaleDateString()}
-                    </p>
-                  </div>
-                )}
+                <div className="venue-info">
+                  <h4>{item.venueName}</h4>
+                  <p>Price: ${item.price}</p>
+                  <p>Max Guests: {item.maxGuests}</p>
+                  {item.media && item.media.length > 0 && (
+                    <img
+                      className="venue-image"
+                      src={item.media[0].url}
+                      alt={item.media[0].alt}
+                    />
+                  )}
+                  {item.selectedDateRange && (
+                    <div>
+                      <h5>Selected Date Range:</h5>
+                      <p>
+                        {new Date(item.selectedDateRange.start).toLocaleDateString()} -{" "}
+                        {new Date(item.selectedDateRange.end).toLocaleDateString()}
+                      </p>
+                    </div>
+                  )}
+                </div>
               </li>
             ))}
           </ul>
           <div>
             <p>Total Price: ${totalPrice}</p>
-            <button onClick={handleConfirmBooking}>Confirm Booking</button>
+            <button onClick={handleConfirmBooking} className={styles.button}>
+              Confirm Booking
+            </button>
           </div>
         </div>
       )}
