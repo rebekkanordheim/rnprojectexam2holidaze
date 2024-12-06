@@ -38,7 +38,7 @@ const Profile = () => {
         setUserData({
           name: data.name,
           email: data.email,
-          avatar: data.avatar ,
+          avatar: data.avatar,
           venueManager: data.venueManager,
         });
       } catch (error) {

@@ -492,16 +492,16 @@ body {
 }
 
 .error-message {
-  background-color: rgba(255, 0, 0, 0.6);
+  background-color: rgba(255, 0, 0, 0.798);
   color: var(--main-text);
 }
 
 .success-message {
-  background-color: rgba(0, 255, 13, 0.696);
+  background-color: rgba(0, 209, 10, 0.874);
   color: var(--main-text);
 }
 
 .loading-message {
-  background-color: rgba(214, 214, 0, 0.716);
+  background-color: rgb(214, 193, 0);
   color: var(--main-text);
 }
