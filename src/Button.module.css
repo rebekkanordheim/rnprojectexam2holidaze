@@ -18,10 +18,10 @@ button:hover {
 }
 
 .buttondanger {
-  color: rgb(255, 0, 0);
+  background-color: rgba(255, 0, 0, 0.6);
+  color: var(--main-text);
   padding: 10px;
   border-radius: 5px;
   border: none;
   margin: 10px;
-  text-transform: uppercase;
 }
