@@ -4,8 +4,7 @@ import "./App.css";
 import Logo from "../../images/Holidaze-transparent.png";
 import { isAuthenticated } from "../User/authUtils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
-import { faUser } from "@fortawesome/free-solid-svg-icons"; // Import user icon
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Component representing the header navigation bar.
@@ -63,11 +62,6 @@ function Header() {
                     aria-label="View Profile"
                     style={{ marginLeft: "15px" }}>
                     <FontAwesomeIcon icon={faUser} aria-hidden="true" />
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/booking-cart" aria-label="View Booking Cart">
-                    <FontAwesomeIcon icon={faCartShopping} aria-hidden="true" />
                   </Link>
                 </li>
               </>

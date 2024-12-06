@@ -327,15 +327,36 @@ a:hover {
 }
 
 /* ========================
-   Booking Cart
+   Calendar
 ======================== */
-.total-price {
-  text-align: center;
-  font-size: 2rem;
+
+/* Custom styles for the DateRangePicker */
+.custom-calendar-container {
+  max-width: 300px;  /* Set a maximum width */
+  margin: 0 auto;    /* Center the calendar */
 }
-.confirm-booking {
-  text-align: center;
-  margin-bottom: 30px;
+
+.rdrCalendarWrapper {
+  font-size: 14px;  /* Make text smaller */
+  width: 100%;      /* Ensure calendar doesn't overflow */
+}
+
+.rdrDateDisplayWrapper {
+  font-size: 12px;  /* Smaller text for date display */
+}
+
+.rdrCalendar {
+  width: 100%;
+  background-color: #fff; /* Optional: change background color */
+}
+
+.rdrDaySelected {
+  background-color: #4CAF50;  /* Highlight selected dates */
+  color: white;
+}
+
+.rdrDay:hover {
+  background-color: #f1f1f1;  /* Add hover effect for days */
 }
 
 /* ========================

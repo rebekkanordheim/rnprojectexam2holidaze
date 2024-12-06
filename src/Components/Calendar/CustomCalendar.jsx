@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const CustomCalendar = ({ onDateRangeSelected }) => {
+const CustomCalendar = ({ onDateRangeSelected, unavailableDates }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const today = new Date();
@@ -12,18 +12,19 @@ const CustomCalendar = ({ onDateRangeSelected }) => {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
-  };
-
-  const handleAddToCart = () => {
-    if (startDate && endDate) {
-      onDateRangeSelected({ start: startDate, end: endDate });
-    } else {
-      alert("Please select a date range.");
+    if (start && end) {
+      onDateRangeSelected({ start, end });
     }
   };
 
+  // Convert unavailableDates to an array of Date objects
+  const unavailableDateRanges = unavailableDates.map((range) => ({
+    start: new Date(range.start),
+    end: new Date(range.end),
+  }));
+
   return (
-    <div>
+    <div className="custom-calendar-container">
       <DatePicker
         selected={startDate}
         onChange={handleDateChange}
@@ -31,15 +32,21 @@ const CustomCalendar = ({ onDateRangeSelected }) => {
         endDate={endDate}
         selectsRange
         minDate={today}
+        excludeDateIntervals={unavailableDateRanges}
         inline
       />
-      <button onClick={handleAddToCart}>Add to Booking Cart</button>
     </div>
   );
 };
 
 CustomCalendar.propTypes = {
   onDateRangeSelected: PropTypes.func.isRequired,
+  unavailableDates: PropTypes.arrayOf(
+    PropTypes.shape({
+      start: PropTypes.instanceOf(Date),
+      end: PropTypes.instanceOf(Date),
+    })
+  ).isRequired,
 };
 
 export default CustomCalendar;
