@@ -16,9 +16,7 @@ const BookingCart = () => {
 
   // Save booking cart data to local storage whenever it updates
   useEffect(() => {
-    if (bookingCart.length > 0) {
-      localStorage.setItem("bookingCart", JSON.stringify(bookingCart));
-    }
+    localStorage.setItem("bookingCart", JSON.stringify(bookingCart));
   }, [bookingCart]);
 
   const totalPrice = bookingCart
@@ -31,55 +29,74 @@ const BookingCart = () => {
   };
 
   const handleConfirmBooking = async () => {
-    if (bookingCart.length === 0 || !bookingCart[0].selectedDateRange) {
-      alert("Please complete your booking details.");
+    if (bookingCart.length === 0) {
+      alert("Your cart is empty. Add items before confirming.");
       return;
     }
 
-    const { selectedDateRange } = bookingCart[0];
-    const { start, end } = selectedDateRange;
-
-    if (
-      !start ||
-      !end ||
-      isNaN(new Date(start).getTime()) ||
-      isNaN(new Date(end).getTime())
-    ) {
-      alert("Invalid date range. Please select valid start and end dates.");
-      return;
-    }
-
-    const bookingData = {
-      dateFrom: new Date(start).toISOString(),
-      dateTo: new Date(end).toISOString(),
-      guests: bookingCart[0].maxGuests, // Assuming guests info is stored in the venue data
-      venueId: bookingCart[0].venueId, // Venue ID to associate the booking with
-    };
-
+    // Ensure each booking in the cart is sent to the API
     try {
-      const response = await fetch("https://v2.api.noroff.dev/holidaze/bookings", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-          "X-Noroff-API-Key": localStorage.getItem("apiKey"),
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookingData),
-      });
+      const responses = await Promise.all(
+        bookingCart.map(async (item) => {
+          // Ensure `selectedDateRange` exists and is valid
+          if (!item.selectedDateRange) {
+            throw new Error(
+              `Missing date range for booking: ${item.venueName}`
+            );
+          }
 
-      if (!response.ok) {
-        throw new Error("Failed to create booking");
-      }
+          const { start, end } = item.selectedDateRange;
 
-      const data = await response.json();
-      alert("Booking confirmed successfully!");
+          // Validate date range
+          if (
+            !start ||
+            !end ||
+            isNaN(new Date(start).getTime()) ||
+            isNaN(new Date(end).getTime())
+          ) {
+            throw new Error(
+              `Invalid date range for booking: ${item.venueName}`
+            );
+          }
 
-      // Only clear the cart and localStorage if booking is successfully completed
+          const bookingData = {
+            dateFrom: new Date(start).toISOString(),
+            dateTo: new Date(end).toISOString(),
+            guests: item.maxGuests || 1, // Default to 1 guest if not specified
+            venueId: item.venueId, // Use venue ID from the item
+          };
+
+          // Send POST request to API
+          const response = await fetch(
+            "https://v2.api.noroff.dev/holidaze/bookings",
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`, // Add authentication token
+                "X-Noroff-API-Key": localStorage.getItem("apiKey"), // Add API key
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(bookingData),
+            }
+          );
+
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || "Failed to create booking");
+          }
+
+          return await response.json(); // Return response data
+        })
+      );
+
+      // On success, show confirmation and clear cart
+      alert("All bookings were confirmed successfully!");
       setBookingCart([]);
       localStorage.removeItem("bookingCart");
+      console.log("Booking Responses:", responses); // Log successful responses for debugging
     } catch (error) {
-      console.error("Error creating booking:", error);
-      alert("Error creating booking. Please try again.");
+      console.error("Error creating bookings:", error);
+      alert(`Error creating bookings: ${error.message}`);
     }
   };
 
@@ -100,13 +117,6 @@ const BookingCart = () => {
                   <h4>{item.venueName}</h4>
                   <p>Price: ${item.price}</p>
                   <p>Max Guests: {item.maxGuests}</p>
-                  {item.media && item.media.length > 0 && (
-                    <img
-                      className="venue-image"
-                      src={item.media[0].url}
-                      alt={item.media[0].alt}
-                    />
-                  )}
                   {item.selectedDateRange && (
                     <div>
                       <h5>Selected Date Range:</h5>
