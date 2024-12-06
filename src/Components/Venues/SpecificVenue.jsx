@@ -13,7 +13,7 @@ const SpecificVenue = () => {
   const [bookingCart, setBookingCart] = useState([]);
   const isUserLoggedIn = isAuthenticated();
 
-  // Load booking cart from localStorage on mount (this is done only once)
+  // Load booking cart from localStorage on mount
   useEffect(() => {
     const storedCart = localStorage.getItem("bookingCart");
     if (storedCart) {
@@ -70,7 +70,6 @@ const SpecificVenue = () => {
   };
 
   const handleConfirmBooking = () => {
-    // Make sure the cart isn't empty before confirming
     if (bookingCart.length === 0) {
       alert("Please add a booking to the cart before confirming.");
       return;
@@ -78,7 +77,7 @@ const SpecificVenue = () => {
 
     alert("Booking confirmed!");
 
-    // Optionally, remove the cart from localStorage if the booking is confirmed
+    // Remove the cart from localStorage
     localStorage.removeItem("bookingCart");
 
     // Clear the cart state
@@ -100,22 +99,27 @@ const SpecificVenue = () => {
       <div className="specific-venue">
         {/* Venue Title */}
         <h2 className="venue-title">{venue.name}</h2>
+
+        {/* Venue Description */}
         <p className="venue-description">
           Price: ${venue.price} | Max Guests: {venue.maxGuests}
         </p>
 
         {/* Venue Image */}
-        {venue.media && venue.media.length > 0 && (
+        {venue.media && venue.media.length > 0 ? (
           <div className="specific-venue-image">
             <img
               src={venue.media[0].url}
-              alt={venue.media[0].alt || "Venue image"}
-              className="specific-venue-image"
+              alt={venue.media[0].alt || `${venue.name} image`}
+              className="venue-image"
             />
           </div>
+        ) : (
+          <p className="no-image">No image available for this venue.</p>
         )}
+
         <br />
-        
+
         {/* Booking Calendar */}
         {isUserLoggedIn ? (
           <CustomCalendar onDateRangeSelected={handleDateRangeSelected} />

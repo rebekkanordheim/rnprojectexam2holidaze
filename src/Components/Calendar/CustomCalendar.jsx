@@ -16,7 +16,7 @@ const CustomCalendar = ({ onDateRangeSelected }) => {
 
   const handleAddToCart = () => {
     if (startDate && endDate) {
-      onDateRangeSelected({ startDate, endDate });
+      onDateRangeSelected({ start: startDate, end: endDate });
     } else {
       alert("Please select a date range.");
     }
