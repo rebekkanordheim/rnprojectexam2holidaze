@@ -120,8 +120,8 @@ const BookingCart = () => {
               </li>
             ))}
           </ul>
-          <div>
-            <p>Total Price: ${totalPrice}</p>
+          <div className="confirm-booking">
+            <p className="total-price">Total Price: ${totalPrice}</p>
             <button onClick={handleConfirmBooking} className={styles.button}>
               Confirm Booking
             </button>

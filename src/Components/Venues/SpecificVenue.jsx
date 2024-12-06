@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import CustomCalendar from "../Calendar/CustomCalendar";
 import { VENUES_API_ENDPOINT } from "../../Common/constants";
-import styles from "../../Button.module.css"; // Importing button styles
-import { isAuthenticated } from "../User/authUtils"; // Check user authentication
+import styles from "../../Button.module.css";
+import { isAuthenticated } from "../User/authUtils";
 
 const SpecificVenue = () => {
   const { id } = useParams();
@@ -53,7 +53,7 @@ const SpecificVenue = () => {
         venueName: venue.name,
         price: venue.price,
         selectedDateRange: dateRange,
-        media: venue.media, // Including media for the venue
+        media: venue.media,
         maxGuests: venue.maxGuests,
       };
 
@@ -108,14 +108,14 @@ const SpecificVenue = () => {
         {venue.media && venue.media.length > 0 && (
           <div className="specific-venue-image">
             <img
-              src={venue.media[0].url} // Display the first image
-              alt={venue.media[0].alt || "Venue image"} // Fallback alt text
+              src={venue.media[0].url}
+              alt={venue.media[0].alt || "Venue image"}
               className="specific-venue-image"
             />
           </div>
         )}
         <br />
-
+        
         {/* Booking Calendar */}
         {isUserLoggedIn ? (
           <CustomCalendar onDateRangeSelected={handleDateRangeSelected} />

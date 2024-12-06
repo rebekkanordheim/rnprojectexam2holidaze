@@ -89,6 +89,7 @@ body {
   max-width: 70%;
   padding: 10px 20px;
   margin-left: 77px;
+  margin: auto;
   background-color: var(--main-text);
   border-radius: var(--border-radius);
   overflow: hidden;
@@ -104,6 +105,7 @@ body {
   background-color: transparent;
   color: var(--main-text);
   font-family: var(--font-family);
+  align-items: center;
 }
 
 .searchinput::placeholder {
@@ -113,6 +115,10 @@ body {
 
 .searchinput:focus {
   outline: none;
+}
+
+label {
+  margin-top: 10px;
 }
 
 /* Headings */
@@ -169,19 +175,19 @@ a:hover {
   }
 
   .venues-container {
-    grid-template-columns: repeat(1, 1fr); /* 1 venue per row on small screens */
+    grid-template-columns: repeat(1, 1fr);
   }
 }
 
 @media (min-width: 900px) {
   .venues-container {
-    grid-template-columns: repeat(2, 1fr); /* 2 venues per row on medium screens */
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (min-width: 1356px) {
   .venues-container {
-    grid-template-columns: repeat(3, 1fr); /* 3 venues per row on larger screens */
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -235,11 +241,6 @@ a:hover {
    Venues Styles
 ======================== */
 .venues-container {
-  /*   display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  padding: 20px;
-  margin: 0 auto; */
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -309,10 +310,10 @@ a:hover {
   color: var(--main-text);
   border-radius: var(--border-radius);
   padding: 20px;
-  margin: 30px auto; /* Center horizontally */
+  margin: 30px auto;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 800px; /* Set a maximum width */
-  width: 70%; /* Make it responsive */
+  max-width: 800px;
+  width: 70%;
 }
 
 .specific-venue-image {
@@ -323,6 +324,18 @@ a:hover {
   border-radius: var(--border-radius);
   margin-bottom: 10px;
   transition: var(--transition);
+}
+
+/* ========================
+   Booking Cart
+======================== */
+.total-price {
+  text-align: center;
+  font-size: 2rem;
+}
+.confirm-booking {
+  text-align: center;
+  margin-bottom: 30px;
 }
 
 /* ========================
@@ -343,7 +356,6 @@ footer {
   z-index: 1;
 }
 
-/* Add padding-bottom to body for footer space */
 body {
   padding-bottom: 70px;
 }
@@ -464,6 +476,6 @@ body {
 }
 
 .loading-message {
-  background-color: rgba(255, 255, 0, 0.5);
+  background-color: rgba(214, 214, 0, 0.716);
   color: var(--main-text);
 }
