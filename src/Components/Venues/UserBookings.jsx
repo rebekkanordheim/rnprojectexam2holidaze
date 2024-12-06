@@ -44,34 +44,6 @@ const UserBookings = ({ userName }) => {
     fetchBookings();
   }, [userName]);
 
-  const handleDeleteBooking = async (bookingId) => {
-    if (!window.confirm("Are you sure you want to delete this booking?")) {
-      return;
-    }
-
-    try {
-      const response = await fetch(`/holidaze/bookings/${bookingId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-          "X-Noroff-API-Key": localStorage.getItem("apiKey"),
-        },
-      });
-
-      if (response.status === 204) {
-        setBookings((prevBookings) =>
-          prevBookings.filter((booking) => booking.id !== bookingId)
-        );
-        alert("Booking deleted successfully.");
-      } else {
-        throw new Error("Failed to delete booking.");
-      }
-    } catch (error) {
-      console.error("Error deleting booking:", error);
-      setError("Failed to delete booking. Please try again.");
-    }
-  };
-
   const renderBooking = (booking) => (
     <div className="venue booking-card" key={booking.id}>
       <div className="booking-info">
@@ -100,12 +72,6 @@ const UserBookings = ({ userName }) => {
           <br />
           {new Date(booking.created).toLocaleString()}
         </p>
-        <button
-          onClick={() => handleDeleteBooking(booking.id)}
-          className={`${styles.buttondanger} delete-button`}
-          aria-label={`Delete booking with ID ${booking.id}`}>
-          Delete Booking
-        </button>
       </div>
     </div>
   );
