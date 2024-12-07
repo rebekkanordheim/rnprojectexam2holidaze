@@ -4,15 +4,15 @@ import Logo from "../../images/Holidaze-transparent.png";
 import { Helmet } from "react-helmet";
 
 /**
- * AboutPage component
+ * AboutPage component.
  *
- * This component renders the About page of the Holidaze application.
- * It provides information about the platform, its purpose, and its features.
- * The component includes a title, descriptive paragraphs, and a logo linking back to the homepage.
+ * Renders the About page of the Holidaze application, which provides information about
+ * the platform, its purpose, and its features. It includes a title, descriptive
+ * paragraphs, and a logo linking back to the homepage.
  *
- * @returns {JSX.Element} The About page component.
+ * @component
+ * @returns {JSX.Element} The rendered About page component.
  */
-
 function AboutPage() {
   return (
     <div className="about-page">
