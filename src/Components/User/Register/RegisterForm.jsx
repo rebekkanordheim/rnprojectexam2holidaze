@@ -148,7 +148,7 @@ const RegisterForm = () => {
             id="email"
             name="email"
             value={formData.email}
-            placeholder="Your email"
+            placeholder="example@stud.noroff.no"
             onChange={handleChange}
             className="form-input"
           />
