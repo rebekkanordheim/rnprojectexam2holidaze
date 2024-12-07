@@ -150,11 +150,6 @@ const SpecificVenue = () => {
     <div className="venue specific-venue-container">
       {venue && (
         <>
-          <h2 className="venue-title">{venue.name}</h2>
-          <p className="venue-description">
-            Price: ${venue.price} | Max Guests: {venue.maxGuests}
-          </p>
-
           {venue.media && venue.media.length > 0 && (
             <img
               src={venue.media[0].url}
@@ -162,6 +157,10 @@ const SpecificVenue = () => {
               className="specific-venue-image"
             />
           )}
+          <h2 className="venue-title">{venue.name}</h2>
+          <p className="venue-description">
+            Price: ${venue.price} | Max Guests: {venue.maxGuests}
+          </p>
 
           {isUserLoggedIn ? (
             <div>

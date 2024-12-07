@@ -82,12 +82,6 @@ function Venues() {
               filteredVenues.map((venue) => (
                 <div key={venue.id} className="venue">
                   <div className="venue-info">
-                    <Link to={`/venue/${venue.id}`}>
-                      <h2 className="venue-title">{venue.name}</h2>
-                    </Link>
-                    <p className="venue-description">
-                      Price: ${venue.price} | Max Guests: {venue.maxGuests}
-                    </p>
                     {venue.media.length > 0 && (
                       <img
                         className="venue-image"
@@ -95,6 +89,12 @@ function Venues() {
                         alt={venue.media[0].alt}
                       />
                     )}
+                    <Link to={`/venue/${venue.id}`}>
+                      <h2 className="venue-title">{venue.name}</h2>
+                    </Link>
+                    <p className="venue-description">
+                      Price: ${venue.price} | Max Guests: {venue.maxGuests}
+                    </p>
                     <Link to={`/venue/${venue.id}`}>
                       <button type="submit" className={styles.button}>
                         View Venue
