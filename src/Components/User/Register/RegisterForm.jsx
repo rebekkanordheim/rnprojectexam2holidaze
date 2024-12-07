@@ -107,8 +107,8 @@ const RegisterForm = () => {
         // Show error message
         setErrors({ apiError: "Registration failed. Please try again." });
 
-        // Hide the error message after 3 seconds
-        setTimeout(() => setErrors({}), 3000);
+        // Hide the error message after 2 seconds
+        setTimeout(() => setErrors({}), 2000);
       }
     }
   };
