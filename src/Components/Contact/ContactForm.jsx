@@ -7,7 +7,7 @@ import styles from "../../Button.module.css";
  * Renders a contact form that includes validation for first name, last name, subject, email,
  * and message fields. Displays success or error messages based on form submission status.
  *
- * @returns {JSX.Element} The ContactForm component.
+ * @returns {JSX.Element} The rendered ContactForm component.
  */
 function ContactForm() {
   const [formData, setFormData] = useState({
@@ -21,11 +21,21 @@ function ContactForm() {
   const [formError, setFormError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  /**
+   * Handles input field changes and updates the form data state.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} event - The change event from the input field.
+   */
   function handleInputChange(event) {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   }
 
+  /**
+   * Validates the form fields, checking for required fields and valid email format.
+   *
+   * @returns {string | null} Returns an error message if validation fails, otherwise null.
+   */
   function validateForm() {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (
@@ -42,6 +52,11 @@ function ContactForm() {
     return null;
   }
 
+  /**
+   * Handles form submission, validating the form and displaying success/error messages.
+   *
+   * @param {React.FormEvent<HTMLFormElement>} event - The form submission event.
+   */
   function onFormSubmit(event) {
     event.preventDefault();
     const validationError = validateForm();

@@ -5,8 +5,10 @@ import { Helmet } from "react-helmet";
 
 /**
  * Renders the ContactPage component.
- * This component displays the contact page with a heading and the ContactForm component.
- * It also sets the document title using the Helmet component.
+ *
+ * This component represents the contact page of the website. It includes a heading and
+ * displays the ContactForm and ContactInformation components. It also sets the page title
+ * and meta description for SEO using the `Helmet` component.
  *
  * @component
  * @returns {JSX.Element} The rendered ContactPage component.

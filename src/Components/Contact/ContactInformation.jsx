@@ -3,7 +3,11 @@ import React from "react";
 /**
  * Component displaying contact information including opening hours, email, and phone number.
  *
- * @returns {JSX.Element} JSX element representing the ContactInformation component.
+ * This component provides structured contact details for users, including business hours,
+ * an email link, and a phone number link. It uses schema.org markup for better SEO and
+ * accessibility, defining the organization information.
+ *
+ * @returns {JSX.Element} The rendered ContactInformation component.
  */
 function ContactInformation() {
   return (
