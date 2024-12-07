@@ -4,7 +4,14 @@ import UpdateVenueManager from "./UpdateVenueManager";
 import UserMadeVenues from "../../Venues/UserMadeVenues";
 import UserBookings from "../../Venues/UserBookings";
 
+/**
+ * Profile component displays and allows the user to update their profile information.
+ * This includes updating the avatar image and venue manager status, as well as viewing
+ * the user's created venues and bookings.
+ * @component
+ */
 const Profile = () => {
+  /** State to manage user profile data. */
   const [userData, setUserData] = useState({
     name: "",
     email: "",
@@ -14,8 +21,16 @@ const Profile = () => {
     },
     venueManager: false,
   });
+
+  /** The logged-in user's name, retrieved from localStorage. */
   const userName = localStorage.getItem("userName");
 
+  /**
+   * Fetches the user's profile data when the component mounts.
+   * @async
+   * @function
+   * @throws {Error} If the fetch request fails.
+   */
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -51,6 +66,13 @@ const Profile = () => {
     }
   }, [userName]);
 
+  /**
+   * Updates the user's avatar in the profile.
+   * @async
+   * @function
+   * @param {Object} newAvatar - The new avatar data.
+   * @throws {Error} If the update request fails.
+   */
   const handleUpdateAvatar = async (newAvatar) => {
     try {
       const response = await fetch(
@@ -79,6 +101,13 @@ const Profile = () => {
     }
   };
 
+  /**
+   * Updates the user's venue manager status in the profile.
+   * @async
+   * @function
+   * @param {boolean} newVenueManagerStatus - The new venue manager status.
+   * @throws {Error} If the update request fails.
+   */
   const handleUpdateVenueManager = async (newVenueManagerStatus) => {
     try {
       const response = await fetch(
