@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { USER_BOOKINGS_ENDPOINT } from "../../Common/constants";
-import styles from "../../Button.module.css";
 
 /**
  * Component for displaying a user's bookings.
