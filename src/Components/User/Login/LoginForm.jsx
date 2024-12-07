@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { loginUser } from "./loginUser";
 import styles from "../../../Button.module.css";
 import { Link } from "react-router-dom";
@@ -27,9 +26,6 @@ const LoginForm = () => {
 
   /** State to disable the button and show a loading state during form submission. */
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  /** Hook to programmatically navigate to different routes. */
-  const navigate = useNavigate();
 
   /**
    * Handles input field changes and updates form data state.
@@ -88,8 +84,9 @@ const LoginForm = () => {
 
         setFormData({ email: "", password: "" });
 
+        // Redirect to home page
         setTimeout(() => {
-          navigate("/");
+          window.location.href = "/";
         }, 2000);
       } catch (error) {
         console.error("Login failed:", error);
