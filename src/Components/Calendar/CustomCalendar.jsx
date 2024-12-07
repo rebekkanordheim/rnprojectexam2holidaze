@@ -3,11 +3,28 @@ import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+/**
+ * CustomCalendar component that allows users to select a date range.
+ * It uses a date picker to select a start and end date while excluding unavailable date ranges.
+ *
+ * @component
+ * @param {Object} props - The component's props.
+ * @param {Function} props.onDateRangeSelected - Callback function to be called when a date range is selected.
+ * @param {Array} props.unavailableDates - Array of objects representing unavailable date ranges, where each object contains a `start` and `end` date.
+ *
+ * @returns {JSX.Element} The rendered CustomCalendar component.
+ */
 const CustomCalendar = ({ onDateRangeSelected, unavailableDates }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const today = new Date();
 
+  /**
+   * Handles changes in the selected date range.
+   * Sets the start and end dates, and triggers the callback function with the selected range.
+   *
+   * @param {Array} dates - The selected dates [start, end].
+   */
   const handleDateChange = (dates) => {
     const [start, end] = dates;
     setStartDate(start);
