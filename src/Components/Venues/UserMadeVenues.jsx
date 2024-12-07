@@ -208,6 +208,8 @@ function UserMadeVenues({ userName }) {
                   className="venue-image"
                 />
                 <h3 className="venue-title">{venue.name}</h3>
+                {/* Display the booking count */}
+                <p>Bookings: {venue._count?.bookings || 0}</p>
               </div>
               <button onClick={() => handleEditVenue(venue)} className={styles.button}>
                 Edit Venue
