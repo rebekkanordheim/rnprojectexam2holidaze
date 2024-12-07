@@ -7,18 +7,31 @@ import styles from "../../Button.module.css";
 
 /**
  * Venues component displaying a list of venues fetched from an API.
+ * It includes functionality for searching and filtering venues.
  *
+ * @component
  * @returns {JSX.Element} JSX element representing the Venues component.
  */
 function Venues() {
+  /** State to store the list of venues fetched from the API. */
   const [venues, setVenues] = useState([]);
+
+  /** State to store the filtered list of venues based on search criteria. */
   const [filteredVenues, setFilteredVenues] = useState([]);
+
+  /** State to track the loading status during the API request. */
   const [isLoading, setIsLoading] = useState(false);
+
+  /** State to track errors encountered during the API request. */
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     /**
-     * Fetches venues data from the API.
+     * Fetches venues data from the API and updates the state.
+     * Sets the loading state to true and handles errors.
+     *
+     * @async
+     * @returns {Promise<void>} Resolves after fetching the data and updating state.
      */
     const fetchData = async () => {
       setIsLoading(true);
@@ -43,9 +56,9 @@ function Venues() {
   }, []);
 
   /**
-   * Handles search functionality to filter venues by name.
+   * Filters the list of venues based on the search term entered by the user.
    *
-   * @param {string} searchTerm - The search term entered by the user.
+   * @param {string} searchTerm - The search term entered by the user to filter venues.
    */
   const handleSearch = (searchTerm) => {
     const filtered = venues.filter((venue) =>

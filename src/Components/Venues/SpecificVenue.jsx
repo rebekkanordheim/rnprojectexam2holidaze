@@ -6,6 +6,15 @@ import { VENUES_API_ENDPOINT } from "../../Common/constants";
 import styles from "../../Button.module.css";
 import { isAuthenticated } from "../User/authUtils";
 
+/**
+ * Component for displaying and booking a specific venue.
+ *
+ * Fetches venue details from the API, allows users to select dates and the number of guests,
+ * and confirms the booking by sending a POST request to the API.
+ * Displays a success message upon successful booking.
+ *
+ * @returns {JSX.Element} The SpecificVenue component.
+ */
 const SpecificVenue = () => {
   const { id } = useParams();
   const [venue, setVenue] = useState(null);
@@ -20,6 +29,10 @@ const SpecificVenue = () => {
   const isUserLoggedIn = isAuthenticated();
   const [startDate, endDate] = dateRange;
 
+  /**
+   * Fetches the venue data and booked dates from the API.
+   * Sets the venue and booked dates in the component state.
+   */
   useEffect(() => {
     const fetchVenueData = async () => {
       setIsLoading(true);
@@ -48,6 +61,11 @@ const SpecificVenue = () => {
     fetchVenueData();
   }, [id]);
 
+  /**
+   * Handles the booking confirmation by sending the booking data to the API.
+   * Checks if the selected dates and number of guests are valid before confirming the booking.
+   * Displays an alert if the booking fails.
+   */
   const handleConfirmBooking = async () => {
     if (!startDate || !endDate) {
       alert("Please select a date range before confirming.");
@@ -113,6 +131,12 @@ const SpecificVenue = () => {
     }
   };
 
+  /**
+   * Checks if a given date is within the booked dates.
+   *
+   * @param {Date} date - The date to check.
+   * @returns {boolean} True if the date is within a booked date range, false otherwise.
+   */
   const isDateDisabled = (date) => {
     return bookedDates.some(
       (bookedDate) => date >= bookedDate.start && date <= bookedDate.end

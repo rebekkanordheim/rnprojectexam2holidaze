@@ -2,11 +2,25 @@ import React, { useEffect, useState } from "react";
 import { USER_BOOKINGS_ENDPOINT } from "../../Common/constants";
 import styles from "../../Button.module.css";
 
+/**
+ * Component for displaying a user's bookings.
+ *
+ * Fetches the bookings of a specific user and displays them in a list.
+ * Displays loading, error, or empty state based on the API response.
+ *
+ * @param {Object} props - The component's props.
+ * @param {string} props.userName - The username of the logged-in user.
+ * @returns {JSX.Element} The UserBookings component.
+ */
 const UserBookings = ({ userName }) => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  /**
+   * Fetches the bookings for the provided username from the API.
+   * Sets loading, error, and bookings state based on the response.
+   */
   useEffect(() => {
     const fetchBookings = async () => {
       if (!userName) {
@@ -44,6 +58,17 @@ const UserBookings = ({ userName }) => {
     fetchBookings();
   }, [userName]);
 
+  /**
+   * Renders a single booking card displaying the booking details.
+   *
+   * @param {Object} booking - The booking data.
+   * @param {string} booking.id - The unique booking ID.
+   * @param {string} booking.dateFrom - The check-in date.
+   * @param {string} booking.dateTo - The check-out date.
+   * @param {number} booking.guests - The number of guests for the booking.
+   * @param {string} booking.created - The creation date of the booking.
+   * @returns {JSX.Element} A booking card component displaying the booking details.
+   */
   const renderBooking = (booking) => (
     <div className="venue booking-card" key={booking.id}>
       <div className="booking-info">

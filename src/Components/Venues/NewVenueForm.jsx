@@ -3,25 +3,69 @@ import styles from "../../Button.module.css";
 import { VENUES_API_ENDPOINT, USER_API_UPDATE } from "../../Common/constants";
 import { isAuthenticated } from "../User/authUtils";
 
+/**
+ * NewVenueForm component allows the user to create a new venue with various details.
+ * It includes form validation and ensures the user is authenticated and has venue manager privileges.
+ *
+ * @component
+ * @returns {JSX.Element} JSX element representing the NewVenueForm component.
+ */
 function NewVenueForm() {
+  /** State for venue name input. */
   const [name, setName] = useState("");
+
+  /** State for venue description input. */
   const [description, setDescription] = useState("");
+
+  /** State for venue image URL input. */
   const [imageUrl, setImageUrl] = useState("");
+
+  /** State for venue price input. */
   const [price, setPrice] = useState("");
+
+  /** State for maximum guests input. */
   const [maxGuests, setMaxGuests] = useState("");
+
+  /** State for wifi option (default: true). */
   const [wifi, setWifi] = useState(true);
+
+  /** State for parking option (default: true). */
   const [parking, setParking] = useState(true);
+
+  /** State for breakfast option (default: true). */
   const [breakfast, setBreakfast] = useState(true);
+
+  /** State for pets option (default: true). */
   const [pets, setPets] = useState(true);
+
+  /** State for address input. */
   const [address, setAddress] = useState("");
+
+  /** State for city input. */
   const [city, setCity] = useState("");
+
+  /** State for zip code input. */
   const [zip, setZip] = useState("");
+
+  /** State for country input. */
   const [country, setCountry] = useState("");
+
+  /** State for success message display. */
   const [successMessage, setSuccessMessage] = useState("");
+
+  /** State for error message display. */
   const [errorMessage, setErrorMessage] = useState("");
+
+  /** State for checking if the user is a venue manager. */
   const [venueManager, setVenueManager] = useState(false);
 
   useEffect(() => {
+    /**
+     * Fetches the current user's profile data to check if they are a venue manager.
+     *
+     * @async
+     * @returns {Promise<void>} Resolves after fetching the user profile and updating state.
+     */
     if (isAuthenticated()) {
       const fetchProfile = async () => {
         const userName = localStorage.getItem("userName");
@@ -52,6 +96,13 @@ function NewVenueForm() {
     }
   }, []);
 
+  /**
+   * Handles the form submission to create a new venue.
+   * Validates the user and venue manager status before making the API request.
+   *
+   * @param {Event} event - The form submit event.
+   * @returns {Promise<void>} Resolves after creating the venue and updating the user profile.
+   */
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -128,10 +179,10 @@ function NewVenueForm() {
       setSuccessMessage("Venue created successfully");
       setErrorMessage("");
 
-      // Redirect to home after 1 second
+      // Redirect to home after 2 seconds
       setTimeout(() => {
         window.location.href = "/"; // Redirect to home page
-      }, 1000);
+      }, 2000);
     } catch (error) {
       console.error("Error creating venue:", error);
       setErrorMessage("Failed to create venue. Please try again.");

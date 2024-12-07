@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../Button.module.css";
 
+/**
+ * Component for displaying and managing the user's venues.
+ *
+ * Fetches and displays the venues created by the logged-in user. Provides functionality
+ * to edit and delete venues, and shows success and error messages.
+ *
+ * @param {Object} props - The component's props.
+ * @param {string} props.userName - The username of the logged-in user.
+ * @returns {JSX.Element} The UserMadeVenues component.
+ */
 function UserMadeVenues({ userName }) {
   const [userVenues, setUserVenues] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -8,6 +18,12 @@ function UserMadeVenues({ userName }) {
   const [successMessage, setSuccessMessage] = useState(null);
   const [editingVenue, setEditingVenue] = useState(null);
 
+  /**
+   * Fetches the venues created by the user.
+   *
+   * Uses the `userName` prop to fetch the user's venues from the API and updates the
+   * `userVenues` state. Handles loading and error states.
+   */
   useEffect(() => {
     const fetchUserVenues = async () => {
       try {
@@ -41,11 +57,22 @@ function UserMadeVenues({ userName }) {
     fetchUserVenues();
   }, [userName]);
 
+  /**
+   * Sets the venue to be edited.
+   *
+   * @param {Object} venue - The venue being edited.
+   */
   const handleEditVenue = (venue) => {
     setEditingVenue(venue); // Set the venue being edited
     setSuccessMessage(null); // Clear success message on edit start
   };
 
+  /**
+   * Updates the venue with new data.
+   *
+   * @param {Object} e - The event object from the form submission.
+   * @returns {Promise<void>} A promise that resolves once the venue is updated.
+   */
   const handleUpdateVenue = async (e) => {
     e.preventDefault();
     const jwtToken = localStorage.getItem("jwtToken");
@@ -117,6 +144,14 @@ function UserMadeVenues({ userName }) {
     }
   };
 
+  /**
+   * Deletes a venue.
+   *
+   * Prompts the user for confirmation before sending a delete request to the API.
+   *
+   * @param {string} venueId - The ID of the venue to be deleted.
+   * @returns {Promise<void>} A promise that resolves once the venue is deleted.
+   */
   const handleDeleteVenue = async (venueId) => {
     if (!window.confirm("Are you sure you want to delete this venue?")) {
       return;
