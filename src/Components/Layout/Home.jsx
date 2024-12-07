@@ -4,6 +4,8 @@ import "./App.css"; // Ensure this is included to apply styles
 
 /**
  * Home component that serves as the main landing page.
+ * This component displays a welcome message and a brief description of the platform,
+ * followed by the Venues component which shows available venues for booking.
  *
  * @returns {JSX.Element} The rendered Home component.
  */

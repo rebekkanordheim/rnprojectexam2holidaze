@@ -5,7 +5,8 @@ import { isAuthenticated } from "../User/authUtils";
 import { Link } from "react-router-dom";
 
 /**
- * Clears the local storage and redirects to the home page.
+ * Clears the local storage and redirects the user to the home page.
+ * This function is typically used when the user logs out, ensuring that all stored data is cleared.
  */
 const handleLogout = () => {
   localStorage.clear();
@@ -14,11 +15,13 @@ const handleLogout = () => {
 
 /**
  * Renders the Footer component.
- * This component displays the footer with a copyright notice and conditional buttons.
- * If the user is logged in, it shows buttons for creating a new venue and logging out.
+ *
+ * The Footer displays a copyright notice and conditionally renders buttons
+ * based on the user's authentication status. If the user is logged in,
+ * it provides options to create a new venue and log out.
  *
  * @component
- * @returns {JSX.Element} The rendered Footer component.
+ * @returns {JSX.Element} The rendered Footer component with conditional content.
  */
 function Footer() {
   const loggedIn = isAuthenticated();
@@ -30,10 +33,7 @@ function Footer() {
         {/* Show buttons for creating a new venue and logging out if the user is logged in */}
         {loggedIn && (
           <>
-            <Link
-              to="/newvenue"
-              className="link"
-              aria-label="Create venue">
+            <Link to="/newvenue" className="link" aria-label="Create venue">
               Create Venue
             </Link>
             <button onClick={handleLogout} className={styles.button} aria-label="Logout">

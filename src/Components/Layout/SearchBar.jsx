@@ -3,6 +3,8 @@ import styles from "../../Button.module.css";
 
 /**
  * SearchBar component for entering search terms and triggering search actions.
+ * It includes an input field for entering a search term, a submit button to trigger the search,
+ * and a clear button to reset the search field.
  *
  * @param {Object} props - The props passed to the component.
  * @param {function} props.onSearch - The function to be called when the user submits the search term.

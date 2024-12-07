@@ -8,7 +8,9 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Component representing the header navigation bar.
- * Renders the logo and navigation links based on the user's authentication status.
+ * The header includes the logo and navigation links, with conditional rendering
+ * based on the user's authentication status. If the user is logged in,
+ * a link to the user's profile is displayed.
  *
  * @returns {JSX.Element} JSX element representing the Header component.
  */
