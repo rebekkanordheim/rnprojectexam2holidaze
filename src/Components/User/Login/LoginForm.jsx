@@ -1,18 +1,40 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { loginUser } from "./loginUser";
 import styles from "../../../Button.module.css";
 import { Link } from "react-router-dom";
 
+/**
+ * LoginForm component allows users to log in by submitting their email and password.
+ * Includes form validation and handles successful or failed login attempts.
+ * @component
+ */
 const LoginForm = () => {
+  /** State to manage form input data. */
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
+  /** State to store form validation errors. */
   const [errors, setErrors] = useState({});
+
+  /** State to manage the success message displayed after login. */
   const [successMessage, setSuccessMessage] = useState("");
+
+  /** State to toggle password visibility. */
   const [showPassword, setShowPassword] = useState(false);
 
+  /** State to disable the button and show a loading state during form submission. */
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  /** Hook to programmatically navigate to different routes. */
+  const navigate = useNavigate();
+
+  /**
+   * Handles input field changes and updates form data state.
+   * @param {Object} e - Event object from the input field.
+   */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -21,6 +43,10 @@ const LoginForm = () => {
     }));
   };
 
+  /**
+   * Validates the form data and sets error messages if validation fails.
+   * @returns {boolean} - Returns true if the form is valid, otherwise false.
+   */
   const validateForm = () => {
     const errors = {};
     if (!formData.email.endsWith("@stud.noroff.no")) {
@@ -33,21 +59,22 @@ const LoginForm = () => {
     return Object.keys(errors).length === 0;
   };
 
+  /**
+   * Handles form submission, validates data, attempts login, and redirects on success.
+   * @param {Object} e - Event object from the form submission.
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
+      setIsSubmitting(true);
       try {
         const user = await loginUser(formData.email, formData.password);
+
         setSuccessMessage("Login successful!");
         setErrors({});
 
-        // Clear the message after 3 seconds
-        setTimeout(() => setSuccessMessage(""), 3000);
-
-        // Save data to localStorage
+        // Save user data to localStorage
         localStorage.setItem("jwtToken", user.data.accessToken);
-        localStorage.setItem("venueManager", JSON.stringify(user.data.venueManager));
-        localStorage.setItem("name", user.data.name);
         localStorage.setItem("email", user.data.email);
         localStorage.setItem(
           "avatarImage",
@@ -62,16 +89,20 @@ const LoginForm = () => {
         setFormData({ email: "", password: "" });
 
         setTimeout(() => {
-          window.location.href = "/";
-        }, 3000);
+          navigate("/");
+        }, 2000);
       } catch (error) {
         console.error("Login failed:", error);
         setErrors({ apiError: "Login failed. Please try again." });
-        setTimeout(() => setErrors({}), 3000); // Clear the error message
+      } finally {
+        setIsSubmitting(false);
       }
     }
   };
 
+  /**
+   * Toggles the visibility of the password input field.
+   */
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -110,7 +141,8 @@ const LoginForm = () => {
             <button
               type="button"
               onClick={toggleShowPassword}
-              className="toggle-password">
+              className="toggle-password"
+              aria-label={showPassword ? "Hide password" : "Show password"}>
               <i
                 className={
                   showPassword ? "fa-regular fa-eye-slash" : "fa-regular fa-eye"
@@ -119,8 +151,8 @@ const LoginForm = () => {
           </div>
           {errors.password && <span className="error-message">{errors.password}</span>}
         </div>
-        <button type="submit" className={styles.button}>
-          Login
+        <button type="submit" className={styles.button} disabled={isSubmitting}>
+          {isSubmitting ? "Logging in..." : "Login"}
         </button>
         <Link to="/register">Not a user? Register here.</Link>
       </form>

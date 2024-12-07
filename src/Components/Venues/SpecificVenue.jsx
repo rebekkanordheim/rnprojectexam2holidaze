@@ -15,6 +15,7 @@ const SpecificVenue = () => {
   const [bookedDates, setBookedDates] = useState([]);
   const [guests, setGuests] = useState(1);
   const [isBooking, setIsBooking] = useState(false);
+  const [bookingSuccess, setBookingSuccess] = useState(null); // New state for success message
 
   const isUserLoggedIn = isAuthenticated();
   const [startDate, endDate] = dateRange;
@@ -90,7 +91,9 @@ const SpecificVenue = () => {
       if (response.ok) {
         const responseData = await response.json();
         console.log("Booking confirmed:", responseData);
-        alert("Booking confirmed!");
+
+        // Set the success message
+        setBookingSuccess("Booking confirmed!");
         setDateRange([null, null]);
         setGuests(1);
       } else {
@@ -138,6 +141,9 @@ const SpecificVenue = () => {
 
           {isUserLoggedIn ? (
             <div>
+              {/* Display success message if booking is successful */}
+              {bookingSuccess && <div className="success-message">{bookingSuccess}</div>}
+
               <div>
                 <h3>Select Dates:</h3>
                 <DatePicker
