@@ -94,6 +94,7 @@ body {
   border-radius: var(--border-radius);
   overflow: hidden;
   font-family: var(--font-family);
+  font-size: 1.125rem;
 }
 
 .form-input,
